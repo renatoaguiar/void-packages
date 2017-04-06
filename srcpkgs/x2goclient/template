@@ -1,0 +1,16 @@
+# Template file for 'x2goclient'
+pkgname=x2goclient
+version=4.1.2.1
+revision=1
+build_style=gnu-makefile
+make_build_target="build_client build_man"
+make_install_target="install_client install_man"
+hostmakedepends="qt-devel-tools"
+makedepends="qt-devel libldap-devel libssh-devel libXpm-devel cups-devel"
+depends="nx-libs"
+short_desc="Client for X2Go remote desktop solution"
+maintainer="Renato Aguiar <renato@renag.me>"
+license="GPL-2"
+homepage="http://www.x2go.org"
+distfiles="http://code.x2go.org/releases/source/${pkgname}/${pkgname}-${version}.tar.gz"
+checksum=1c18981f0a39929624de9472b0e6c3fa2ac7842837dd306db318af54c5fff2af

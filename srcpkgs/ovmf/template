@@ -1,0 +1,27 @@
+# Template file for 'ovmf'
+pkgname=ovmf
+version=2018
+revision=1
+wrksrc=edk2-vUDK2018
+only_for_archs="x86_64"
+hostmakedepends="acpica-utils nasm python"
+makedepends="libuuid-devel"
+short_desc="UEFI firmware for qemu"
+maintainer="Renato Aguiar <renato@renag.me>"
+license="BSD, MIT"
+homepage="https://github.com/tianocore/edk2"
+distfiles="https://github.com/tianocore/edk2/archive/vUDK2018.tar.gz"
+checksum=a37aa6dc7a4326b562ce03e225afd96a0cd1dc847d9aeddfd867ce6b2e7cc7bc
+
+do_build() {
+	make -j${XBPS_MAKEJOBS} -C BaseTools
+	. edksetup.sh
+	build -t GCC5 -p OvmfPkg/OvmfPkgX64.dsc -D FD_SIZE_2MB \
+				-b RELEASE -a X64 -n ${XBPS_MAKEJOBS}
+}
+
+do_install() {
+	vinstall Build/OvmfX64/RELEASE_GCC5/FV/OVMF_CODE.fd 644 usr/share/OVMF/
+	vinstall Build/OvmfX64/RELEASE_GCC5/FV/OVMF_VARS.fd 644 usr/share/OVMF/
+	vlicense OvmfPkg/License.txt
+}

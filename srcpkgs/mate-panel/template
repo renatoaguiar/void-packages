@@ -1,8 +1,9 @@
 # Template file for 'mate-panel'
 pkgname=mate-panel
-version=1.20.2
-revision=1
+version=1.22.1
+revision=2
 build_style=gnu-configure
+build_helper="gir"
 configure_args="--disable-static --disable-schemas-compile
  $(vopt_enable gir introspection)"
 hostmakedepends="glib-devel intltool itstool pkg-config
@@ -11,17 +12,15 @@ makedepends="dbus-glib-devel libSM-devel libcaja-devel libcanberra-devel
  libmarco-devel libmateweather-devel librsvg-devel libwnck-devel
  mate-desktop-devel mate-menus-devel"
 depends="caja marco mate-session-manager"
-short_desc="The MATE Panel"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+short_desc="MATE Panel"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="GPL-2.0-or-later"
 homepage="https://mate-desktop.org"
 distfiles="https://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=d688fc3a81f517d056c233e7295ec4055f7d9e96de8be55f0b7237cd89fbe039
+checksum=aa36130b9ecf4f7527978cfc9a9593bbf521be144d91d7a87ee64aa7df6d695d
 
 build_options="gir"
-if [ -z "$CROSS_BUILD" ]; then
-	build_options_default="gir"
-fi
+build_options_default="gir"
 
 libmate-panel_package() {
 	short_desc+=" - runtime library"

@@ -1,6 +1,6 @@
 # Template file for 'kcalcore'
 pkgname=kcalcore
-version=17.12.3
+version=19.04.3
 revision=1
 build_style=cmake
 hostmakedepends="extra-cmake-modules qt5-qmake qt5-host-tools python bison"
@@ -9,8 +9,8 @@ short_desc="The KDE calendar access library"
 maintainer="John <johnz@posteo.net>"
 license="LGPL-2.0-or-later"
 homepage="https://community.kde.org/KDE_PIM"
-distfiles="https://download.kde.org/stable/applications/${version}/src/kcalcore-${version}.tar.xz"
-checksum=7f80fcbbeea8d349327f4bba6241d348e9b159242b0686a9a97c99fb466bb888
+distfiles="${KDE_SITE}/applications/${version}/src/kcalcore-${version}.tar.xz"
+checksum=335df0ae376b7abfc8274d46bb5a9956fb8ef438c1065d7f79a57db23005ca45
 
 case $XBPS_TARGET_MACHINE in
 	*-musl) CFLAGS="-D_GNU_SOURCE";;

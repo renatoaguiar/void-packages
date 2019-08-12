@@ -1,6 +1,6 @@
 # Template file for 'kwin'
 pkgname=kwin
-version=5.13.3
+version=5.16.4
 revision=1
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
@@ -8,14 +8,19 @@ hostmakedepends="extra-cmake-modules breeze pkg-config"
 makedepends="plasma-framework-devel kcmutils-devel knewstuff-devel
  kscreenlocker-devel kinit-devel xcb-util-cursor-devel qt5-multimedia-devel
  kdecoration-devel libxkbcommon-devel libinput-devel libSM-devel
- libICE-devel xcb-util-wm-devel qt5-sensors-devel"
+ libICE-devel xcb-util-wm-devel qt5-sensors-devel libcap-devel"
 depends="breeze hicolor-icon-theme kinit"
 short_desc="KDE Window manager"
-maintainer="Denis Revin <denis.revin@gmail.com>"
+maintainer="John <johnz@posteo.net>"
 license="GPL-2.0-or-later"
 homepage="https://projects.kde.org/projects/plasma/kwin"
 distfiles="${KDE_SITE}/plasma/${version}/${pkgname}-${version}.tar.xz"
-checksum=7f069710a2c85c362dc5d1bbe25f54b46fa6ff4cf287c8d1a46bd43cf3f3cbaa
+checksum=71b96f1efef0b3f4974900373285a08d425a63628404fe9e89c27f61119383e6
+
+if [ "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-qmake qt5-host-tools kcoreaddons kconfig"
+	configure_args+=" -DDESKTOPTOJSON_EXECUTABLE=/usr/bin/desktoptojson"
+fi
 
 kwin-devel_package() {
 	short_desc+=" - development"

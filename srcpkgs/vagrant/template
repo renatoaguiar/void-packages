@@ -1,20 +1,18 @@
 # Template file for 'vagrant'
 pkgname=vagrant
-version=2.1.2
-revision=1
+version=2.2.5
+revision=2
+archs="i686 x86_64"
 hostmakedepends="ruby"
 makedepends="ruby-devel zlib-devel"
-depends="openssh curl bsdtar"
+depends="bsdtar curl openssh rsync"
 short_desc="Tool for building and distributing development environments"
 maintainer="Andrea Brancaleoni <abc@pompel.me>"
 license="MIT"
 homepage="https://www.vagrantup.com/"
-distfiles="https://github.com/mitchellh/$pkgname/archive/v$version.tar.gz"
-checksum=610d704e737cbc0ccb9d27fd1b40be8bb1917cad693d2a3d841c8c36c8066939
+distfiles="https://github.com/mitchellh/${pkgname}/archive/v${version}.tar.gz"
+checksum=0a228f5185b24b72efcc5a3924f86fa9fabab6f7562c3c63c1d9d239aa72a7b1
 nocross=yes
-patch_args="-p1"
-
-only_for_archs="i686 x86_64"
 
 post_extract() {
 	sed -i 's|\,\ "<\ 2\.5"||g' $pkgname.gemspec
@@ -25,7 +23,7 @@ do_build() {
 }
 
 do_install() {
-	GEM_PATH=$DESTDIR/usr/lib/$pkgname GEM_HOME="$GEM_PATH" gem install $pkgname-$version.gem --no-ri --no-rdoc -- --disable-clean
+	GEM_PATH=$DESTDIR/usr/lib/$pkgname GEM_HOME="$GEM_PATH" gem install $pkgname-$version.gem --no-document -- --disable-clean
 
 	find ${DESTDIR} -type f -name \*.a -delete
 	find ${DESTDIR} -type f -name \*.log -delete

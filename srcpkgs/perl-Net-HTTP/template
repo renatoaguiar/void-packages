@@ -2,14 +2,14 @@
 pkgname=perl-Net-HTTP
 version=6.18
 revision=1
-noarch=yes
+archs=noarch
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-module
 hostmakedepends="perl"
 makedepends="${hostmakedepends} perl-URI"
 depends="${makedepends}"
 short_desc="Net::HTTP - Low-level HTTP connection (client)"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="Artistic-1.0-Perl, GPL-1.0-or-later"
 homepage="https://metacpan.org/release/Net-HTTP"
 distfiles="${CPAN_SITE}/Net/Net-HTTP-${version}.tar.gz"

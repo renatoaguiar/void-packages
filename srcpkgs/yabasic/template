@@ -1,6 +1,7 @@
 # Template file for 'yabasic'
 pkgname=yabasic
-version=2.79.2
+reverts="2.769_1"
+version=2.84.0
 revision=1
 build_style=gnu-configure
 makedepends="libXt-devel ncurses-devel"
@@ -9,9 +10,10 @@ maintainer="Diogo Leal <diogo@diogoleal.com>"
 license="GPL-3.0-or-later"
 homepage="http://2484.de/yabasic/"
 distfiles="http://2484.de/yabasic/download/yabasic-${version}.tar.gz"
-checksum=9a819c570fe3986f14ec6b718f6eafb7caa627d192e22a865dcfe50b0ae2b175
+checksum=103fd4a2a8edc61a2bd7f56d721775a5c56c19026566f74e16cdabc1816389d2
 
 do_install() {
 	vbin yabasic
 	vman yabasic.1
+	vdoc yabasic.htm
 }

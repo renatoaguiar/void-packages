@@ -1,26 +1,20 @@
 # Template file for 'just'
 pkgname=just
-version=0.3.12
+version=0.4.4
 revision=1
-hostmakedepends="cargo"
+build_style=cargo
 short_desc="Just a command runner"
 maintainer="Wilson Birney <wpb@360scada.com>"
 license="CC0-1.0"
 homepage="https://github.com/casey/just"
 changelog="https://raw.githubusercontent.com/casey/just/master/CHANGELOG.md"
 distfiles="https://github.com/casey/just/archive/v${version}.tar.gz"
-checksum=e5ca71efd19db8f157131cddb14d75ba161851e79e1cc9fc709e2c674d2c943b
-nocross=yes
+checksum=131955a54ff1622349382288ba20db64b01acff802a42b719dd7ebcb2e9c8983
 
-do_build() {
-	cargo build --release ${makejobs}
+pre_build() {
+	cargo update --package nix --precise 0.13.1
 }
 
-do_check() {
-	cargo check --release
-}
-
-do_install() {
-	vbin target/release/just
+post_install() {
 	vlicense LICENSE
 }

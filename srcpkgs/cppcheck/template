@@ -1,15 +1,15 @@
 # Template file for 'cppcheck'
 pkgname=cppcheck
-version=1.84
+version=1.87
 revision=1
 hostmakedepends="libxslt docbook-xsl"
 depends="python"
 short_desc="Static analysis of C/C++ code"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="maxice8 <thinkabit.ukim@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="http://cppcheck.sourceforge.net"
-distfiles="https://github.com/danmar/cppcheck/archive/$version.tar.gz"
-checksum=aaa6293d91505fc6caa6982ca3cd2d949fa1aac603cabad072b705fdda017fc5
+distfiles="https://github.com/danmar/cppcheck/archive/${version}.tar.gz"
+checksum=ea7ac1cd2f5c00ecffd596fd0f7281cba44308e565a634fae02b77ecd927c153
 
 do_build() {
 	make ${makejobs} CFGDIR=/usr/share/cppcheck/cfg

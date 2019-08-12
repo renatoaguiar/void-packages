@@ -1,6 +1,6 @@
 # Template file for 'kscreenlocker'
 pkgname=kscreenlocker
-version=5.13.3
+version=5.16.4
 revision=1
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
@@ -9,11 +9,11 @@ hostmakedepends="extra-cmake-modules pkg-config kcoreaddons qt5-qmake
 makedepends="kdeclarative-devel kidletime-devel kcmutils-devel
  kwayland-devel libXi-devel pam-devel libXcursor-devel"
 short_desc="KDE Library and components for secure lock screen architecture"
-maintainer="Denis Revin <denis.revin@gmail.com>"
+maintainer="John <johnz@posteo.net>"
 license="GPL-2.0-or-later"
 homepage="https://projects.kde.org/projects/plasma/kscreenlocker"
 distfiles="${KDE_SITE}/plasma/${version}/${pkgname}-${version}.tar.xz"
-checksum=bda0bef715db370ae0affa7ebaf5171aeb8cc6400bbb8645a772a0181cfc4ec8
+checksum=92a858f1f4bd6f209f328ca6456dfadc6b542e2a1e3d04ecdcc70f70c1cc2f6f
 
 if [ "$CROSS_BUILD" ]; then
 	hostmakedepends+=" wayland-devel"

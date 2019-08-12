@@ -1,19 +1,19 @@
 # Template file for 'knotifyconfig'
 pkgname=knotifyconfig
-version=5.47.0
+version=5.60.0
 revision=1
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
-hostmakedepends="extra-cmake-modules"
+hostmakedepends="kcoreaddons extra-cmake-modules"
 makedepends="kio-devel"
 short_desc="KDE Configuration dialog for desktop notifications"
-maintainer="Denis Revin <denis.revin@gmail.com>"
-license="LGPL-2"
+maintainer="John <johnz@posteo.net>"
+license="LGPL-2.1-or-later"
 homepage="https://projects.kde.org/projects/frameworks/knotifyconfig"
 distfiles="${KDE_SITE}/frameworks/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=546b099c5257e2d59b92c0350415824754cba9f789d767d160bd2ea54b505b7d
+checksum=77e78f15226334ffaaa0469c06052cca60a9c18063140f38b9cd6dbf8de8f099
 
-if [ -n "$CROSS_BUILD" ]; then
+if [ "$CROSS_BUILD" ]; then
 	hostmakedepends+=" qt5-host-tools qt5-qmake python"
 fi
 
@@ -24,6 +24,6 @@ knotifyconfig-devel_package() {
 		vmove usr/include
 		vmove usr/lib/qt5/mkspecs
 		vmove usr/lib/cmake
-		vmove usr/lib/*.so
+		vmove "usr/lib/*.so"
 	}
 }

@@ -1,17 +1,18 @@
 # Template file for 'kdepim-apps-libs'
 pkgname=kdepim-apps-libs
-version=17.12.3
+version=19.04.3
 revision=1
 build_style=cmake
-hostmakedepends="extra-cmake-modules qt5-qmake qt5-host-tools python"
+hostmakedepends="extra-cmake-modules qt5-qmake qt5-host-tools python
+ kcoreaddons kconfig"
 makedepends="grantlee5-devel kcontacts-devel akonadi-contacts-devel libkleo-devel
  grantleetheme-devel libkdepim-devel pimcommon-devel"
 short_desc="KDE PIM mail related libraries"
 maintainer="John <johnz@posteo.net>"
 license="GPL-2.0-or-later, LGPL-2.1-or-later"
 homepage="https://community.kde.org/KDE_PIM"
-distfiles="https://download.kde.org/stable/applications/${version}/src/kdepim-apps-libs-${version}.tar.xz"
-checksum=44c85b039200cdc5d7b57a6fd74ba1d9902f305bb7406a1d142d5a2f67c0119d
+distfiles="${KDE_SITE}/applications/${version}/src/kdepim-apps-libs-${version}.tar.xz"
+checksum=a3ad12f4b7c58154aef49fc5d0ac388a6e9441972605aaa02e17dd6a0583eeb2
 
 kdepim-apps-libs-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision} ${makedepends}"

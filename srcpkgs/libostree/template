@@ -1,19 +1,29 @@
 # Template file for 'libostree'
 pkgname=libostree
-version=2018.5
-revision=1
+version=2019.2
+revision=3
 build_style=gnu-configure
-configure_args="--with-builtin-grub2-mkconfig --with-openssl"
+build_helper="gir"
+configure_args="--with-builtin-grub2-mkconfig --with-openssl
+ $(vopt_enable gir introspection)"
 hostmakedepends="bison docbook-xsl glib-devel libxslt pkg-config"
 makedepends="e2fsprogs-devel fuse-devel glib-devel gpgme-devel libarchive-devel
- libsoup-devel"
-checkdepends="python3-yaml attr-progs cpio elfutils"
+ libsoup-devel $(vopt_if gir 'gobject-introspection')"
+checkdepends="attr-progs cpio elfutils python3-yaml"
 short_desc="Operating system and container binary deployment and upgrades"
-maintainer="Duncaen <duncaen@voidlinux.eu>"
+maintainer="Duncaen <duncaen@voidlinux.org>"
 license="LGPL-2.0-or-later"
 homepage="https://ostree.readthedocs.io/en/latest/"
+changelog="https://github.com/ostreedev/ostree/releases"
 distfiles="https://github.com/ostreedev/ostree/releases/download/v${version}/libostree-${version}.tar.xz"
-checksum=ad0f5a0e7a7f22f87c72b318b2cfdbe8cf908a1a469ec94eb72984bbb3690261
+checksum=9e0051be1ec0f5642cc3ce56a404f7f9c78d6b74068b23e8dd465772c7cf6b59
+
+build_options="gir"
+build_options_default="gir"
+
+post_install() {
+	vinstall bash/ostree 644 usr/share/bash-completion/completions
+}
 
 libostree-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision} libglib-devel"
@@ -22,5 +32,8 @@ libostree-devel_package() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
 		vmove "usr/lib/*.so"
+		if [ "$build_option_gir" ]; then
+			vmove usr/share/gir-1.0
+		fi
 	}
 }

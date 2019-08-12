@@ -1,8 +1,8 @@
 # Template file for 'MEGAsdk'
 pkgname=MEGAsdk
-version=3.3.9
-revision=2
-wrksrc=sdk-${version}
+version=3.5.4
+revision=1
+wrksrc="sdk-${version}"
 build_style=gnu-configure
 configure_args="--enable-chat --disable-examples $(vopt_with libuv)"
 make_build_args='LIBTOOLFLAGS="--tag=CXX"'
@@ -11,12 +11,12 @@ makedepends="libcurl-devel c-ares-devel libressl-devel crypto++-devel
  zlib-devel sqlite-devel freeimage-devel libsodium-devel fuse-devel
  libuv-devel $(vopt_if mediainfo libmediainfo-devel)"
 checkdepends="gtest-devel"
-short_desc="The official client for cloud service mega.nz"
+short_desc="Official client for cloud service mega.nz"
 maintainer="John <johnz@posteo.net>"
 license="BSD-2-Clause"
 homepage="https://mega.nz"
 distfiles="https://github.com/meganz/sdk/archive/v${version}.tar.gz"
-checksum=522b63bf2f2d1eeff0644ef106fff94fcd4f6a844e01539cc6cfb30d16463dba
+checksum=7fc81a64a77829bbc8dd316aac2159890a556dfdeade527a1386482e6dee26ee
 replaces="libmega>=0"
 
 build_options="libuv mediainfo"

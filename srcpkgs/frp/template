@@ -1,23 +1,22 @@
 # Template file for 'frp'
 pkgname=frp
-version=0.20.0
+version=0.28.0
 revision=1
 build_style=go
-go_import_path="github.com/fatedier/frp"
+go_import_path=github.com/fatedier/frp
 go_package="${go_import_path}/cmd/frpc ${go_import_path}/cmd/frps"
-conf_files="/etc/frp/*.ini"
 short_desc="Fast reverse proxy"
-maintainer="cr6git <quark6@protonmail.com>"
+maintainer="Anachron <gith@cron.world>"
 license="Apache-2.0"
 homepage="https://github.com/fatedier/frp"
 distfiles="https://github.com/fatedier/frp/archive/v${version}.tar.gz"
-checksum=17219fcdde776c87b79848dcae5aba5beb9ccc2a512d7d2ff811c901611a696e
+checksum=61afbd0e84fc1ab92eacce5a642e2590d1b8c1a972a78f6499165c1778aa62cf
+
+conf_files="/etc/frp/*.ini"
 
 post_install() {
-	vinstall conf/frpc_full.ini 644 etc/frp
-	vinstall conf/frps_full.ini 644 etc/frp
-	vinstall conf/frpc.ini 644 etc/frp
-	vinstall conf/frps.ini 644 etc/frp
+	vmkdir etc/frp
+	vcopy conf/*.ini etc/frp
 	vsv frpc
 	vsv frps
 }

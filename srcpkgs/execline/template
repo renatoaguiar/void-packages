@@ -1,18 +1,25 @@
 # Template file for 'execline'
 pkgname=execline
-version=2.5.0.0
-revision=2
-build_style=gnu-configure
+version=2.5.1.0
+revision=1
+build_style=configure
 makedepends="skalibs-devel"
-configure_args="--libdir=/usr/lib --with-sysdeps=${XBPS_CROSS_BASE}/usr/lib/skalibs/sysdeps --with-lib=${XBPS_CROSS_BASE}/usr/lib"
+configure_args="--libdir=/usr/lib --bindir=/usr/bin
+ --with-sysdeps=${XBPS_CROSS_BASE}/usr/lib/skalibs/sysdeps
+ --with-lib=${XBPS_CROSS_BASE}/usr/lib"
 short_desc="A non-interactive scripting language"
-maintainer="bougyman <bougyman@voidlinux.eu>"
+maintainer="bougyman <bougyman@voidlinux.org>"
 license="ISC"
-homepage="http://skarnet.org/software/execline/"
-distfiles="http://skarnet.org/software/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=f6993094766652041c21fde9c07ef53a3cd4b93a64123d9578fb4997a2cefca1
+homepage="https://skarnet.org/software/execline/"
+changelog="https://skarnet.org/software/execline/upgrade.html"
+distfiles="https://skarnet.org/software/${pkgname}/${pkgname}-${version}.tar.gz"
+checksum=b1a756842947488404db8173bbae179d6e78b6ef551ec683acca540ecaf22677
 
 CFLAGS="-fPIC"
+
+case "$XBPS_TARGET_MACHINE" in
+	*-musl) makedepends+=" nsss-devel" configure_args+=" --enable-nsss" ;;
+esac
 
 post_install() {
 	vlicense COPYING
@@ -21,7 +28,7 @@ post_install() {
 }
 
 execline-doc_package() {
-	noarch=yes
+	archs=noarch
 	short_desc+=" - Documentation"
 	depends="${sourcepkg}>=${version}_${revision}"
 	pkg_install() {

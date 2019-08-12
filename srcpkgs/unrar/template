@@ -1,21 +1,23 @@
 # Template file for 'unrar'
 pkgname=unrar
-version=5.6.5
+version=5.7.5
 revision=1
 wrksrc=unrar
 short_desc="Unarchiver for .rar files (non-free version)"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="freeware"
 homepage="https://www.rarlab.com/rar_add.htm"
 distfiles="https://www.rarlab.com/rar/unrarsrc-${version}.tar.gz"
-checksum=eba36a421bf41491818dee9507d934064622bc0bd9db6bbb8422a4706f200898
+checksum=e1c2fddaa87a88b1535bfc10ca484f3c5af4e5a55fbb933f8819e26203bbe2ee
 repository=nonfree
 
 do_build() {
-	sed -i -e 's/^\(CXXFLAGS\)=\(.*\)/\1+=\2/' \
-		-e 's/^\(LDFLAGS\)=\(.*\)/\1+=-lpthread \2/' makefile
+	vsed -e 's/^\(CXXFLAGS\)=\(.*\)/\1+=\2/' \
+		 -e 's/^\(LDFLAGS\)=\(.*\)/\1+=-lpthread \2/' \
+		 -i makefile
 	make CXX="$CXX" LD="$LD" STRIP=: -f makefile
 }
+
 do_install() {
 	vbin unrar
 	vlicense license.txt LICENSE

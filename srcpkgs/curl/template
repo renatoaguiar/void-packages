@@ -1,6 +1,6 @@
 # Template file for 'curl'
 pkgname=curl
-version=7.61.0
+version=7.65.3
 revision=1
 build_style=gnu-configure
 configure_args="ac_cv_sizeof_off_t=8 --enable-threaded-resolver --enable-ipv6
@@ -15,12 +15,12 @@ makedepends="nghttp2-devel zlib-devel $(vopt_if gnutls 'gnutls-devel')
 depends="ca-certificates"
 checkdepends="python"
 short_desc="Client that groks URLs"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="MIT"
 homepage="https://curl.haxx.se"
 changelog="https://curl.haxx.se/changes.html#${version//./_}"
 distfiles="${homepage}/download/${pkgname}-${version}.tar.bz2"
-checksum=5f6f336921cf5b84de56afbd08dfb70adeef2303751ffb3e570c936c6d656c9c
+checksum=0a855e83be482d7bc9ea00e05bdb1551a44966076762f9650959179c89fce509
 build_options="gnutls gssapi ldap rtmp ssh ssl"
 build_options_default="ssh ssl"
 vopt_conflict ssl gnutls
@@ -36,16 +36,17 @@ post_install() {
 }
 
 libcurl_package() {
-	short_desc="The multiprotocol file transfer library"
+	short_desc="Multiprotocol file transfer library"
 	shlib_provides="libcurl-gnutls.so.4"
 	pkg_install() {
 		vmove "usr/lib/*.so.*"
 		ln -sf libcurl.so.4.5.0 ${PKGDESTDIR}/usr/lib/libcurl-gnutls.so.4
 	}
 }
+
 libcurl-devel_package() {
 	depends="${makedepends} libcurl>=${version}_${revision}"
-	short_desc="The multiprotocol file transfer library - development files"
+	short_desc="Multiprotocol file transfer library - development files"
 	pkg_install() {
 		vmove usr/bin/curl-config
 		vmove "usr/share/man/man1/curl-config*"

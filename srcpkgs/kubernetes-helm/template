@@ -1,24 +1,38 @@
+# Template file for 'kubernetes-helm'
 pkgname=kubernetes-helm
-version=2.9.1
+version=2.14.3
 revision=1
+wrksrc="helm-${version}"
 hostmakedepends="go make git mercurial"
-short_desc="The Kubernetes Package Manager"
+short_desc="Kubernetes Package Manager"
 maintainer="Kyle Nusbaum <knusbaum+void@sdf.org>"
 license="Apache-2.0"
 homepage="https://helm.sh/"
 distfiles="https://github.com/helm/helm/archive/v${version}.tar.gz"
-checksum=2fee31764117024d1cc4f597d23791c60feef7c3ceedd143cfdbbafca7a7e126
-nopie=true
+checksum=178b67aaa2b8ab8fd6a892dc1e321f0cb29fcd15b0a640e09d84bb7098aab53e
 conflicts="helm"
-wrksrc="helm-${version}"
-_go_target_arch=$(source /void-packages/common/environment/build-style/go.sh; echo $GOARCH)
+nopie=true
+
+_convert_arch() {
+	case "$1" in
+		aarch64*) echo arm64;;
+		armv6*) echo arm;;
+		armv7*) echo arm;;
+		i686*) echo 386;;
+		x86_64*) echo amd64;;
+		ppc64le*) echo ppc64le;;
+	esac
+}
+
+export _go_target_arch=$(_convert_arch $XBPS_TARGET_MACHINE)
+export _go_host_arch=$(_convert_arch $XBPS_MACHINE)
 
 do_extract() {
 	mkdir -p golib/src/k8s.io/helm
 	tar -xvzf ${XBPS_SRCDISTDIR}/${pkgname}-${version}/v${version}.tar.gz \
 		-C golib/src/k8s.io/helm \
 		--strip-components 1 \
-		helm-2.9.1
+		helm-${version}
 }
 
 pre_build() {
@@ -37,12 +51,26 @@ pre_build() {
 
 do_build() {
 	cd golib/src/k8s.io/helm
-	TARGETS="linux/${_go_target_arch}" make bootstrap build-cross APP="..."
+	TARGETS="linux/${_go_target_arch} linux/${_go_host_arch}" make bootstrap build-cross APP="..." LDFLAGS="-X k8s.io/helm/pkg/version.Version=v${version} -X k8s.io/helm/pkg/version.BuildMetadata="
+
+	_dist/linux-${_go_host_arch}/helm completion bash > completion.bash
+	_dist/linux-${_go_host_arch}/helm completion zsh > completion.zsh
 }
 
 do_install() {
-	vbin golib/src/k8s.io/helm/_dist/linux-${_go_target_arch}/helm
-	vbin golib/src/k8s.io/helm/_dist/linux-${_go_target_arch}/rudder
-	vbin golib/src/k8s.io/helm/_dist/linux-${_go_target_arch}/tiller
-	vlicense golib/src/k8s.io/helm/LICENSE
+	cd golib/src/k8s.io/helm
+
+	# Copy documentation and examples.
+	vmkdir usr/share/examples/$pkgname
+	vcopy "docs/examples/*" usr/share/examples/$pkgname
+	for file in docs/man/man1/*.1; do
+		vman ${file}
+	done
+	vinstall completion.bash 644 usr/share/bash-completion/completions helm
+	vinstall completion.zsh 644 usr/share/$pkgname
+
+	# Copy binaries and license
+	vbin _dist/linux-${_go_target_arch}/helm
+	vbin _dist/linux-${_go_target_arch}/tiller
+	vlicense LICENSE
 }

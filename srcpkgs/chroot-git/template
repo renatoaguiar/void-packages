@@ -1,29 +1,34 @@
 # Template file for 'chroot-git'
 pkgname=chroot-git
-version=2.18.0
+version=2.22.0
 revision=1
 bootstrap=yes
-wrksrc="git-$version"
+wrksrc="git-${version}"
 build_style=gnu-configure
 configure_args="--without-curl --without-openssl
  --without-python --without-expat --without-tcltk
  ac_cv_lib_curl_curl_global_init=no ac_cv_lib_expat_XML_ParserCreate=no
- ac_cv_fread_reads_directories=no ac_cv_snprintf_returns_bogus=no"
-makedepends="zlib-devel"
+ ac_cv_snprintf_returns_bogus=no"
 make_build_args="CC_LD_DYNPATH=-L"
 make_install_args="NO_INSTALL_HARDLINKS=1"
+makedepends="zlib-devel"
 short_desc="GIT Tree History Storage Tool -- for xbps-src use"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="GPL-2.0-or-later"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
+license="GPL-2.0-only"
 homepage="https://git-scm.com/"
 distfiles="https://www.kernel.org/pub/software/scm/git/git-${version}.tar.xz"
-checksum=8b40be383a603147ae29337136c00d1c634bdfdc169a30924a024596a7e30e92
+checksum=159e4b599f8af4612e70b666600a3139541f8bacc18124daf2cbe8d1b934f29f
 
 if [ "$CHROOT_READY" ]; then
 	hostmakedepends="perl"
 else
 	configure_args+=" --with-zlib=${XBPS_MASTERDIR}/usr"
 fi
+
+case "$XBPS_TARGET_MACHINE" in
+	*-musl) configure_args+=" ac_cv_fread_reads_directories=yes" ;;
+	*) configure_args+=" ac_cv_fread_reads_directories=no" ;;
+esac
 
 do_install() {
 	# remove unneeded stuff.

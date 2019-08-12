@@ -1,24 +1,15 @@
 # Template file for 'miniserve'
 pkgname=miniserve
-version=0.1.5
+version=0.3.0
 revision=1
-hostmakedepends="cargo"
+build_style=cargo
 short_desc="CLI tool to serve files and dirs over HTTP"
-maintainer="cr6git <quark6@protonmail.com>"
+maintainer="Rasmus Thomsen <rasmus.thomsen@protonmail.com>"
 license="MIT"
 homepage="https://github.com/svenstaro/miniserve"
 distfiles="https://github.com/svenstaro/miniserve/archive/v${version}.tar.gz"
-checksum=b435471cd08f3dbe080e26a0b6937c824502a87659948f49b5d2e54f07de64e0
+checksum=80ee5d661730ddad14671f961b560467f3b3a9f0544b9b11dec65098eb4a1f7e
 
-nocross="https://travis-ci.org/voidlinux/void-packages/jobs/380263119#L1158
- https://travis-ci.org/voidlinux/void-packages/jobs/380263118#L1167"
-
-do_build() {
-	cargo build --release
-}
-
-do_install() {
-	vbin target/release/miniserve
+post_install() {
 	vlicense LICENSE
 }
-

@@ -1,15 +1,14 @@
 # Template file for 'kwallet-pam'
 pkgname=kwallet-pam
-version=5.13.3
+version=5.16.4
 revision=1
 build_style=cmake
-configure_args="-DBUILD_TESTING=OFF"
-hostmakedepends="extra-cmake-modules"
-makedepends="libgcrypt-devel pam-devel"
+hostmakedepends="qt5-qmake qt5-host-tools extra-cmake-modules"
+makedepends="libgcrypt-devel pam-devel kwallet-devel"
 depends="socat pam"
 short_desc="KWallet PAM integration"
-maintainer="Denis Revin <denis.revin@gmail.com>"
+maintainer="John <johnz@posteo.net>"
 license="LGPL-2.1-or-later"
 homepage="https://projects.kde.org/projects/plasma/kwallet-pam"
 distfiles="${KDE_SITE}/plasma/${version}/${pkgname}-${version}.tar.xz"
-checksum=27d9ab697e909be72a611d8a99ddde948e3763ba7199bf2da4a08354fcc0964f
+checksum=7332dd9729c55f4b24260b3ec1266f72284f834eed66ce76badd4ac5af3dd429

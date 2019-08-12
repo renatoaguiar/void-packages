@@ -1,16 +1,17 @@
 # Template file for 'nano'
 pkgname=nano
-version=2.9.8
+version=4.3
 revision=1
 build_style=gnu-configure
 configure_args="--enable-utf8"
 makedepends="file-devel ncurses-devel"
-short_desc="The GNU nano text editor"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+short_desc="GNU nano text editor"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="GPL-3.0-or-later"
 homepage="https://www.nano-editor.org/"
-distfiles="https://www.nano-editor.org/dist/v${version%.*}/nano-$version.tar.xz"
-checksum=c2deac31ba4d3fd27a42fafcc47ccf499296cc69a422bbecab63f2933ea85488
+changelog="http://git.savannah.gnu.org/cgit/nano.git/plain/NEWS"
+distfiles="https://www.nano-editor.org/dist/v${version%.*}/nano-${version}.tar.xz"
+checksum=00d3ad1a287a85b4bf83e5f06cedd0a9f880413682bebd52b4b1e2af8cfc0d81
 
 post_install() {
 	vsconf syntax/nanorc.nanorc

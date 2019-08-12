@@ -1,6 +1,6 @@
 # Template file for 'krdc'
 pkgname=krdc
-version=18.04.3
+version=19.04.3
 revision=1
 build_style=cmake
 configure_args="-DDESKTOPTOJSON_EXECUTABLE=/usr/bin/desktoptojson"
@@ -8,15 +8,15 @@ hostmakedepends="extra-cmake-modules qt5-qmake qt5-host-tools python freerdp
  kcoreaddons kdoctools kconfig"
 makedepends="kconfig-devel kcmutils-devel kdnssd-devel knotifyconfig-devel
  knotifications-devel kbookmarks-devel kiconthemes-devel kxmlgui-devel
- kcompletion-devel kwallet-devel kwidgetsaddons-devel knotifyconfig-devel
- ki18n-devel libvncserver-devel"
+ kcompletion-devel kwallet-devel kwidgetsaddons-devel ki18n-devel
+ libvncserver-devel"
 depends="freerdp"
 short_desc="Remote Desktop Client supporting VNC and RDP"
 maintainer="Helmut Pozimski <helmut@pozimski.eu>"
 license="GPL-2.0-or-later, GFDL-2.1, LGPL-2.1-or-later"
 homepage="https://kde.org/applications/internet/krdc/"
 distfiles="${KDE_SITE}/applications/${version}/src/${pkgname}-${version}.tar.xz"
-checksum=7d04968306f8a5862223adad846bf130134fc066e69f1749e52f583eb5b3a764
+checksum=2458858d3e4d00ca2a95151ff7433d3a1726518f9a28281d5e1bb90855132426
 
 krdc-devel_package() {
 	short_desc+=" - development files"

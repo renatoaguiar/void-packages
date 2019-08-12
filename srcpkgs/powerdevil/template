@@ -1,14 +1,16 @@
 # Template file for 'powerdevil'
 pkgname=powerdevil
-version=5.13.3
+version=5.16.4
 revision=1
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
-hostmakedepends="extra-cmake-modules pkg-config"
-makedepends="bluez-qt5-devel libkscreen-devel networkmanager-qt5-devel kdesignerplugin-devel kdoctools-devel plasma-workspace-devel"
+hostmakedepends="extra-cmake-modules pkg-config kdoctools kauth
+ kconfig qt5-qmake qt5-host-tools"
+makedepends="bluez-qt5-devel libkscreen-devel networkmanager-qt5-devel
+ kdesignerplugin-devel kdoctools-devel plasma-workspace-devel ksolid-devel"
 short_desc="Power consumption settings of a Plasma"
-maintainer="Denis Revin <denis.revin@gmail.com>"
+maintainer="John <johnz@posteo.net>"
 license="GPL-2.0-or-later"
 homepage="https://projects.kde.org/projects/plasma/powerdevil"
 distfiles="${KDE_SITE}/plasma/${version}/${pkgname}-${version}.tar.xz"
-checksum=2088c45f59c439e9f0177b53d9560a4e491d47be9ba04ac3d8d5e34202d1d0d0
+checksum=40885869890366f7ea92946ed0f8d251546fb14228eddd2ad128e3be8f88d2ed

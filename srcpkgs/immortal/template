@@ -1,19 +1,20 @@
 # Template file for 'immortal'
 pkgname=immortal
-version=0.20.0
+version=0.23.0
 revision=1
 build_style=go
 go_import_path=github.com/immortal/immortal
-go_package="${go_import_path}/cmd/immortal ${go_import_path}/cmd/immortalctl ${go_import_path}/cmd/immortaldir"
+go_package="${go_import_path}/cmd/immortal ${go_import_path}/cmd/immortalctl
+ ${go_import_path}/cmd/immortaldir"
 go_ldflags="-X main.Version=v${version}"
 hostmakedepends="git"
-short_desc="A *nix cross-platform (OS agnostic) supervisor"
+short_desc="*nix cross-platform (OS agnostic) supervisor"
 maintainer="maxice8 <thinkabit.ukim@gmail.com>"
 license="BSD-3-Clause"
 homepage="https://github.com/immortal/immortal"
 #changelog="https://raw.githubusercontent.com/immortal/immortal/master/CHANGELOG.md"
 distfiles="https://github.com/immortal/immortal/archive/${version}.tar.gz"
-checksum=729c08265bcb93996215cc64af16155651f8355cd1c571077576d923740f0613
+checksum=1edc0f7b81897f1afd3bf5b81b44cb6d10060427a392b87af63c573770be018e
 
 do_check() {
 	go test -v

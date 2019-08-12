@@ -1,6 +1,6 @@
 # Template file for 'rspamd'
 pkgname=rspamd
-version=1.7.8
+version=1.9.4
 revision=1
 build_style=cmake
 configure_args="-DRSPAMD_USER=rspamd -DCONFDIR=/etc/rspamd
@@ -9,17 +9,21 @@ hostmakedepends="perl pkg-config ragel"
 makedepends="LuaJIT-devel fann-devel file-devel gd-devel gmime-devel
  hiredis-devel icu-devel libevent-devel sqlite-devel"
 short_desc="Fast, free and open-source spam filtering system"
-maintainer="Enno Boland <gottox@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.org>"
 license="Apache-2.0"
 homepage="https://rspamd.com/"
+changelog="https://raw.githubusercontent.com/vstakhov/rspamd/master/ChangeLog"
 distfiles="https://github.com/vstakhov/rspamd/archive/${version}.tar.gz"
-checksum=d8ce172fbe4c2e0cb4fedfc3c38bb92710de40f2e8659fb7445d03d558229af5
+checksum=e4720c1f45defd07dd17b9563d0ddc480c70beadbc1a833235c077960092e030
 system_accounts="rspamd"
 rspamd_homedir=/var/lib/rspamd
 conf_files="/etc/rspamd/*.conf /etc/rspamd/*.inc /etc/rspamd/modules.d/*.conf"
 
 case "$XBPS_TARGET_MACHINE" in
-	arm*) broken="https://build.voidlinux.eu/builders/armv7l_builder/builds/8365/steps/shell_3/logs/stdio" ;;
+	aarch64*|arm*) configure_args+=" -DHAS_C11_ATOMICS_EXITCODE=0
+	 -DHAS_C11_ATOMICS_EXITCODE__TRYRUN_OUTPUT=0
+	 -DHAVE_ATOMIC_BUILTINS_EXITCODE=0
+	 -DHAVE_ATOMIC_BUILTINS_EXITCODE__TRYRUN_OUTPUT=0"
 esac
 
 if [ "$CROSS_BUILD" ]; then
@@ -46,5 +50,5 @@ pre_configure() {
 
 post_install() {
 	vsv rspamd
-	vlicense LICENSE
+	vlicense LICENSE.md
 }

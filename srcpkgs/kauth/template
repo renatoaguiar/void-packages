@@ -1,19 +1,19 @@
 # Template file for 'kauth'
 pkgname=kauth
-version=5.47.0
-revision=2
+version=5.60.0
+revision=1
 build_style=cmake
-hostmakedepends="extra-cmake-modules pkg-config"
+hostmakedepends="kcoreaddons extra-cmake-modules pkg-config"
 makedepends="kcoreaddons-devel polkit-qt5-devel"
 short_desc="KDE Execute actions as privileged user"
-maintainer="Denis Revin <denis.revin@gmail.com>"
-license="LGPL-2"
+maintainer="John <johnz@posteo.net>"
+license="LGPL-2.1-or-later"
 homepage="https://projects.kde.org/projects/frameworks/kauth"
 distfiles="${KDE_SITE}/frameworks/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=29c7c3d6c539d52200806502e4b11a132c1941512df6f2d3e073ed3e7f7e00e9
+checksum=50a2a2eb90d7529bb6fc4ddd77e37ef5b25c612b18487cc63d8d086d5ec28916
 
-if [ -n "$CROSS_BUILD" ]; then
-	hostmakedepends+=" qt5-host-tools qt5-qmake qt5-tools-devel polkit-qt5-devel"
+if [ "$CROSS_BUILD" ]; then
+	hostmakedepends+=" kcoreaddons qt5-host-tools qt5-qmake qt5-tools-devel polkit-qt5-devel"
 fi
 
 kauth-devel_package() {
@@ -23,6 +23,6 @@ kauth-devel_package() {
 		vmove usr/include
 		vmove usr/lib/qt5/mkspecs
 		vmove usr/lib/cmake
-		vmove usr/lib/*.so
+		vmove "usr/lib/*.so"
 	}
 }

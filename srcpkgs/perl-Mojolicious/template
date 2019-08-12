@@ -1,8 +1,8 @@
 # Template file for 'perl-Mojolicious'
 pkgname=perl-Mojolicious
-version=7.88
+version=8.14
 revision=1
-noarch=yes
+archs=noarch
 wrksrc="${pkgname//perl-/}-${version}"
 build_style=perl-module
 hostmakedepends="perl"
@@ -12,5 +12,5 @@ maintainer="Urs Schulz <voidpkgs@ursschulz.de>"
 license="Artistic-1.0-Perl, GPL-1.0-or-later"
 homepage="https://metacpan.org/release/Mojolicious"
 distfiles="${CPAN_SITE}/${pkgname//perl-/}/${pkgname//perl-/}-${version}.tar.gz"
-checksum=4c4c9c05131fcd175cd6370e15d2586baec1a3ec882cb6971e1f5f52b5e0d785
+checksum=381578a16a8c6c4600345b1a5e107f7485ff0a9a30fa3296b0d8b3507aab5535
 

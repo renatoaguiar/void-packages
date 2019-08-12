@@ -1,22 +1,26 @@
 # Template file for 'rocksndiamonds'
 pkgname=rocksndiamonds
-version=4.1.0.0
+version=4.1.3.0
 revision=1
 build_style=gnu-makefile
 hostmakedepends="pkg-config"
 makedepends="SDL2_image-devel SDL2_mixer-devel SDL2_net-devel"
+depends="rocksndiamonds-data"
 short_desc="Arcade style game"
 maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
-license="GPL-2"
+license="GPL-2.0-only"
 homepage="http://www.artsoft.org/rocksndiamonds"
 distfiles="http://www.artsoft.org/RELEASES/unix/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=4e9958dc550cf3eddef73f759ee3fdf274ca259314d64fc735077a0c85fbba2e
+checksum=93da17fdfb8e4b22b2e050724dc775cf86dc6ed278ffab8bc18922ed2b2594cb
 
 # Package build options
 build_options="gles"
 
+LDFLAGS="-lz"
+
 case "$XBPS_TARGET_MACHINE" in
 	arm*)
+		broken=yes
 		# Enable OpenGL/ES on rpi platforms
 		build_options_default="gles"
 		;;
@@ -50,4 +54,12 @@ do_install() {
 	# vman rocksndiamonds.1
 	vinstall ${FILESDIR}/${pkgname}.desktop 644 usr/share/applications
 	vinstall ${FILESDIR}/${pkgname}.png 644 usr/share/pixmaps
+}
+
+rocksndiamonds-data_package() {
+	short_desc+=" - data files"
+	archs=noarch
+	pkg_install() {
+		vmove usr/share/rocksndiamonds
+	}
 }

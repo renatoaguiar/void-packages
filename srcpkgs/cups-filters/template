@@ -1,32 +1,26 @@
 # Template file for 'cups-filters'
 pkgname=cups-filters
-version=1.20.4
+version=1.25.1
 revision=1
 build_style=gnu-configure
 configure_args="--disable-static --with-rcdir=no --enable-avahi
- --with-browseremoteprotocols=DNSSD,CUPS"
-hostmakedepends="ghostscript glib-devel mupdf-tools poppler-utils pkg-config"
-makedepends="avahi-glib-libs-devel cups-devel fontconfig-devel
+ --with-browseremoteprotocols=DNSSD,CUPS
+ --with-test-font-path=/usr/share/fonts/TTF/DejaVuSans.ttf"
+hostmakedepends="ghostscript glib-devel mupdf-tools pkg-config poppler-utils
+ liblouis"
+makedepends="avahi-glib-libs-devel cups-devel fontconfig-devel liblouis-devel
  ghostscript-devel lcms2-devel libqpdf-devel poppler-cpp-devel"
 depends="bc ghostscript libcups-filters-${version}_${revision} poppler-utils"
 checkdepends="dejavu-fonts-ttf"
 conf_files="/etc/cups/cups-browsed.conf"
-short_desc="The OpenPrinting CUPS Filters"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+short_desc="OpenPrinting CUPS Filters"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="GPL-2.0-or-later, LGPL-2.1-or-later, MIT"
 homepage="https://wiki.linuxfoundation.org/openprinting/cups-filters"
 distfiles="http://openprinting.org/download/cups-filters/${pkgname}-${version}.tar.xz"
-checksum=33756e9fa8562cde050ecbec13f4c84b1c61c4f79a525e02382787c528ab536a
+checksum=1a09cc121d76f762e4bed6d3499499957935cbf3b5ec06765bd932692521985a
 
 lib32disabled=yes
-
-pre_check() {
-	ln -s /usr/share/fonts/TTF /usr/share/fonts/dejavu
-}
-
-post_check() {
-	rm -f -- /usr/share/fonts/dejavu
-}
 
 post_install() {
 	vsv cups-browsed
@@ -36,15 +30,16 @@ post_install() {
 libcups-filters_package() {
 	short_desc+=" - shared library"
 	pkg_install() {
-		vmove usr/lib/*.so.*
+		vmove "usr/lib/*.so.*"
 	}
 }
+
 libcups-filters-devel_package() {
 	short_desc+=" - development files"
 	depends="libcups-filters-${version}_${revision}"
 	pkg_install() {
 		vmove usr/include
-		vmove usr/lib/*.so
+		vmove "usr/lib/*.so"
 		vmove usr/lib/pkgconfig
 	}
 }

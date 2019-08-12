@@ -1,12 +1,13 @@
 # Template file for 'opam'
 pkgname=opam
-version=1.2.2
-revision=6
+version=2.0.5
+revision=1
 build_style=gnu-configure
 disable_parallel_build=yes
+configure_args="--docdir=/usr/share/doc/${pkgname}"
 make_build_args="lib-ext all"
 make_check_target="tests"
-makedepends="ncurses-devel ocaml curl"
+makedepends="curl ncurses-devel ocaml ocaml-findlib"
 depends="curl patch unzip"
 checkdepends="${depends} git rsync"
 short_desc="OCaml package manager"
@@ -14,6 +15,9 @@ maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="LGPL-3.0-only"
 homepage="http://opam.ocamlpro.com"
 distfiles="https://github.com/ocaml/${pkgname}/archive/${version}.tar.gz"
-checksum=3e4a05df6ff8deecba019d885ebe902eb933acb6e2fc7784ffee1ee14871e36a
+checksum=f07f3ea3d4507c8a43cddbd409869377c7878d330c3e8a668424287b989d4fb9
 nocross=yes
-export OCAMLPARAM="safe-string=0,_"
+
+post_install() {
+	rm -rf ${DESTDIR}/usr/doc
+}

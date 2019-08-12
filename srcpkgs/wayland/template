@@ -1,17 +1,17 @@
 # Template file for 'wayland'
 pkgname=wayland
-version=1.15.0
-revision=4
+version=1.17.0
+revision=1
 build_style=gnu-configure
 configure_args="--disable-documentation --disable-static"
 hostmakedepends="flex pkg-config"
 makedepends="expat-devel libffi-devel libfl-devel libxml2-devel"
 short_desc="Wayland protocol compositor"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="maxice8 <thinkabit.ukim@gmail.com>"
 license="MIT"
 homepage="https://wayland.freedesktop.org/"
 distfiles="https://wayland.freedesktop.org/releases/wayland-${version}.tar.xz"
-checksum=eb3fbebb8559d56a80ad3753ec3db800f587329067962dbf65e14488b4b7aeb0
+checksum=72aa11b8ac6e22f4777302c9251e8fec7655dc22f9d94ee676c6b276f95f91a4
 
 post_install() {
 	vlicense COPYING

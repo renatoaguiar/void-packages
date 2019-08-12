@@ -1,25 +1,18 @@
 # Template file for 'vba-m'
 pkgname=vba-m
 reverts=1292_2
-version=2.1.0
-revision=2
-_subversion=Beta-3
-wrksrc="visualboyadvance-m-${_subversion}"
+version=2.1.3
+revision=1
+wrksrc="visualboyadvance-m-${version}"
 build_style=cmake
-hostmakedepends="unzip pkg-config zip"
-makedepends="zlib-devel libpng-devel MesaLib-devel SDL2-devel libopenal-devel gtkmm2-devel
-gtkglext-devel gtkglextmm-devel ffmpeg-devel gtk+-devel SFML-devel wxWidgets-devel"
+configure_args="-DENABLE_GTK=TRUE -DENABLE_FFMPEG=TRUE -DENABLE_LINK=TRUE"
+hostmakedepends="unzip pkg-config zip yasm wxWidgets-common-devel"
+makedepends="zlib-devel libpng-devel MesaLib-devel libopenal-devel SDL2-devel
+ gtkmm2-devel gtkglext-devel gtkglextmm-devel ffmpeg-devel gtk+3-devel
+ SFML-devel wxWidgets-gtk3-devel libgomp-devel"
 short_desc="Gameboy Advance Emulator"
 maintainer="Andrea Brancaleoni <abc@pompel.me>"
-license="GPL-2"
+license="GPL-2.0-or-later"
 homepage="https://github.com/visualboyadvance-m/visualboyadvance-m/"
-distfiles="https://github.com/visualboyadvance-m/visualboyadvance-m/archive/${_subversion}.tar.gz"
-checksum=100176bdf31f27211876bac72a297e5545189aebf74c8fe7ddf5a943a39e79b0
-configure_args="-DENABLE_GTK=TRUE -DENABLE_FFMPEG=TRUE -DENABLE_LINK=TRUE"
-nocross="executes binary 'bin2c' when building"
-
-pre_configure() {
-	sed 's|Common/|common/|' -i src/gba/debugger-expr-yacc.cpp
-	sed 's|wxrc|wxrc-3.0|g' -i src/wx/CMakeLists.txt
-	sed 's|wxrc|wxrc-3.0|g' -i po/update_pot.sh
-}
+distfiles="https://github.com/visualboyadvance-m/visualboyadvance-m/archive/v${version}.tar.gz"
+checksum=c64a8b400e9af862e0be74148760a7c73f98d08dcbb7d01eca81e6dc5ad376fd

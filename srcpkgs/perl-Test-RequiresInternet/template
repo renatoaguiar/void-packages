@@ -1,8 +1,8 @@
 # Template file for 'perl-Test-RequiresInternet'
 pkgname=perl-Test-RequiresInternet
 version=0.05
-revision=2
-noarch=yes
+revision=3
+archs=noarch
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-module
 hostmakedepends="perl"

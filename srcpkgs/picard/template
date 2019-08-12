@@ -1,19 +1,20 @@
 # Template file for 'picard'
 pkgname=picard
-version=2.0.2
+version=2.1.3
 revision=1
-noarch=yes
+archs=noarch
 wrksrc="${pkgname}-release-${version}"
 build_style=python3-module
+make_install_args="--disable-autoupdate"
 pycompile_module="picard"
 hostmakedepends="python3-setuptools"
 makedepends="python3-devel"
 depends="python3-PyQt5 chromaprint python3-mutagen
  desktop-file-utils hicolor-icon-theme"
-maintainer="Matthew Wynn <matthew@matthewwynn.com>"
-license="GPL-2.0-or-later"
 short_desc="MusicBrainz's audio tagger"
-homepage="http://picard.musicbrainz.org/"
+maintainer="Michael Aldridge <maldridge@voidlinux.org>"
+license="GPL-2.0-or-later"
+homepage="https://picard.musicbrainz.org/"
 changelog="https://picard.musicbrainz.org/changelog/"
-distfiles="http://ftp.musicbrainz.org/pub/musicbrainz/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=9f9a46a8c4ce78516b60b97e97bc1ea787c99b13f44d5c575132825447b7ec5d
+distfiles="http://ftp.musicbrainz.org/pub/musicbrainz/${pkgname}/${pkgname}-${version%.0}.tar.gz"
+checksum=8e044fe68c44d345c19f98952c3c7f20c72da74dbac9ce7c7b0621e2d69885a7

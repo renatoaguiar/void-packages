@@ -1,36 +1,35 @@
 # Template file for 'wireshark'
 pkgname=wireshark
-version=2.4.7
+version=3.0.3
 revision=1
-build_style=gnu-configure
-configure_args="--with-ssl --with-pcap --with-libcap --with-zlib --with-lua
- --with-krb5 --with-gtk=3 --with-qt=5 --without-portaudio CC_FOR_BUILD=cc"
-hostmakedepends="pkg-config flex perl python-devel mit-krb5-devel automake libtool
- qt5-host-tools qt5-tools glib-devel"
+build_style=cmake
+hostmakedepends="pkg-config flex perl python3-devel mit-krb5-devel qt5-tools
+ qt5-host-tools qt5-qmake"
 makedepends="libpcap-devel zlib-devel lua52-devel mit-krb5-devel gnutls-devel
- geoip-devel libgcrypt-devel gtk+3-devel qt5-devel libcap-devel sbc-devel c-ares-devel"
+ libmaxminddb-devel libgcrypt-devel libcap-devel sbc-devel c-ares-devel libxml2-devel
+ libssh-devel libnl3-devel spandsp-devel tiff-devel libcap-progs liblz4-devel
+ nghttp2-devel qt5-devel qt5-tools-devel qt5-multimedia-devel qt5-svg-devel"
 depends="libcap-progs"
-short_desc="A network protocol analyzer"
-maintainer="Enno Boland <gottox@voidlinux.eu>"
-homepage="https://www.wireshark.org"
+short_desc="Network protocol analyzer"
+maintainer="Enno Boland <gottox@voidlinux.org>"
 license="GPL-2.0-or-later"
+homepage="https://www.wireshark.org"
 distfiles="https://www.wireshark.org/download/src/${pkgname}-${version}.tar.xz"
-checksum=5ecb3c68734fb89c83ac283e6cdf264eb15b9c7e7ea63dcfd4f0bad3e77c4f44
+checksum=af92729c781d870110885c31ebcbe4c4224ed51bb580d00c896fe9746994211c
 system_groups="wireshark"
 
 CFLAGS="-I${XBPS_CROSS_BASE}/usr/include/lua5.2"
 CXXFLAGS="-I${XBPS_CROSS_BASE}/usr/include/lua5.2"
 
-pre_configure() {
-	autoreconf -fi
-	find -type f -name Makefile.in -exec sed -i "s/^LIBS = .*/\0 -ldl/" {} \;
-}
 post_install() {
+	rm -f -- "${DESTDIR}/usr/bin/lemon"
+	rm -f -- "${DESTDIR}/usr/lib/wireshark/cmake/UseLemon.cmake"
+
 	local _includeDir=usr/include/wireshark
 
 	# Headers
 	vmkdir $_includeDir
-	vcopy "config.h register.h ws_symbol_export.h" $_includeDir
+	vcopy ws_symbol_export.h $_includeDir
 
 	for i in wiretap wsutil; do
 		vmkdir $_includeDir/$i
@@ -43,28 +42,30 @@ post_install() {
 libwireshark_package() {
 	short_desc+=" - library"
 	pkg_install() {
-		vmove usr/lib/*.so.*
-		vmove usr/lib/wireshark
+		vmove "usr/lib/*.so.*"
+		vmove usr/lib/wireshark/extcap
+		vmove usr/lib/wireshark/plugins
 	}
 }
+
 libwireshark-devel_package() {
 	short_desc+=" - development files"
 	depends="libwireshark>=${version}_${revision}"
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
-		vmove usr/lib/*.so
+		vmove "usr/lib/*.so"
+		vmove usr/lib/wireshark/cmake
 	}
 }
+
 wireshark-gtk_package() {
-	depends="${sourcepkg}>=${version}_${revision} hicolor-icon-theme desktop-file-utils"
-	short_desc+=" - GTK+ frontend"
-	pkg_install() {
-		vmove usr/bin/wireshark-gtk
-		vmove usr/share/icons
-		vmove usr/share/applications/wireshark-gtk.desktop
-	}
+	build_style=meta
+	archs=noarch
+	depends="${sourcepkg}>=${version}_${revision}"
+	short_desc+=" - GTK+ frontend (removed package)"
 }
+
 wireshark-qt_package() {
 	depends="${sourcepkg}>=${version}_${revision} desktop-file-utils"
 	short_desc+=" - Qt frontend"

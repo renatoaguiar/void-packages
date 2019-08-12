@@ -1,0 +1,21 @@
+# Template file for 'zoom'
+pkgname=zoom
+version=2.9.265650.0716
+revision=1
+archs="x86_64"
+wrksrc=zoom
+create_wrksrc=yes
+short_desc="Video Conferencing and Web Conferencing Service"
+maintainer="Daniel Santana <daniel@santana.tech>"
+license="Proprietary"
+homepage="https://zoom.us/"
+distfiles="https://zoom.us/client/${version}/zoom_x86_64.pkg.tar.xz"
+checksum=f9014967875c6e5f90968c11ed08846a24001f48191f6f860e5c95bbf58512e2
+repository=nonfree
+restricted=yes
+nopie=yes
+
+do_install() {
+	vcopy opt .
+	vcopy usr .
+}

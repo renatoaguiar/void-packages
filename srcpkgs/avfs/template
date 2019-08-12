@@ -1,17 +1,17 @@
 # Template file for 'avfs'
 pkgname=avfs
-version=1.0.5
+version=1.1.0
 revision=1
 build_style=gnu-configure
 hostmakedepends="pkg-config"
-makedepends="fuse-devel liblzma-devel"
+makedepends="fuse-devel liblzma-devel libzstd-devel"
 depends="perl"
 short_desc="Virtual filesystem that allows browsing compressed files"
 maintainer="John <johnz@posteo.net>"
 license="GPL-2.0-only, LGPL-2.0-only"
 homepage="http://avf.sourceforge.net/"
 distfiles="$SOURCEFORGE_SITE/avf/avfs-${version}.tar.bz2"
-checksum=e5ce6b1f4193c37148b1b8a021f4f3d05e88f725cf11b16b95a58e8fdae50176
+checksum=a7f3734f5be1a76aab710fb49a004b60bb802ccbd32394a731b18ed6011333a7
 
 libavfs_package() {
 	short_desc+=" - library"

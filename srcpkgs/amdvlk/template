@@ -1,0 +1,73 @@
+# Template file for 'amdvlk'
+pkgname=amdvlk
+version=2019.Q3.3
+revision=1
+_llpc_commit=f60ebe48d60ef00e69b399a24e04d600cdcc1f0c
+_xgl_commit=6b0fbc836e01be4b8fb1990b4e31846ec19305bc
+_pal_commit=46251728a7137f399b564b0886bd9bf9888c48ef
+_llvm_commit=951ae36dc33d628235446a7abe87a1aebf6717e8
+_spvgen_commit=2f31d1170e8a12a66168b23235638c4bbc43ecdc
+archs="i686* x86_64*"
+create_wrksrc=yes
+build_wrksrc="xgl"
+build_style=cmake
+configure_args="-DBUILD_WAYLAND_SUPPORT=ON"
+hostmakedepends="pkg-config python3 perl"
+makedepends="libxml2-devel xorg-server-devel libXrandr-devel"
+depends="vulkan-loader"
+short_desc="AMD Open Source Driver For Vulkan"
+maintainer="John <johnz@posteo.net>"
+license="MIT"
+homepage="https://github.com/GPUOpen-Drivers/AMDVLK"
+distfiles="https://github.com/GPUOpen-Drivers/AMDVLK/archive/v-${version}.tar.gz
+ https://github.com/GPUOpen-Drivers/llpc/archive/${_llpc_commit}.tar.gz
+ https://github.com/GPUOpen-Drivers/xgl/archive/${_xgl_commit}.tar.gz
+ https://github.com/GPUOpen-Drivers/pal/archive/${_pal_commit}.tar.gz
+ https://github.com/GPUOpen-Drivers/llvm/archive/${_llvm_commit}.tar.gz
+ https://github.com/GPUOpen-Drivers/spvgen/archive/${_spvgen_commit}.tar.gz"
+checksum="d2aa97caeffef43c934b73d24af3c30be640d6ffee20e27db6a58bb21c683939
+ 4d6b623092215bfb8f9f01601db3de2b93cc0bf305173bafeb58c65f32967043
+ fee95d0a55cbd9c34aa54c3309ad896d56c287f35bc7cd6bb25bd86f7e0985d6
+ 6832551a933fd04d8b1d031cf49b86497c17c878675fc641df23c9c9e128d52b
+ 50b25878e19cd8a7d15aad891463fbdac60cbb04b2a4027bc31ff9ca3da4a5f6
+ cc946ad2835e502aca904c5f87802a2004eaed4729cb5c1dc29a5258d1c1e401"
+nocross=yes
+lib32files="/usr/share/vulkan/icd.d/amd_icd32.json"
+
+case $XBPS_TARGET_MACHINE in
+	*-musl) makedepends+=" rand48_r-devel"
+esac
+
+post_extract() {
+	mv ${wrksrc}/AMDVLK-v-${version} ${wrksrc}/AMDVLK
+	mv ${wrksrc}/xgl-${_xgl_commit} ${wrksrc}/xgl
+	mv ${wrksrc}/pal-${_pal_commit} ${wrksrc}/pal
+	mv ${wrksrc}/llpc-${_llpc_commit} ${wrksrc}/llpc
+	mv ${wrksrc}/llvm-${_llvm_commit} ${wrksrc}/llvm
+	mv ${wrksrc}/spvgen-${_spvgen_commit} ${wrksrc}/spvgen
+}
+
+pre_configure() {
+	case "$XBPS_TARGET_MACHINE" in
+		i686*) _arch="X86";;
+		x86_64*) _arch="X86";;
+	esac
+	configure_args+=" -DLLVM_TARGET_ARCH=${_arch}"
+	configure_args+=" -DLLVM_DEFAULT_TARGET_TRIPLE=${XBPS_CROSS_TRIPLET:-$XBPS_TRIPLET}"
+}
+
+do_install() {
+	case $XBPS_TARGET_MACHINE in
+		i686*|mips*|arm*|ppc|ppc-musl)
+			vinstall build/icd/amdvlk32.so 644 usr/lib/
+			vinstall ${wrksrc}/AMDVLK/json/Redhat/amd_icd32.json 644 usr/share/vulkan/icd.d/
+			vsed -i ${DESTDIR}/usr/share/vulkan/icd.d/amd_icd32.json -e 's#/usr/lib/#/usr/lib32/#g'
+			;;
+		*)
+			vinstall build/icd/amdvlk64.so 644 usr/lib/
+			vinstall ${wrksrc}/AMDVLK/json/Redhat/amd_icd64.json 644 usr/share/vulkan/icd.d/
+			vsed -i ${DESTDIR}/usr/share/vulkan/icd.d/amd_icd64.json -e 's#/usr/lib64/#/usr/lib/#g'
+			;;
+	esac
+	vlicense ${wrksrc}/AMDVLK/LICENSE.txt
+}

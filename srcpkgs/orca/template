@@ -1,17 +1,21 @@
 # Template file for 'orca'
 pkgname=orca
-version=3.28.2
-revision=1
-noarch=yes
+version=3.32.0
+revision=2
+archs=noarch
 build_style=gnu-configure
+pycompile_module="orca"
 hostmakedepends="intltool itstool pkg-config"
-makedepends="at-spi2-atk-devel liblouis-devel python-gobject-devel"
+makedepends="at-spi2-atk-devel liblouis-devel python3-gobject-devel"
 depends="desktop-file-utils gst-plugins-good1 hicolor-icon-theme liblouis
  python3-atspi python3-brlapi python3-dbus python3-xdg speech-dispatcher"
-pycompile_module="orca"
 short_desc="Screen reader for individuals who are blind or visually impaired"
-maintainer="Enno Boland <gottox@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.org>"
 license="GPL-2.0-or-later"
-homepage="http://www.gnome.org/projects/orca"
+homepage="https://wiki.gnome.org/Projects/Orca"
 distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=188d168a135a3fad1c73ae4b51a426e0717b78ee591e2b78b6e50164a2343023
+checksum=3130268296fa2c115acc4b37f3520967f06abd402251403d1ca507071efd5816
+
+if [ "$CROSS_BUILD" ]; then
+	hostmakedepends+=" python3-gobject-devel"
+fi

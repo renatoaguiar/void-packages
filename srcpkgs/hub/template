@@ -1,21 +1,47 @@
 # Template file for 'hub'
 pkgname=hub
-version=2.5.0
+version=2.12.3
 revision=1
 build_style=go
 go_import_path=github.com/github/hub
-hostmakedepends="git"
+hostmakedepends="git groff"
 short_desc="Command line tool for Github"
-maintainer="Enno Boland <gottox@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.org>"
 license="MIT"
 homepage="https://hub.github.com/"
 changelog="https://github.com/github/hub/releases"
 distfiles="https://github.com/github/hub/archive/v${version}.tar.gz"
-checksum=8e3bda092ddc81eaf208c5fd2b87f66e030012129d55fa631635c6adf8437941
+checksum=197242fea670353688c541d2e4584b449f18c354a01d89bf1667ea33c0071ddc
+
+if [ "$CROSS_BUILD" ]; then
+	hostmakedepends+=" hub"
+fi
 
 post_install() {
-	# Requires ronn
-	# vman man/${pkgname}.1
+	if [ "$CROSS_BUILD" ]; then
+		vsed -e 's|bin/hub|hub|g' -i Makefile
+
+		(
+			# Build md2roff ourselves since it needs to be executed on
+			# the host, also use a subshell so we don't modify the
+			# environment of the main program
+			unset GOARCH GOARM GOOS
+			export CC="$CC_FOR_BUILD"
+			export CFLAGS="$CFLAGS_FOR_BUILD"
+			go build -o bin/md2roff github.com/github/hub/md2roff-bin
+		)
+	fi
+
+	make man-pages
+
+	for m in share/man/man1/*.1; do
+		vman $m
+	done
+
+	for d in share/man/man1/*.html; do
+		vdoc $d
+	done
+
 	vlicense LICENSE
 
 	vinstall etc/hub.zsh_completion 644 usr/share/zsh/site-functions _hub

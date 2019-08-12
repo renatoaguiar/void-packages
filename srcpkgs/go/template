@@ -1,16 +1,16 @@
 # Template file for 'go'
 pkgname=go
-version=1.10.3
+version=1.12.7
 revision=1
 create_wrksrc=yes
 build_wrksrc=go
 hostmakedepends="go1.4-bootstrap"
-short_desc="The Go Programming Language"
-maintainer="Michael Gehring <mg@ebfe.org>"
+short_desc="Go Programming Language"
+maintainer="Michael Aldridge <maldridge@voidlinux.org>"
+license="BSD-3-Clause"
 homepage="http://golang.org/"
-license="3-clause-BSD"
 distfiles="https://golang.org/dl/go${version}.src.tar.gz"
-checksum=567b1cc66c9704d1c019c50bef946272e911ec6baf244310f87f4e678be155f2
+checksum=95e8447d6f04b8d6a62de1726defbb20ab203208ee167ed15f83d7978ce43b13
 
 nostrip=yes
 noverifyrdeps=yes
@@ -75,6 +75,7 @@ do_install() {
 	rm -f ${DESTDIR}/usr/share/go/doc/articles/wiki/get.bin
 	rm -f ${DESTDIR}/usr/lib/go/pkg/tool/*/api
 	rm -rf ${DESTDIR}/usr/lib/go/pkg/bootstrap
+	rm -rf ${DESTDIR}/usr/lib/go/pkg/obj
 
 	vlicense LICENSE
 }

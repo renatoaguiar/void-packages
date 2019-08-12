@@ -1,18 +1,22 @@
 # Template file for 'hledger'
 pkgname=hledger
-version=1.5
+version=1.14.2
 revision=1
+wrksrc="${pkgname}-${pkgname}-${version}"
 build_style=haskell-stack
-nocross=yes # Can't yet cross compile Haskell
+makedepends="zlib-devel ncurses-devel"
 short_desc="Simple, precise, plain text accounting"
 maintainer="Inokentiy Babushkin <twk@twki.de>"
-license="GPL-3"
+license="GPL-3.0-or-later"
 homepage="http://hledger.org/"
-makedepends="zlib-devel ncurses-devel"
-wrksrc="${pkgname}-${pkgname}-${version}"
 distfiles="https://github.com/simonmichael/${pkgname}/archive/${pkgname}-${version}.tar.gz"
-checksum=4a26ccc7a87a55f416cd166855c4215cfb9b1259d27752a4c736c91283e27e4b
+checksum=127edf1a8ca5b3c16e9163ec777909eb6f045f3ae3f0500ba7333074ff78c393
 nopie_files="/usr/bin/hledger"
+nocross=yes # Can't yet cross compile Haskell
+
+case "$XBPS_TARGET_MACHINE" in
+	*-musl) broken="https://build.voidlinux.org/builders/x86_64-musl_builder/builds/22210/steps/shell_3/logs/stdio" ;;
+esac
 
 post_install() {
 	vman hledger/hledger.1

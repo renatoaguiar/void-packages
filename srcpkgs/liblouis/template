@@ -1,6 +1,6 @@
 # Template file for 'liblouis'
 pkgname=liblouis
-version=3.6.0
+version=3.9.0
 revision=1
 build_style=gnu-configure
 configure_args="--enable-ucs4"
@@ -9,11 +9,11 @@ hostmakedepends="pkg-config help2man python3-devel"
 makedepends="python3-devel"
 depends="python3"
 short_desc="Open-source braille translator and back-translator"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="GPL-3.0-or-later, LGPL-2.1-or-later"
 homepage="http://liblouis.org/"
 distfiles="https://github.com/liblouis/liblouis/releases/download/v${version}/liblouis-${version}.tar.gz"
-checksum=003f5bf9d0fa827513d6f97a81a174ecba7afc0be94e880da259be88c133848c
+checksum=e4ae23373751003c6e44bcda653cf3b3de1eff0b850f9349091aea7e4a0cb878
 disable_parallel_build=yes
 
 case "$XBPS_TARGET_MACHINE" in

@@ -1,19 +1,19 @@
 # Template file for 'libmediainfo'
 pkgname=libmediainfo
-version=18.05
-revision=2
-wrksrc="MediaInfoLib"
-build_wrksrc="Project/GNU/Library"
+version=19.07
+revision=1
+wrksrc=MediaInfoLib
+build_wrksrc=Project/GNU/Library
 build_style=gnu-configure
 configure_args="--enable-shared --disable-static --with-libcurl --with-libmms"
 hostmakedepends="automake libtool pkg-config"
 makedepends="libcurl-devel libmms-devel libzen-devel"
 short_desc="Shared library for mediainfo"
-maintainer="Georg Schabel <gescha@posteo.de>"
+maintainer="John <johnz@posteo.net>"
 license="BSD-2-Clause"
 homepage="https://mediaarea.net/MediaInfo"
 distfiles="https://mediaarea.net/download/source/libmediainfo/${version}/${pkgname}_${version}.tar.xz"
-checksum=76759613ca71d5659818e6ed121be9f31c552931b04939b0db4c58bc57cd5221
+checksum=5acbe3f0a48e10cacb588381454f30149c947ffa89659680165ed1a0603d6d4c
 
 pre_configure() {
 	autoreconf -fi
@@ -35,6 +35,6 @@ libmediainfo-devel_package() {
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
-		vmove usr/lib/*.so
+		vmove "usr/lib/*.so"
 	}
 }

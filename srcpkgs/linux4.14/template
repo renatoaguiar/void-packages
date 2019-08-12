@@ -1,15 +1,15 @@
 # Template file for 'linux4.14'
 pkgname=linux4.14
-version=4.14.59
+version=4.14.138
 revision=1
 patch_args="-Np1"
 wrksrc="linux-${version}"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 homepage="http://www.kernel.org"
 license="GPL-2.0-only"
-short_desc="The Linux kernel and modules (${version%.*} series)"
+short_desc="Linux kernel and modules (${version%.*} series)"
 distfiles="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${version}.tar.xz"
-checksum=7ec633c661bba941239e340bb35391d356eda541fb4c323d07034d09d05b319b
+checksum=f250bd1de3a83c1f015f8e6e9bfa9f20eaef3dc24a6cd60116e49979314b837b
 
 nodebug=yes  # -dbg package is generated below manually
 nostrip=yes
@@ -17,7 +17,7 @@ noverifyrdeps=yes
 noshlibprovides=yes
 preserve=yes
 
-only_for_archs="i686 i686-musl x86_64 x86_64-musl armv5tel armv5tel-musl armv7l armv7l-musl aarch64 aarch64-musl"
+archs="i686* x86_64* armv5tel* armv7l* aarch64*"
 hostmakedepends="bc elfutils-devel kmod libressl-devel perl uboot-mkimage gmp-devel libmpc-devel"
 
 _kernver="${version}_${revision}"

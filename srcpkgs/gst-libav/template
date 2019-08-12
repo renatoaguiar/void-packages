@@ -1,32 +1,25 @@
 # Template file for 'gst-libav'
 pkgname=gst-libav
-version=1.14.2
+version=1.16.0
 revision=1
-lib32disabled=yes
 wrksrc="${pkgname}-${version}"
-build_style=gnu-configure
-configure_args="--with-system-libav"
+build_style=meson
 patch_args="-Np1"
-hostmakedepends="pkg-config yasm python"
+hostmakedepends="pkg-config yasm"
 makedepends="orc-devel gst-plugins-base1-devel ffmpeg-devel"
 depends="orc>=0.4.18 gst-plugins-base1>=${version}"
 short_desc="GStreamer libav plugin (1.x)"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="LGPL-2.0-or-later"
 homepage="https://gstreamer.freedesktop.org"
 distfiles="${homepage}/src/${pkgname}/${pkgname}-${version}.tar.xz"
-checksum=8a351c39c5cfc2bbd31ca434ec4a290a730a26efbdea962fdd8306dce5c576de
+checksum=dfac119043a9cfdcacd7acde77f674ab172cf2537b5812be52f49e9cddc53d9a
 
 case "$XBPS_TARGET_MACHINE" in
 	*-musl) # Required by musl for M_SQRT1_2
 		CFLAGS="-D_XOPEN_SOURCE"
 		;;
 esac
-
-pre_configure() {
-	# Fix cross compiling for arm* where os=linuxeabihf
-	sed -i ${wrksrc}/gst-libs/ext/libav/configure -e "s;linux);linux*);"
-}
 
 post_configure() {
 	case "$XBPS_TARGET_MACHINE" in

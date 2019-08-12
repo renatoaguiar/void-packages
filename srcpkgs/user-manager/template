@@ -1,16 +1,17 @@
 # Template file for 'user-manager'
 pkgname=user-manager
-version=5.13.3
+version=5.16.4
 revision=1
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
-hostmakedepends="extra-cmake-modules pkg-config qt5-qmake qt5-host-tools"
+hostmakedepends="extra-cmake-modules pkg-config qt5-qmake qt5-host-tools
+ kcoreaddons"
 makedepends="accountsservice-devel kdelibs4support-devel libpwquality-devel
  kdesignerplugin-devel kdoctools-devel kcmutils-devel"
 depends="accountsservice"
 short_desc="KDE user manager"
-maintainer="Denis Revin <denis.revin@gmail.com>"
+maintainer="John <johnz@posteo.net>"
 license="GPL-2.0-or-later"
 homepage="https://projects.kde.org/projects/plasma/user-manager"
 distfiles="${KDE_SITE}/plasma/${version}/${pkgname}-${version}.tar.xz"
-checksum=1283bbde4dbcc20695a5a873a2fbd51e17061f4ca7e937003c7909a679245803
+checksum=3dd29a6abf8c15014ed87a448b13190516e16d8dc3a67d56f05f62d1f2e1b745

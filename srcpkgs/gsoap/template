@@ -1,6 +1,6 @@
 # Template file for 'gsoap'
 pkgname=gsoap
-version=2.8.69
+version=2.8.89
 revision=1
 wrksrc="gsoap-${version%.*}"
 build_style=gnu-configure
@@ -8,20 +8,23 @@ configure_args="--enable-ipv6"
 hostmakedepends="unzip flex autoconf"
 makedepends="libressl-devel zlib-devel"
 short_desc="Toolkit for SOAP and REST Web Services and XML-Based Applications"
-maintainer="Enno Boland <gottox@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.org>"
 license="gSOAP-1.3b, GPL-2.0-only"
 homepage="http://www.cs.fsu.edu/~engelen/soap.html"
 distfiles="${SOURCEFORGE_SITE}/gsoap2/gsoap_${version}.zip"
-checksum=df0cc9ab66dce85f1842ca07abebaf9b04ca48a0a39013f90571e8172d4b0c7b
+checksum=d9b10ca2611b00932fab98cbf67b514ddad24f22cbbda91d9d68ea45821c54f2
 disable_parallel_build=yes
 
 if [ "$CROSS_BUILD" ]; then
 	hostmakedepends+=" gsoap"
-	pre_build() {
+fi
+
+pre_build() {
+	if [ "$CROSS_BUILD" ]; then
 		# run host 'soapcpp2'
 		sed -i 's|^\(SOAP = \).*|\1soapcpp2|' gsoap/wsdl/Makefile
-	}
-fi
+	fi
+}
 
 post_install() {
 	vlicense license.pdf

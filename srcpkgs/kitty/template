@@ -1,44 +1,41 @@
 # Template file for 'kitty'
 pkgname=kitty
-version=0.11.3
+version=0.14.3
 revision=1
-python_version=3
-hostmakedepends="ncurses pkg-config"
+pycompile_dirs="usr/lib/kitty"
+hostmakedepends="ncurses pkg-config python3 wayland-devel wayland-protocols"
 makedepends="gettext-devel glfw-devel harfbuzz-devel libxkbcommon-devel
- python3-devel wayland-devel wayland-protocols"
-depends="kitty-terminfo"
-conf_files="/etc/kitty/kitty.conf"
+ python3-devel wayland-devel wayland-protocols libcanberra-devel"
+depends="kitty-terminfo-${version}_${revision}"
 short_desc="Modern, hackable, featureful, OpenGL based terminal emulator"
 maintainer="Benjamin Slade <slade@jnanam.net>"
 license="GPL-3.0-or-later"
 homepage="https://sw.kovidgoyal.net/kitty/"
+changelog="https://sw.kovidgoyal.net/kitty/changelog.html"
 distfiles="https://github.com/kovidgoyal/kitty/releases/download/v${version}/kitty-${version}.tar.xz"
-checksum=e36e3d777824030b686003fbf20c1861efb8183e43bf3efc9cb8f92a0aa9a10e
-
-if [ -n "$CROSS_BUILD" ]; then
-	hostmakedepends+=" python3-devel wayland-devel wayland-protocols"
-fi
+checksum=f5e522a6e477acd8b4a9637261f20dc66d6f7b9e9229a4a957f10811708b8d8b
+patch_args="-Np1"
+pycompile_version="$py3_ver"
+LDFLAGS+=" -Wl,-z,stack-size=2097152"
 
 do_build() {
-	if [ -n "$CROSS_BUILD" ]; then
-		export CFLAGS="-I${XBPS_CROSS_BASE}/usr/include/python3.6m"
-		sed -i "s|-fpie|-fpie ${CFLAGS}|g" setup.py
+	if [ "$CROSS_BUILD" ]; then
+		CFLAGS+=" -I${XBPS_CROSS_BASE}/${py3_inc}"
 	fi
 	case "$XBPS_TARGET_MACHINE" in
 		*-musl)
-			sed -i 's/pow10/pow_10/g' kitty/parser.c;;
+			vsed -e 's/pow10/pow_10/g' -i kitty/parser.c;;
 	esac
-	python3 setup.py linux-package --prefix=${DESTDIR}/usr --verbose
+	python3 setup.py linux-package --prefix=${DESTDIR}/usr --update-check-interval=0 --verbose
 }
 
 do_install() {
-	vmkdir etc/kitty
-	cp ${DESTDIR}/usr/share/doc/kitty/html/_downloads/kitty.conf ${DESTDIR}/etc/kitty/
+	vsconf $(find ${DESTDIR}/usr/share/doc/kitty/html/_downloads/ -name "kitty.conf")
 }
 
 kitty-terminfo_package() {
 	short_desc+=" - terminfo data"
-	noarch=yes
+	archs=noarch
 	pkg_install() {
 		vmove usr/share/terminfo
 	}

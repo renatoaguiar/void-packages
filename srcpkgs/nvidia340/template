@@ -1,17 +1,17 @@
-# Template file for 'nvidia'
+# Template file for 'nvidia340'
 
 _desc="NVIDIA drivers (GeForce 8, 9, 9M, 100, 100M, 200, 300 series)"
 
 pkgname=nvidia340
 version=340.107
-revision=1
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+revision=3
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="Proprietary NVIDIA license"
 homepage="http://www.nvidia.com"
 
-only_for_archs="i686 x86_64"
+archs="i686 x86_64"
 nopie=yes
-repository="nonfree"
+repository=nonfree
 create_wrksrc=yes
 short_desc="${_desc} - Libraries and Utilities"
 depends="${pkgname}-dkms-${version}_${revision} pkg-config"
@@ -41,6 +41,8 @@ do_extract() {
 do_configure() {
 	cd ${_pkg}
 	patch -p0 < ${FILESDIR}/kernel-4.11.patch
+	patch -p0 < ${FILESDIR}/kernel-5.0.patch
+	patch -p0 < ${FILESDIR}/kernel-5.1.patch
 }
 
 do_install() {
@@ -95,8 +97,7 @@ do_install() {
 	# CUDA
 	vbin nvidia-cuda-mps-control
 	vbin nvidia-cuda-mps-server
-	gzip -d nvidia-cuda-mps-control.1.gz
-	vman nvidia-cuda-mps-control.1
+	vman nvidia-cuda-mps-control.1.gz
 
 	vinstall libcuda.so.${version} 755 usr/lib
 	ln -sf libcuda.so.${version} ${DESTDIR}/usr/lib/libcuda.so
@@ -108,13 +109,11 @@ do_install() {
 
 	# nvidia-xconfig
 	vbin nvidia-xconfig
-	gzip -d nvidia-xconfig.1.gz
-	vman nvidia-xconfig.1
+	vman nvidia-xconfig.1.gz
 
 	# nvidia-settings
 	vbin nvidia-settings
-	gzip -d nvidia-settings.1.gz
-	vman nvidia-settings.1
+	vman nvidia-settings.1.gz
 	vinstall nvidia-settings.desktop 644 usr/share/applications
 	vinstall nvidia-settings.png 644 usr/share/pixmaps
 	sed -e 's:__UTILS_PATH__:/usr/bin:' \
@@ -127,8 +126,7 @@ do_install() {
 
 	# nvidia-smi
 	vbin nvidia-smi
-	gzip -d nvidia-smi.1.gz
-	vman nvidia-smi.1
+	vman nvidia-smi.1.gz
 
 	# License and documentation.
 	vlicense LICENSE
@@ -179,7 +177,6 @@ do_install() {
 
 nvidia340-dkms_package() {
 	short_desc="${_desc} - DKMS kernel module"
-	triggers="dkms"
 	dkms_modules="nvidia ${version}"
 	depends="dkms"
 	provides="nvidia-dkms-${version}_${revision}"

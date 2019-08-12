@@ -1,13 +1,14 @@
 # Template file for 'tmux-xpanes'
 pkgname=tmux-xpanes
-version=3.0.1
+version=4.1.1
 revision=1
+archs=noarch
 short_desc="Awesome way to create multiple tmux panes"
 maintainer="lemmi <lemmi@nerd2nerd.org>"
 license="MIT"
 homepage="https://github.com/greymd/tmux-xpanes"
 distfiles="https://github.com/greymd/tmux-xpanes/archive/v${version}.tar.gz"
-checksum=68b652c0330a77a29f8af922ea88be293acfeb45a0e443da75c8a465099ab93c
+checksum=c69ae17516071cbf38cb74aabfc7c55ce221ccf56ab73d23f2b7d2b0613f0c0b
 
 do_install() {
 	vbin bin/xpanes

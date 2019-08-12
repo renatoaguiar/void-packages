@@ -1,80 +1,38 @@
-From 645b7635ba8fd58062245419e8bb668ab90cd3ec Mon Sep 17 00:00:00 2001
-From: "Gabriel F. T. Gomes" <gftg@linux.vnet.ibm.com>
-Date: Mon, 7 Aug 2017 09:14:14 -0300
-Subject: [PATCH 09] powerpc: Restrict xssqrtqp operands to Vector Registers
- (bug 21941)
+From 10dd17da710fd32aaf1f2187544d80064b8c4ee0 Mon Sep 17 00:00:00 2001
+From: Aurelien Jarno <aurelien@aurel32.net>
+Date: Sat, 16 Mar 2019 22:59:56 +0100
+Subject: [PATCH 09] Record CVE-2019-9169 in NEWS and ChangeLog [BZ #24114]
 
-POWER ISA 3.0 introduces the xssqrtqp instructions, which expects
-operands to be in Vector Registers (Altivec/VMX), even though this
-instruction belongs to the Vector-Scalar Instruction Set.
-
-In GCC's Extended Assembly for POWER, the 'wq' register constraint is
-provided for use with IEEE 754 128-bit floating-point values.  However,
-this constraint does not limit the register allocation to Vector
-Registers (Altivec/VMX) and could assign a Vector-Scalar Register (VSX)
-to the operands of the instruction.
-
-This patch changes the register constraint used in sqrtf128 from 'wq' to
-'v', in order to request a Vector Register (Altivec/VMX) for use with
-the xssqrtqp instruction.
-
-Tested for powerpc64le and --with-cpu=power9.
-
-	[BZ #21941]
-	* sysdeps/powerpc/fpu/math_private.h (__ieee754_sqrtf128): Since
-	xssqrtqp requires operands to be in Vector Registers
-	(Altivec/VMX), replace the register constraint 'wq' with 'v'.
-	* sysdeps/powerpc/powerpc64le/power9/fpu/e_sqrtf128.c
-	(__ieee754_sqrtf128): Likewise.
-
-(cherry picked from commit 4d98ace9de3183309cb394cd0110eda5ad2d2531)
+(cherry picked from commit b626c5aa5d0673a9caa48fb79fba8bda237e6fa8)
 ---
- ChangeLog                                           | 9 +++++++++
- sysdeps/powerpc/fpu/math_private.h                  | 2 +-
- sysdeps/powerpc/powerpc64le/power9/fpu/e_sqrtf128.c | 2 +-
- 3 files changed, 11 insertions(+), 2 deletions(-)
+ ChangeLog | 1 +
+ NEWS      | 4 ++++
+ 2 files changed, 5 insertions(+)
 
 diff --git a/ChangeLog b/ChangeLog
-index 0057c0902a..6886cd9361 100644
+index fb88626efe..80413dd560 100644
 --- a/ChangeLog
 +++ b/ChangeLog
-@@ -1,3 +1,12 @@
-+2017-08-10  Gabriel F. T. Gomes  <gftg@linux.vnet.ibm.com>
-+
-+	[BZ #21941]
-+	* sysdeps/powerpc/fpu/math_private.h (__ieee754_sqrtf128): Since
-+	xssqrtqp requires operands to be in Vector Registers
-+	(Altivec/VMX), replace the register constraint 'wq' with 'v'.
-+	* sysdeps/powerpc/powerpc64le/power9/fpu/e_sqrtf128.c
-+	(__ieee754_sqrtf128): Likewise.
-+
- 2017-08-11  Florian Weimer  <fweimer@redhat.com>
+@@ -1,5 +1,6 @@
+ 2019-01-31  Paul Eggert  <eggert@cs.ucla.edu>
  
- 	[BZ #21242]
-diff --git a/sysdeps/powerpc/fpu/math_private.h b/sysdeps/powerpc/fpu/math_private.h
-index d8fd4923ac..396fd0562e 100644
---- a/sysdeps/powerpc/fpu/math_private.h
-+++ b/sysdeps/powerpc/fpu/math_private.h
-@@ -30,7 +30,7 @@ extern __always_inline _Float128
- __ieee754_sqrtf128 (_Float128 __x)
- {
-   _Float128 __z;
--  asm ("xssqrtqp %0,%1" : "=wq" (__z) : "wq" (__x));
-+  asm ("xssqrtqp %0,%1" : "=v" (__z) : "v" (__x));
-   return __z;
- }
- #endif
-diff --git a/sysdeps/powerpc/powerpc64le/power9/fpu/e_sqrtf128.c b/sysdeps/powerpc/powerpc64le/power9/fpu/e_sqrtf128.c
-index 769d3f8922..59fd8269f5 100644
---- a/sysdeps/powerpc/powerpc64le/power9/fpu/e_sqrtf128.c
-+++ b/sysdeps/powerpc/powerpc64le/power9/fpu/e_sqrtf128.c
-@@ -30,7 +30,7 @@ __float128
- __ieee754_sqrtf128 (__float128 a)
- {
-   __float128 z;
--  asm ("xssqrtqp %0,%1" : "=wq" (z) : "wq" (a));
-+  asm ("xssqrtqp %0,%1" : "=v" (z) : "v" (a));
-   return z;
- }
- strong_alias (__ieee754_sqrtf128, __sqrtf128_finite)
++	CVE-2019-9169
+ 	regex: fix read overrun [BZ #24114]
+ 	Problem found by AddressSanitizer, reported by Hongxu Chen in:
+ 	https://debbugs.gnu.org/34140
+diff --git a/NEWS b/NEWS
+index 340e06d0f4..271bf7a2cd 100644
+--- a/NEWS
++++ b/NEWS
+@@ -24,6 +24,10 @@ Security related changes:
+   memcmp gave the wrong result since it treated the size argument as
+   zero.  Reported by H.J. Lu.
+ 
++  CVE-2019-9169: Attempted case-insensitive regular-expression match
++  via proceed_next_node in posix/regexec.c leads to heap-based buffer
++  over-read.  Reported by Hongxu Chen.
++
+ 
+ Version 2.29
+ 
 

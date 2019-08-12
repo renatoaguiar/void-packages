@@ -1,8 +1,8 @@
 # Template file for 'perl-Clone-PP'
 pkgname=perl-Clone-PP
 version=1.07
-revision=2
-noarch=yes
+revision=3
+archs=noarch
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-module
 hostmakedepends="perl"

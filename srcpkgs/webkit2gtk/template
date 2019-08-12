@@ -1,79 +1,58 @@
 # Template file for 'webkit2gtk'
 pkgname=webkit2gtk
-version=2.20.3
-revision=1
-wrksrc="webkitgtk-$version"
+version=2.24.3
+revision=2
+wrksrc="webkitgtk-${version}"
 build_style=cmake
+build_helper="gir"
 configure_args="-DPORT=GTK -DENABLE_GTKDOC=OFF -DCMAKE_LINKER=${XBPS_CROSS_TRIPLET}-gcc
- -DUSE_GSTREAMER_GL=OFF"
-# XXX add libwoff2dec
-configure_args+=" -DUSE_WOFF2=OFF"
+ -DUSE_GSTREAMER_GL=OFF -DRUBY_VERSION=2.6 -DENABLE_C_LOOP=$(vopt_if jit OFF ON)
+ -DRUBY_CONFIG_INCLUDE_DIR=${XBPS_CROSS_BASE}/usr/include/ruby-2.6.0
+ -DENABLE_INTROSPECTION=$(vopt_if gir ON OFF)
+ -DENABLE_WAYLAND_TARGET=$(vopt_if wayland ON OFF)
+ -DENABLE_X11_TARGET=$(vopt_if x11 ON OFF) -DENABLE_JIT=$(vopt_if jit ON OFF)
+ -DENABLE_SAMPLING_PROFILER=$(vopt_if sampling_profiler ON OFF)"
+hostmakedepends="perl python pkg-config gperf flex ruby glib-devel geoclue2
+ $(vopt_if wayland wayland-devel)"
+makedepends="at-spi2-core-devel libjpeg-turbo-devel libpng-devel
+ harfbuzz-devel gst-plugins-base1-devel gst-plugins-bad1-devel sqlite-devel
+ libsoup-devel libxslt-devel gnutls-devel icu-devel enchant-devel
+ dbus-glib-devel libwebp-devel gtk+-devel gtk+3-devel libgudev-devel
+ libsecret-devel ruby-devel geoclue2-devel libnotify-devel hyphen-devel
+ woff2-devel freetype-devel libopenjpeg2-devel
+ $(vopt_if x11 libXt-devel) $(vopt_if jit '' libatomic-devel)
+ $(vopt_if wayland 'MesaLib-devel libxkbcommon-devel wayland-devel wayland-protocols')"
 short_desc="GTK+3 port of the WebKit2 browser engine"
-maintainer="Enno Boland <gottox@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.org>"
+license="LGPL-2.1-or-later, BSD-2-Clause"
 homepage="https://webkitgtk.org/"
-license="LGPL-2.1, 2-clause-BSD"
 distfiles="${homepage}/releases/webkitgtk-${version}.tar.xz"
-checksum=579b307d78fa16a73f112790178022166d7ad17d4147492ced9b9fba48f20dd8
+checksum=940d746d7e82c357222feb5b3f44c4b201e81df7d81ddca5ca2bf3ae0acf6c51
+
+makedepends+=" qt5-devel"
 
 # ETOOHUGE
 nodebug=1
 
-CXXFLAGS="-Wno-expansion-to-defined"
-
-hostmakedepends="perl python pkg-config intltool gperf flex ruby glib-devel geoclue2"
-makedepends="
- at-spi2-core-devel libjpeg-turbo-devel libpng-devel sqlite-devel
- harfbuzz-devel gst-plugins-base1-devel libsoup-devel libxslt-devel
- gnutls-devel icu-devel enchant-devel dbus-glib-devel libwebp-devel
- gtk+-devel gtk+3-devel libgudev-devel libsecret-devel ruby-devel
- geoclue2-devel libnotify-devel hyphen-devel"
-
-case "$XBPS_TARGET_MACHINE" in
-armv[56]*|mips*) configure_args+=" -DENABLE_JIT=0"
-	makedepends+=" libatomic-devel"
-	;;
-aarch64*) configure_args+=" -DUSE_LD_GOLD=0";;
-esac
-
-case "$XBPS_TARGET_MACHINE" in
-*-musl) configure_args+=" -DENABLE_SAMPLING_PROFILER=OFF";;
-esac
+CXXFLAGS="-Wno-expansion-to-defined -Wno-redundant-move -Wno-deprecated-copy"
 
 # Package build options
-build_options="gir wayland x11"
-# Disable gir for cross builds.
-build_options_default="wayland x11"
-if [ -z "$CROSS_BUILD" ]; then
-	build_options_default+=" gir"
-else
-	# Make cmake detect Ruby headers in cross base
-	configure_args+=" -DRUBY_VERSION=2.4 -DRUBY_CONFIG_INCLUDE_DIR=${XBPS_CROSS_BASE}/usr/include/ruby-2.4.0"
-	# Fix non-working target CPU detection
-	configure_args+=" -DCMAKE_SYSTEM_PROCESSOR=${XBPS_TARGET_MACHINE%-musl}"
-fi
+build_options="gir wayland x11 jit sampling_profiler"
+build_options_default="gir wayland x11"
 
-if [ "$build_option_gir" ]; then
-	configure_args+=" --enable-introspection"
-	hostmakedepends+=" gobject-introspection"
-else
-	configure_args+=" --disable-introspection"
-	configure_args+=" -DENABLE_INTROSPECTION=0"
-fi
+desc_option_jit="Enable JustInTime JS support"
+desc_option_sampling_profiler="Toggle sampling profiler support (disabled on musl)"
 
-if [ "$build_option_wayland" ]; then
-	configure_args+=" --enable-wayland-target"
-	hostmakedepends+=" wayland-devel"
-	makedepends+=" MesaLib-devel libxkbcommon-devel wayland-devel"
-else
-	configure_args+=" --disable-wayland-target"
-fi
+case "$XBPS_TARGET_MACHINE" in
+	aarch64*|arm*) configure_args+=" -DUSE_LD_GOLD=0";;
+esac
 
-if [ "$build_option_x11" ]; then
-	configure_args+=" --enable-x11-target"
-	makedepends+=" libXt-devel"
-else
-	configure_args+=" --disable-x11-target"
-fi
+# JIT conflicts with sampling_profiler
+case "$XBPS_TARGET_MACHINE" in
+	i686*|ppc*|mips*|arm*) ;;
+	*-musl) build_options_default+=" jit" ;;
+	*) build_options_default+=" jit sampling_profiler" ;;
+esac
 
 pre_configure() {
 	case "$XBPS_TARGET_MACHINE" in

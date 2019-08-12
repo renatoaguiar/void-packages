@@ -1,21 +1,22 @@
 # Template file for 'python-Twisted'
 pkgname=python-Twisted
-version=18.4.0
-revision=1
+version=18.9.0
+revision=3
 wrksrc="Twisted-${version}"
 build_style=python-module
 pycompile_module="twisted"
 hostmakedepends="python-setuptools python3-setuptools
  python-incremental python3-incremental"
 makedepends="python-devel python3-devel"
-depends="python-setuptools python-zope.interface python-service_identity
- python-constantly python-incremental python-automat python-hyperlink"
+depends="python-setuptools python-zope.interface python-openssl
+ python-service_identity python-constantly python-incremental python-automat
+ python-hyperlink python-PyHamcrest"
 short_desc="Asynchronous networking framework written in Python (Python2)"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="https://twistedmatrix.com/"
 license="MIT"
 distfiles="${PYPI_SITE}/T/Twisted/Twisted-${version}.tar.bz2"
-checksum=a4cc164a781859c74de47f17f0e85f4bce8a3321a9d0892c015c8f80c4158ad9
+checksum=294be2c6bf84ae776df2fc98e7af7d6537e1c5e60a46d33c3ce2a197677da395
 
 alternatives="
  twisted:cftp:/usr/bin/cftp2
@@ -44,8 +45,9 @@ python3-Twisted_package() {
 	 twisted:twist:/usr/bin/twist3
 	 twisted:twistd:/usr/bin/twistd3"
 	pycompile_module="twisted"
-	depends="python3-setuptools python3-zope.interface python3-service_identity
-	 python3-constantly python3-incremental python3-automat python3-hyperlink"
+	depends="python3-setuptools python3-zope.interface python3-openssl
+	 python3-service_identity python3-constantly python3-incremental
+	 python3-automat python3-hyperlink python3-PyHamcrest"
 	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
 		vmove usr/bin/*3

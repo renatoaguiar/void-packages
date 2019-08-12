@@ -1,30 +1,27 @@
 # Template file for 'shellcheck'
 pkgname=shellcheck
-version=0.5.0
+version=0.7.0
 revision=1
-hostmakedepends="cabal-install"
-short_desc="A static analysis tool for shell scripts"
+build_style=haskell-stack
+stackage="lts-13.26"
+hostmakedepends="pandoc"
+short_desc="Static analysis tool for shell scripts"
 maintainer="Diogo Leal <diogo@diogoleal.com>"
 license="GPL-3.0-or-later"
 homepage="https://www.shellcheck.net/"
 distfiles="https://github.com/koalaman/shellcheck/archive/v${version}.tar.gz"
-checksum=348a3f7892c1f28a44f188c00ac82f1b3bf899d9f81d14ddb0e306db26c937bb
+checksum=946cf3421ffd418f0edc380d1184e4cb08c2ec7f098c79b1c8a2c482fe91d877
 nocross=yes
-nopie=yes
+nopie_files="/usr/bin/shellcheck"
 
-do_build() {
-	cabal sandbox init
-	cabal update
-	cabal install ${makejobs} --only-dependencies
-	cabal configure
-	cabal build ${makejobs}
+case "$XBPS_TARGET_MACHINE" in
+	i686)   broken="https://build.voidlinux.org/builders/i686_builder/builds/19227/steps/shell_3/logs/stdio"
+esac
+
+pre_configure() {
+	pandoc -s -t man shellcheck.1.md -o shellcheck.1
 }
 
-do_check() {
-	cabal test
-}
-
-do_install() {
-	vbin dist/build/shellcheck/shellcheck
-	vdoc shellcheck.1.md
+post_install() {
+	vdoc shellcheck.1
 }

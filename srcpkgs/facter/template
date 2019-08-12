@@ -1,22 +1,25 @@
 # Template file for 'facter'
 pkgname=facter
-version=3.11.2
-revision=3
+version=3.14.2
+revision=1
 build_style=cmake
-configure_args="-DRUBY_CONFIG_INCLUDE_DIR=${XBPS_CROSS_BASE}/usr/include"
+configure_args="-DRUBY_CONFIG_INCLUDE_DIR=${XBPS_CROSS_BASE}/usr/include
+ -DENABLE_CXX_WERROR=OFF"
 hostmakedepends="ruby-devel"
 makedepends="boost-devel cpp-hocon leatherman libblkid-devel libcurl-devel
  ruby-devel yaml-cpp-devel"
 depends="net-tools ruby"
 short_desc="Collect and display system facts"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="Apache-2.0"
-homepage="http://puppetlabs.com/facter"
-distfiles="http://downloads.puppetlabs.com/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=853c6bb4e55302a477d42ac1453be0cf4f99157813271f65b56c5da480cdbe91
+homepage="https://puppetlabs.com/facter"
+distfiles="https://downloads.puppetlabs.com/${pkgname}/${pkgname}-${version}.tar.gz"
+checksum=d43cc988389ebfcfe24e5c5ddce709b84dbaa540a6714262e9445e61d8c1c7c0
 
-post_install() {
-	vlicense LICENSE
+pre_configure() {
+	case "$XBPS_TARGET_MACHINE" in
+		mips*)	sed -i lib/CMakeLists.txt -e'/add_subdirectory(tests)/d' ;;
+	esac
 }
 
 facter-devel_package() {

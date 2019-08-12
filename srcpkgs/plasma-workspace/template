@@ -1,26 +1,39 @@
 # Template file for 'plasma-workspace'
 pkgname=plasma-workspace
-version=5.13.3
+version=5.16.4
 revision=1
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
-hostmakedepends="extra-cmake-modules iso-codes pkg-config"
+hostmakedepends="extra-cmake-modules iso-codes pkg-config kdoctools kcoreaddons"
 makedepends="qt5-devel qt5-declarative-devel qt5-script-devel plasma-framework-devel
  krunner-devel kjsembed-devel knotifyconfig-devel kdesu-devel knewstuff-devel
  kcmutils-devel kidletime-devel kdelibs4support-devel libksysguard-devel
  baloo5-devel ktexteditor-devel kwin-devel libxcb-devel libXtst-devel
- libqalculate-devel"
+ libqalculate-devel prison-devel kholidays-devel ksolid-devel"
 depends="kactivitymanagerd kwin iso-codes milou plasma-integration libxcb-devel"
 short_desc="KDE Window manager"
-maintainer="Denis Revin <denis.revin@gmail.com>"
+maintainer="John <johnz@posteo.net>"
 license="GPL-2.0-or-later,GFDL-2.1, LGPL-2.1-or-later"
 homepage="https://projects.kde.org/projects/plasma/plasma-workspace"
 distfiles="${KDE_SITE}/plasma/${version}/${pkgname}-${version}.tar.xz"
-checksum=442f10b8c7a514fae07c629052287d678d77c3c395aab4e74ccfe1f803e193ea
+checksum=5cd9366ef3d0b68159d9dee2f14886d1f81d1ccf7aedceed1ae5cf8e32d243f1
+
+if [ "$CROSS_BUILD" ]; then
+	hostmakedepends+=" kpackage-devel kconfig-devel kcoreaddons-devel plasma-framework"
+	configure_args+=" -DKF5_HOST_TOOLING=/usr/lib/cmake"
+fi
+
+kworkspace_package() {
+	short_desc="Plasma Workspace Library for KF5"
+	pkg_install() {
+		vmove "usr/lib/libkworkspace5.so.5*"
+	}
+}
 
 plasma-workspace-devel_package() {
 	short_desc+=" - development"
-	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	depends="${makedepends} kworkspace>=${version}_${revision}
+	 ${sourcepkg}>=${version}_${revision}"
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/cmake

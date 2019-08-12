@@ -1,15 +1,15 @@
 # Template file for 'perl-Template-Toolkit'
 pkgname=perl-Template-Toolkit
-version=2.27
-revision=2
+version=2.29
+revision=1
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-module
 hostmakedepends="perl"
 makedepends="${hostmakedepends}"
-depends="${makedepends}"
+depends="${makedepends} perl-AppConfig"
 short_desc="Template Toolkit"
 maintainer="Andrea Brancaleoni <abc@pompel.me>"
 homepage="https://metacpan.org/release/Template-Toolkit"
-license="Artistic, GPL-1"
+license="Artistic-1.0-Perl, GPL-1.0-or-later"
 distfiles="${CPAN_SITE}/Template/Template-Toolkit-${version}.tar.gz"
-checksum=1311a403264d0134c585af0309ff2a9d5074b8ece23ece5660d31ec96bf2c6dc
+checksum=2bddd71cf41fb805fd5234780daf53226b8e7004c623e1647ba2658113614779

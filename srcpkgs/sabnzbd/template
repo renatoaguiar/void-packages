@@ -1,25 +1,23 @@
 # Template file for 'sabnzbd'
 pkgname=sabnzbd
-version=2.3.4
+version=2.3.8
 revision=1
+archs=noarch
 wrksrc="SABnzbd-${version}"
 pycompile_dirs="/usr/share/sabnzbd"
 depends="par2cmdline python-cheetah python-configobj python-feedparser
  python-gntp python-openssl python-yenc unzip"
 short_desc="Open Source Binary Newsreader written in Python"
-maintainer="Orphaned <orphan@voidlinux.eu>"
+maintainer="Orphaned <orphan@voidlinux.org>"
 license="GPL-2.0-or-later"
 homepage="https://sabnzbd.org/"
 distfiles="https://github.com/sabnzbd/sabnzbd/releases/download/${version}/SABnzbd-${version}-src.tar.gz"
-checksum=646569d03ef62c7d0a3dac4de4a64ddbf693f84bf3600bb9462d8fa7449d6149
-noarch=yes
+checksum=0685e867250106c0cab6cc9ffb5241caa9b1e2cdd43faec67ea41021d4997b72
 
 post_extract() {
 	rm -rf gntp sabnzbd/utils/{feedparser,configobj}.py
 	rm -f licenses/License-{feedparser,configobj,gntp,Python}.txt
 	rm -rf solaris
-
-	sed -i 's/from gntp import GNTPRegister/from gntp.core import GNTPRegister/' sabnzbd/notifier.py
 
 	# sabnzbd bundles a heavily modified version of cherrypy. It's
 	# uncertain what base version they use, or where each individual

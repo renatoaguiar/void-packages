@@ -1,17 +1,17 @@
 # Template file for 'zerotier'
 pkgname=zerotier-one
-version=1.2.10
+version=1.4.0.1
 revision=1
 wrksrc=ZeroTierOne-${version}
 build_style=gnu-makefile
 hostmakedepends="nodejs"
 makedepends="sqlite-devel"
 short_desc="Network Virtualization Everywhere"
-maintainer="Michael Aldridge <maldridge@VoidLinux.eu>"
+maintainer="Michael Aldridge <maldridge@voidlinux.org>"
 license="GPL-3"
 homepage="https://www.zerotier.com/"
 distfiles="https://github.com/zerotier/ZeroTierOne/archive/${version}.tar.gz"
-checksum=1c79ec57e67764079a77704b336e642ae3cf221dc8088b0cf9e9c81e0a9c0c57
+checksum=39f5cdbe589ff550dca9d407f579e87b55a750dbb46458914476fa7dbafb8214
 
 pre_install() {
 	sed -i 's/sbin/bin/g' make-linux.mk

@@ -1,29 +1,25 @@
 # Template file for 'filezilla'
 pkgname=filezilla
-version=3.35.1
+version=3.44.1
 revision=1
 build_style=gnu-configure
-configure_args="--disable-static --disable-manualupdatecheck --disable-autoupdatecheck"
+configure_args="--disable-static --disable-manualupdatecheck --disable-autoupdatecheck
+ --with-wx-config=wx-config-gtk3"
 hostmakedepends="pkg-config"
 makedepends="gnutls-devel pugixml-devel dbus-devel libidn-devel sqlite-devel
- gtk+-devel wxWidgets-devel xdg-utils libfilezilla-devel"
+ gtk+3-devel wxWidgets-gtk3-devel xdg-utils libfilezilla-devel"
 depends="xdg-utils hicolor-icon-theme desktop-file-utils"
 short_desc="Fast and reliable FTP, FTPS and SFTP client"
 maintainer="Helmut Pozimski <helmut@pozimski.eu>"
 license="GPL-2.0-or-later"
-homepage="http://filezilla-project.org/"
+homepage="https://filezilla-project.org"
 changelog="https://svn.filezilla-project.org/filezilla/FileZilla3/trunk/NEWS?view=co"
-distfiles="https://dl3.cdn.filezilla-project.org/client/FileZilla_${version}_src.tar.bz2"
-checksum=8c99d39ecfdb892d13ee13200003f260a55cbbd6d2be161fad3e137454f15f84
+distfiles="https://download.filezilla-project.org/client/FileZilla_${version}_src.tar.bz2"
+checksum=c18e64106e80100f77a218f87e72931bdf0e244bddeb628e4e0a50166b934c8e
 
 if [ "$CROSS_BUILD" ]; then
-	hostmakedepends+=" wxWidgets-devel xdg-utils"
+	hostmakedepends+=" wxWidgets-gtk3-devel xdg-utils"
 	case "$XBPS_TARGET_MACHINE" in
 		armv6*) makedepends+=" libatomic-devel" ;;
 	esac
-
-	pre_configure() {
-		# set --host for sub-configure script else configure breaks
-		sed -i -e "s|\"\$ac_abs_confdir/src/fzshellext/configure\" --disable-shellext|& --host=${XBPS_TRIPLET}|" configure
-	}
 fi

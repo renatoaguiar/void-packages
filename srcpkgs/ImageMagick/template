@@ -1,9 +1,9 @@
 # Template file for 'ImageMagick'
 pkgname=ImageMagick
-_majorver=6.9.10
-_patchver=8
+_majorver=7.0.8
+_patchver=59
 version="${_majorver}.${_patchver}"
-revision=2
+revision=1
 wrksrc="${pkgname}-${_majorver}-${_patchver}"
 build_style=gnu-configure
 configure_args="--without-autotrace --with-wmf=yes
@@ -13,14 +13,15 @@ configure_args="--without-autotrace --with-wmf=yes
  --with-dejavu-font-dir=/usr/share/fonts/TTF --enable-opencl --disable-static"
 hostmakedepends="automake libtool pkg-config"
 makedepends="djvulibre-devel fftw-devel ghostscript-devel glib-devel lcms2-devel
- libXt-devel libgomp-devel libltdl-devel librsvg-devel libwebp-devel
- libwmf-devel ocl-icd-devel pango-devel"
+ libXt-devel libgomp-devel libltdl-devel librsvg-devel libwebp-devel libwmf-devel
+ ocl-icd-devel pango-devel"
 short_desc="Package for display and interactive manipulation of images"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="ImageMagick"
 homepage="https://www.imagemagick.org/"
-distfiles="https://www.imagemagick.org/download/ImageMagick-${_majorver}-${_patchver}.tar.xz"
-checksum=991bccd1548f69c4ddf5ca4f7a826f816167555c8651311157a6337833864e50
+changelog="https://imagemagick.org/script/changelog.php"
+distfiles="https://github.com/ImageMagick/ImageMagick/archive/${_majorver}-${_patchver}.tar.gz"
+checksum=238ee17196fcb80bb58485910aaefc12d48f99e4043c2a28f06ff9588161c4e3
 
 subpackages="libmagick libmagick-devel"
 
@@ -33,11 +34,6 @@ if [ -z "$CROSS_BUILD" ]; then
 	hostmakedepends+=" perl"
 	subpackages+=" libmagick-perl"
 fi
-
-post_extract() {
-	sed -i '/VERSION/s/6\.9A/6.99/g' version.sh PerlMagick/Makefile.PL \
-		PerlMagick/*/Makefile.PL PerlMagick/quantum/quantum.pm
-}
 
 pre_configure() {
 	autoreconf -if

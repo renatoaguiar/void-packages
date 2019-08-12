@@ -1,14 +1,15 @@
 # Template file for 'scdoc'
 pkgname=scdoc
-version=1.4.1
+version=1.9.6
 revision=1
 build_style=gnu-makefile
+make_build_args="PREFIX=/usr"
 short_desc="Tool for generating roff manual pages"
 maintainer="Julio Galvan <juliogalvan@protonmail.com>"
 license="MIT"
 homepage="https://git.sr.ht/~sircmpwn/scdoc"
-distfiles="https://git.sr.ht/~sircmpwn/scdoc/snapshot/scdoc-${version}.tar.xz"
-checksum=2bc96daae0ddfb858305e550eb00a544a7a6255edd0bd169dcb2fc0c035eca92
+distfiles="https://git.sr.ht/~sircmpwn/scdoc/archive/${version}.tar.gz"
+checksum=89a5f2294b4b72ee1d20b8a478d16bee1f96b6202bfeedb6df76c27881ed5928
 
 if [ "$CROSS_BUILD" ]; then
 	hostmakedepends+=" scdoc"
@@ -16,9 +17,9 @@ fi
 
 pre_build() {
 	if [ "$CROSS_BUILD" ]; then
-		sed -i "s|^HOST_SCDOC=.*|HOST_SCDOC=/usr/bin/scdoc|g" Makefile
+		vsed -e "s|^HOST_SCDOC=.*|HOST_SCDOC=/usr/bin/scdoc|g" -i Makefile
 	fi
-	sed -i "s/\" VERSION \"/ ${version}/g" src/main.c
+	vsed -e "s/\" VERSION \"/ ${version}/g" -i src/main.c
 }
 
 post_install() {

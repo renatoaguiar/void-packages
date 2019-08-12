@@ -1,6 +1,6 @@
 # Template file for 'MoarVM'
 pkgname=MoarVM
-version=2018.06
+version=2019.07.1
 revision=1
 build_style=configure
 configure_script="perl Configure.pl"
@@ -10,12 +10,9 @@ makedepends="libatomic_ops-devel libffi-devel libtommath-devel libuv-devel"
 short_desc="MoarVM is a virtual machine for Rakudo Perl 6"
 maintainer="Ruslan <axetwe@gmail.com>"
 license="Artistic-2.0"
-homepage="http://moarvm.com"
-distfiles="http://moarvm.org/releases/MoarVM-${version}.tar.gz"
-checksum=6eb8ffc8966151a8031c02abd78325fbe9ebeb0b835a5b7a9985ea3b25ca39a8
+homepage="https://moarvm.org"
+changelog="https://github.com/MoarVM/MoarVM/raw/master/docs/ChangeLog"
+distfiles="https://moarvm.org/releases/MoarVM-${version}.tar.gz"
+checksum=253c945ee6b589ede6949b8e77814542befcbc326190e18ef549634db4955988
 nocross=yes
 shlib_provides="libmoar.so"
-
-do_clean() {
-	rm -rf ${DESTDIR}/usr/include/libuv ${DESTDIR}/usr/include/libtommath
-}

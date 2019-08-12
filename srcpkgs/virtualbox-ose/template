@@ -1,19 +1,19 @@
 # Template file for 'virtualbox-ose'
 pkgname=virtualbox-ose
-version=5.2.16
+version=6.0.10
 revision=1
 wrksrc="VirtualBox-${version%*a}"
 short_desc="General-purpose full virtualizer for x86 hardware"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="GPL-2.0-only, CDDL-1.0"
 homepage="https://www.virtualbox.org"
 changelog="https://www.virtualbox.org/wiki/Changelog"
 distfiles="http://download.virtualbox.org/virtualbox/${version%*a}/VirtualBox-$version.tar.bz2"
-checksum=c30383ad9c86b8a2d1fee03e576f0c0b6ec5354cbfba5f795bf3c5cd339bf650
+checksum=5236148a93267478fb6d306f6343aa9587d3f90f437f54c7b3485bd9d538d2f8
 
 nopie=yes
 lib32disabled=yes
-only_for_archs="i686 x86_64"
+archs="x86_64"
 
 hostmakedepends="acpica-utils dev86 perl pkg-config qt5-tools yasm"
 makedepends="device-mapper-devel docbook-xsl gsoap-devel libcap-devel libcurl-devel
@@ -23,8 +23,6 @@ makedepends="device-mapper-devel docbook-xsl gsoap-devel libcap-devel libcurl-de
 
 if [ "$XBPS_MACHINE" = "x86_64" ]; then
 	makedepends+=" gcc-multilib"
-else
-	broken="https://build.voidlinux.eu/builders/i686_builder/builds/7205/steps/shell_3/logs/stdio"
 fi
 
 depends="virtualbox-ose-dkms-${version}_${revision} hicolor-icon-theme desktop-file-utils dbus"
@@ -75,11 +73,11 @@ do_install() {
 	install -m0644 *.rc *.r0 *.fd ${DESTDIR}/usr/lib/virtualbox
 
 	# setuid
-	install -m4755 VBoxHeadless VBoxSDL VBoxNetDHCP VBoxNetAdpCtl \
-		VirtualBox -t ${DESTDIR}/usr/lib/virtualbox
+	install -m4755 VBoxSDL VirtualBoxVM VBoxHeadless VBoxNetDHCP VBoxNetAdpCtl \
+		VBoxNetNAT -t ${DESTDIR}/usr/lib/virtualbox
 
-	install -m0755 VBoxManage VBoxSVC VBoxExtPackHelperApp VBoxXPCOMIPCD \
-		VBoxTestOGL VBoxBalloonCtrl vboxwebsrv webtest \
+	install -m0755 VirtualBox VBoxManage VBoxSVC VBoxExtPackHelperApp \
+		VBoxXPCOMIPCD VBoxTestOGL VBoxBalloonCtrl vboxwebsrv webtest \
 		-t ${DESTDIR}/usr/lib/virtualbox
 
 	# locales
@@ -123,7 +121,7 @@ virtualbox-ose-dkms_package() {
 	short_desc+=" - kernel module sources for dkms"
 	dkms_modules="virtualbox-ose ${version}"
 	depends="dkms"
-	noarch=yes
+	archs=noarch
 
 	pkg_install() {
 		source ${wrksrc}/env.sh
@@ -133,6 +131,7 @@ virtualbox-ose-dkms_package() {
 
 		install -d ${_osedir}
 		cp -a . ${_osedir}
+		cp -a ${wrksrc}/include ${_osedir}
 		rm -f ${_osedir}/do_dkms
 		install -m644 ${FILESDIR}/${sourcepkg}-dkms.dkms ${_osedir}/dkms.conf
 		vinstall ${FILESDIR}/${sourcepkg}-dkms.udev 644 \
@@ -174,7 +173,7 @@ virtualbox-ose-guest-dkms_package() {
 	short_desc+=" - guest addition module source for dkms"
 	dkms_modules="virtualbox-ose-guest ${version}"
 	depends="dkms"
-	noarch=yes
+	archs=noarch
 
 	pkg_install() {
 		source ${wrksrc}/env.sh

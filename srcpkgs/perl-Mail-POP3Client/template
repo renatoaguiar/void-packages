@@ -1,8 +1,8 @@
 # Template file for 'perl-Mail-POP3Client'
 pkgname=perl-Mail-POP3Client
 version=2.19
-revision=2
-noarch=yes
+revision=3
+archs=noarch
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-module
 hostmakedepends="perl"

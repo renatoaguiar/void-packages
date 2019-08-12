@@ -1,8 +1,8 @@
 # Template file for 'perl-Mail-Sendmail'
 pkgname=perl-Mail-Sendmail
 version=0.80
-revision=2
-noarch=yes
+revision=3
+archs=noarch
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-module
 hostmakedepends="perl"

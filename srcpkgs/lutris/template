@@ -1,15 +1,18 @@
 # Template file for 'lutris'
 pkgname=lutris
-version=0.4.18
+version=0.5.2.2
 revision=1
-noarch=yes
+archs=noarch
 build_style=python3-module
-pycompile_module="${pkgname}"
-hostmakedepends="python3-setuptools python3-gobject"
-depends="python3-dbus python3-gobject python3-yaml xrandr"
+build_helper="gir"
+pycompile_module="$pkgname"
+hostmakedepends="python3-setuptools python3-gobject gtk+3-devel"
+depends="python3-dbus python3-gobject python3-yaml python3-evdev python3-Pillow
+ pciutils cabextract gtk+3 xrandr unzip p7zip gnome-desktop python3-requests webkit2gtk"
 short_desc="Open gaming platform for managing games in a unified way"
 maintainer="Jan Wey. <janwey.git@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://lutris.net"
+changelog="https://raw.githubusercontent.com/lutris/lutris/master/debian/changelog"
 distfiles="https://github.com/lutris/lutris/archive/v${version}.tar.gz"
-checksum=a9e2fc537a52ff29b970a3e32bea5ab7f354343c6a7c404bc8c59ae8a35f3542
+checksum=09ed6bbc501610c4bdc3653b8b9f9bfde1ae797dae29e69a2f4a4b75da337376

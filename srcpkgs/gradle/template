@@ -1,8 +1,8 @@
 # Template file for 'gradle'
 pkgname=gradle
-version=4.9
+version=4.10.3
 revision=1
-noarch=yes
+archs=noarch
 hostmakedepends="unzip"
 depends="virtual?java-environment"
 short_desc="Build system for Java/C/C++ software"
@@ -11,7 +11,7 @@ license="Apache-2.0"
 homepage="https://gradle.org/"
 changelog="https://docs.gradle.org/${version}/release-notes.html"
 distfiles="https://services.gradle.org/distributions/gradle-${version}-bin.zip"
-checksum=e66e69dce8173dd2004b39ba93586a184628bc6c28461bc771d6835f7f9b0d28
+checksum=8626cbf206b4e201ade7b87779090690447054bc93f052954c78480fa6ed186e
 nocross=yes
 
 do_install() {

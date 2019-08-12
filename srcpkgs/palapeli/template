@@ -1,0 +1,15 @@
+# Template file for 'palapeli'
+pkgname=palapeli
+version=19.04.3
+revision=1
+build_style=cmake
+hostmakedepends="extra-cmake-modules qt5-qmake qt5-host-tools kdoctools
+ kconfig kcoreaddons"
+makedepends="libkdegames-devel kdoctools"
+depends="qhull"
+short_desc="Jigsaw puzzle game"
+maintainer="Adam Beckmeyer <adam_gpg@thebeckmeyers.xyz>"
+license="GPL-2.0-or-later"
+homepage="https://kde.org/applications/games/palapeli"
+distfiles="${KDE_SITE}/applications/${version}/src/palapeli-${version}.tar.xz"
+checksum=7cbf7a1666e16a476de9bdab7155f17f2224baa7db9d80cd77c785dead6f2e10

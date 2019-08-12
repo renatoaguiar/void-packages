@@ -1,24 +1,28 @@
 # Template file for 'chromium-widevine'
+#
+# Keep in sync with 'chromium'!
+#
 _chromeVersion="current"
 _channel="stable"
 
 pkgname=chromium-widevine
-version=64.0.3282.167
+version=75.0.3770.142
 revision=1
-short_desc="A browser plugin designed for the viewing of premium video content"
-maintainer="Benjamin Hoffmeyer <hoffmeyer25@gmail.com>"
-homepage="http://www.google.com/chrome"
-license="chrome"
-only_for_archs="x86_64"
-depends="chromium binutils xz"
-repository=nonfree
+archs="x86_64"
 create_wrksrc=yes
+short_desc="Browser plugin designed for the viewing of premium video content"
+maintainer="Benjamin Hoffmeyer <hoffmeyer25@gmail.com>"
+license="chrome"
+depends="chromium binutils xz"
+homepage="https://www.google.com/chrome"
+repository=nonfree
 distfiles="https://dl.google.com/linux/direct/google-chrome-${_channel}_${_chromeVersion}_amd64.deb"
-checksum=6ba016ae5064dfba9a2de24274f2de3b104451ecbdc0f4dffe7494478e90b145
+checksum=8a39e922d9d0f12b79949efc46c22021f89a8207670fa9493a366ad8231b343f
 
 do_extract() {
 	:
 }
+
 do_install() {
 	vlicense ${FILESDIR}/LICENSE
 }

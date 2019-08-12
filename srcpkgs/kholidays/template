@@ -1,17 +1,21 @@
 # Template file for 'kholidays'
 pkgname=kholidays
-version=5.47.0
-revision=1
 reverts="17.12.3_1 17.12.1_1 17.12.0_1 17.04.3_1"
+version=5.60.0
+revision=1
 build_style=cmake
-hostmakedepends="extra-cmake-modules"
+hostmakedepends="kcoreaddons extra-cmake-modules"
 makedepends="qt5-devel qt5-tools-devel qt5-declarative-devel"
 short_desc="KDE library for regional holiday information"
-maintainer="Denis Revin <denis.revin@gmail.com>"
+maintainer="John <johnz@posteo.net>"
 license="LGPL-2.1-or-later"
 homepage="https://projects.kde.org/projects/applications/kholidays"
 distfiles="${KDE_SITE}/frameworks/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=8b3b4d57b80b78fc55fb4747a12e1710c9d0df816c116d0bc0a4b545ae8e3500
+checksum=af1954758e946b62e387e2197f128e7ae53b6054717f35bcabc674bec19b2d14
+
+if [ "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-host-tools qt5-qmake"
+fi
 
 kholidays-devel_package() {
 	short_desc+=" - development"
@@ -23,7 +27,3 @@ kholidays-devel_package() {
 		vmove "usr/lib/*.so"
 	}
 }
-
-if [ -n "$CROSS_BUILD" ]; then
-	hostmakedepends+=" qt5-host-tools qt5-qmake"
-fi

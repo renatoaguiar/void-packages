@@ -1,38 +1,55 @@
 # Template file for 'vala'
 pkgname=vala
-version=0.40.8
+# Should be kept in sync with 'valadoc' (shared distfiles)
+version=0.44.6
 revision=1
 build_style=gnu-configure
-hostmakedepends="flex libxslt pkg-config automake libtool"
-makedepends="graphviz-devel libfl-devel libglib-devel"
+configure_args="--disable-valadoc"
+hostmakedepends="flex libxslt pkg-config"
+makedepends="libfl-devel libglib-devel"
 checkdepends="dbus libgirepository-devel"
 short_desc="Compiler for the GObject type system"
-maintainer="Enno Boland <gottox@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.org>"
 license="LGPL-2.1-or-later"
-homepage="https://live.gnome.org/Vala"
-changelog="https://raw.githubusercontent.com/GNOME/vala/0.40/NEWS"
+homepage="https://wiki.gnome.org/Projects/Vala"
+changelog="https://gitlab.gnome.org/GNOME/vala/raw/0.42/NEWS"
 distfiles="${GNOME_SITE}/vala/${version%.*}/vala-${version}.tar.xz"
-checksum=5c35e087a7054e9f0a514a0c1f1d0a0d7cf68d3e43c1dbeb840f9b0d815c0fa5
+checksum=ab9f1756af7460aa1e39c9a7388f5492a4252a3cd9c76b02f2033f1dedcd793a
+shlib_provides="libvalaccodegen.so"
 
-pre_configure() {
-	autoreconf -fi
+post_install() {
+	# remove the /usr/bin prefix from the vapigen variable
+	# so the package that use it fall into our wrapper.
+	# keep the binary versioned, we don't know the potential
+	# fallout from using the unversioned one
+	vsed -e 's|^vapigen=.*|vapigen=vapigen-0.44|g' \
+		 -i ${DESTDIR}/usr/lib/pkgconfig/vapigen-0.44.pc
 }
 
 libvala_package() {
-	short_desc+=" - shared library"
+	short_desc+=" - vala shared library"
 	pkg_install() {
-		vmove usr/lib/*.so.*
+		vmove "usr/lib/libvala-*.so.*"
 	}
 }
 
 vala-devel_package() {
-	depends="libglib-devel vala>=${version}_${revision}"
-	short_desc+=" - development files"
+	depends="libglib-devel vala-${version}_${revision}"
+	short_desc+=" - vala development files"
 	pkg_install() {
-		vmove usr/include
-		vmove usr/lib/pkgconfig
-		vmove usr/lib/*.so
+		vmove "usr/lib/libvala-*.so"
+		vmove "usr/lib/pkgconfig/libvala*.pc"
+		vmove "usr/include/vala-*"
+		vmove "usr/share/vala/vapi/libvala-*.*"
 		vmove usr/share/aclocal
+	}
+}
+
+vala-doc_package() {
+	archs=noarch
+	depends="vala-${version}_${revision}"
+	short_desc+=" - devhelp documentation"
+	pkg_install() {
 		vmove usr/share/devhelp
 	}
 }

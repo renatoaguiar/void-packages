@@ -1,18 +1,19 @@
 # Template file for 'kpimtextedit'
 pkgname=kpimtextedit
-version=18.04.3
+version=19.04.3
 revision=1
 build_style=cmake
-hostmakedepends="extra-cmake-modules python qt5-qmake qt5-host-tools"
+hostmakedepends="extra-cmake-modules python qt5-qmake qt5-host-tools
+ kcoreaddons"
 makedepends="qt5-devel grantlee5-devel kcodecs-devel kconfig-devel kconfigwidgets-devel
  kemoticons-devel kiconthemes-devel kio-devel syntax-highlighting-devel
  qt5-speech-devel"
-short_desc="A textedit with PIM-specific features"
+short_desc="Textedit with PIM-specific features"
 maintainer="Helmut Pozimski <helmut@pozimski.eu>"
 license="LGPL-2.1-or-later"
 homepage="https://projects.kde.org/projects/applications/kpimtextedit"
 distfiles="${KDE_SITE}/applications/${version}/src/${pkgname}-${version}.tar.xz"
-checksum=81e4ec27e7fb8b3b5a014160c706183d497c5ee688dcfbb36dcbc7022871143b
+checksum=e71e0c4dc666db23a1cfcbe202d37cac3b0c5fd966c3edbdd88c85ed2e983f24
 
 if [ "$CROSS_BUILD" ]; then
 	hostmakedepends+=" qt5-tools-devel"
@@ -25,6 +26,6 @@ kpimtextedit-devel_package() {
 		vmove usr/include
 		vmove usr/lib/qt5/mkspecs
 		vmove usr/lib/cmake
-		vmove usr/lib/*.so
+		vmove "usr/lib/*.so"
 	}
 }

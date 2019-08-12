@@ -1,19 +1,19 @@
 # Template file for 'kcolorchooser'
 pkgname=kcolorchooser
-version=18.04.2
+version=19.04.3
 revision=1
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
-hostmakedepends="extra-cmake-modules"
+hostmakedepends="extra-cmake-modules kcoreaddons"
 makedepends="qt5-devel kxmlgui-devel"
 short_desc="KDE's Color Chooser"
-maintainer="Michael Straube <straubem@gmx.de>"
+maintainer="travankor <travankor@tuta.io>"
 license="MIT"
 homepage="https://www.kde.org/applications/graphics/kcolorchooser"
-distfiles="${KDE_SITE}/applications/${version}/src/${pkgname}-${version}.tar.xz"
-checksum=020abccf25b18af3e11f67d787be4d3b6df0107ab8f15c946cc00a8804fc1154
+distfiles="${KDE_SITE}/applications/${version}/src/kcolorchooser-${version}.tar.xz"
+checksum=f60ee47baaca59b7df8ce58902ae09d44d2cb5b7f3f5ec7b9a401c7f7e3e5ab4
 
-if [ -n "$CROSS_BUILD" ]; then
+if [ "$CROSS_BUILD" ]; then
 	hostmakedepends+=" qt5-host-tools qt5-devel"
 fi
 

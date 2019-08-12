@@ -1,17 +1,17 @@
 # Template file for 'units'
 pkgname=units
-version=2.17
+version=2.19
 revision=1
 build_style=gnu-configure
-hostmakedepends="python"
+hostmakedepends="python3"
 makedepends="readline-devel"
-depends="python python-Unidecode"
+depends="python3 python3-Unidecode"
 short_desc="Converts between different units"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="GPL-3.0-or-later"
 homepage="https://www.gnu.org/software/units/units.html"
 distfiles="${GNU_SITE}/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=1f03c9f9aef1fb0ccddc6fb545f2925f7754de2bfa67d4e62f8758d7edfd5dd8
+checksum=4262136bdfc152b63ff5a9b93a7d80ce18b5e8bebdcffddc932dda769e306556
 
 post_install() {
 	# Tries to install to /usr/com/currency.units

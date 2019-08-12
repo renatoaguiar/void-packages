@@ -1,6 +1,6 @@
 # Template file for 'fio'
 pkgname=fio
-version=3.8
+version=3.15
 revision=1
 wrksrc="${pkgname}-${pkgname}-${version}"
 build_style=configure
@@ -9,17 +9,17 @@ makedepends="zlib-devel libaio-devel"
 depends="python"
 short_desc="Flexible I/O tester"
 maintainer="Leah Neukirchen <leah@vuxu.org>"
-license="GPL-2"
+license="GPL-2.0-only"
 homepage="https://github.com/axboe/fio"
 distfiles="https://github.com/axboe/${pkgname}/archive/${pkgname}-${version}.tar.gz"
-checksum=3eccc9eb2ccf9d910ab391c5d639565e0f6bb4050620d161f26c36c6ff83454f
+checksum=c0c0e40e770abcd5ab013af4bd8b16dfa83645145871063939db2a14270e2545
 
 case "$XBPS_TARGET_MACHINE" in
-	i686*|x86_64*) makedepends+=" libnuma-devel"
+	i686*|x86_64*|ppc64*) makedepends+=" libnuma-devel"
 esac
 
 do_configure() {
-	./configure --prefix=/usr --extra-cflags="$CFLAGS"
+	./configure --prefix=/usr --extra-cflags="$CFLAGS" --disable-native
 }
 
 post_install() {

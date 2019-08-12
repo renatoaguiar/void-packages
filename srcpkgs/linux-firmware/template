@@ -1,17 +1,17 @@
 # Template file for 'linux-firmware'
 pkgname=linux-firmware
-version=20180606
+version=20190717
 revision=1
-_githash=d1147327232ec4616a66ab898df84f9700c816c1
+_githash=bf13a71b18af229b4c900b321ef1f8443028ded8
+archs=noarch
 wrksrc="${pkgname}-${_githash}"
-noarch=yes
-short_desc="Binary firmware blobs for the Linux kernel"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="https://www.kernel.org/"
-license="See /usr/share/licenses/${pkgname}"
 depends="${pkgname}-amd-${version}_${revision} ${pkgname}-network-${version}_${revision}"
+short_desc="Binary firmware blobs for the Linux kernel"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
+license="See /usr/share/licenses/${pkgname}"
+homepage="https://www.kernel.org/"
 distfiles="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/${pkgname}-${_githash}.tar.gz"
-checksum=8e55b3bdad5df820f72f153361855c2a03dee9c21c50cdb3c6af51356c4c7db5
+checksum=306b4cbd4237d2cf013e27923df2b721d5d570882a6bf27782c03429be244887
 
 do_install() {
 	vmkdir usr/lib/firmware
@@ -24,7 +24,7 @@ do_install() {
 
 linux-firmware-amd_package() {
 	short_desc+=" - AMD CPU/GPU microcode"
-	noarch=yes
+	archs=noarch
 	pkg_install() {
 		vmove usr/lib/firmware/amd*
 		vmove usr/lib/firmware/radeon
@@ -36,7 +36,7 @@ linux-firmware-amd_package() {
 
 linux-firmware-intel_package() {
 	short_desc+=" - Intel CPU/GPU microcode"
-	noarch=yes
+	archs=noarch
 	pkg_install() {
 		vmove usr/lib/firmware/i915
 		vmove usr/share/licenses/linux-firmware/LICENSE.i915
@@ -45,7 +45,7 @@ linux-firmware-intel_package() {
 
 linux-firmware-nvidia_package() {
 	short_desc+=" NVIDIA GPU microcode"
-	noarch=yes
+	archs=noarch
 	pkg_install() {
 		vmove usr/lib/firmware/nvidia
 		vmove usr/share/licenses/linux-firmware/LICENCE.nvidia*
@@ -54,7 +54,7 @@ linux-firmware-nvidia_package() {
 
 linux-firmware-network_package() {
 	short_desc+=" - network"
-	noarch=yes
+	archs=noarch
 	pkg_install() {
 		vmove usr/lib/firmware/3com
 		vmove usr/lib/firmware/RTL8192E

@@ -1,19 +1,25 @@
 # Template file for 'mkvtoolnix'
 pkgname=mkvtoolnix
-version=25.0.0
-revision=2
+version=35.0.0
+revision=1
 build_style=gnu-configure
 configure_args="--with-docbook-xsl-root=/usr/share/xsl/docbook --enable-qt"
 hostmakedepends="autoconf docbook-xsl libxslt pkg-config ruby"
-makedepends="boost-devel cmark-devel file-devel libflac-devel libmatroska-devel
- libvorbis-devel qt5-multimedia-devel qt5-tools-devel"
+makedepends="boost-devel cmark-devel file-devel json-c++
+ libflac-devel libmatroska-devel libvorbis-devel pugixml-devel
+ qt5-multimedia-devel qt5-tools-devel"
 short_desc="Create, alter and inspect Matroska videos"
 maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
 license="GPL-2.0-only"
 homepage="https://www.bunkus.org/videotools/mkvtoolnix/"
-distfiles="${homepage}/sources/${pkgname}-${version}.tar.xz"
-checksum=834cb7abdd8849da3a6864055c8207cea44d14768147830918cd1a723c40bc33
-nocross="Fails due to dependency chain eigen -> jack -> pulseaudio"
+changelog="https://mkvtoolnix.download/doc/NEWS.md"
+distfiles="https://www.bunkus.org/videotools/${pkgname}/sources/${pkgname}-${version}.tar.xz"
+checksum=5144e77ce0bd4653733bd07eed143870fb5cdcda31c5e943a3f22a069da4e6fd
+
+if [ "$CROSS_BUILD" ]; then
+	configure_args+=" --with-boost=${XBPS_CROSS_BASE}/usr"
+	hostmakedepends+=" qt5-host-tools qt5-multimedia-devel qt5-tools-devel"
+fi
 
 pre_configure() {
 	./autogen.sh

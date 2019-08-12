@@ -1,29 +1,23 @@
 # Template file for 'playerctl'
 pkgname=playerctl
-version=0.6.0
-revision=1
-build_style=gnu-configure
-configure_args="$(vopt_enable gir introspection)"
-hostmakedepends="automake pkg-config glib-devel gtk-doc
- $(vopt_if gir gobject-introspection)"
+version=2.0.2
+revision=2
+build_style=meson
+build_helper="gir"
+configure_args="-Dintrospection=$(vopt_if gir 'true' 'false')
+ -Dgtk-doc=$(vopt_if doc 'true' 'false')"
+hostmakedepends="pkg-config glib-devel $(vopt_if doc gtk-doc)"
 makedepends="libglib-devel"
 short_desc="MPRIS command-line controller and library"
-maintainer="Duncaen <duncaen@voidlinux.eu>"
+maintainer="Duncaen <duncaen@voidlinux.org>"
 license="LGPL-3.0-or-later"
 homepage="https://github.com/acrisci/playerctl"
 distfiles="https://github.com/acrisci/playerctl/archive/v${version}.tar.gz"
-checksum=c7af7291fa3efad07dabae62ad31f366e8730a84439e2499c6fb6b09f4a7d0e7
-disable_parallel_build=yes
-nocross=yes
+checksum=04461f5a9869fd43c76da539c5565c6275c8dbab3295f7ecf45990695a53bc54
 
-build_options="gir"
-if [ -z "$CROSS_BUILD" ]; then
-	build_options_default="gir"
-fi
-
-pre_configure() {
-	NOCONFIGURE=1 ./autogen.sh
-}
+build_options="doc gir"
+desc_option_doc="Build documentation"  # fails :(
+build_options_default="gir"
 
 playerctl-devel_package() {
 	depends="playerctl>=${version}_${revision}"

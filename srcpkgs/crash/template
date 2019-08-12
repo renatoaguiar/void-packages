@@ -1,7 +1,8 @@
 # Template file for 'crash'
 pkgname=crash
-version=7.2.3
+version=7.2.6
 revision=1
+archs="i686 x86_64"  # broken on musl
 build_style=gnu-makefile
 hostmakedepends="flex"
 makedepends="lzo-devel ncurses-devel zlib-devel"
@@ -9,10 +10,9 @@ short_desc="Kernel crash dump debugger and live inspector"
 maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="GPL-3.0-or-later"
 homepage="http://people.redhat.com/anderson/"
-#changelog="https://people.redhat.com/anderson/crash.changelog.html"
+changelog="https://people.redhat.com/anderson/crash.changelog.html"
 distfiles="http://people.redhat.com/anderson/${pkgname}-${version}.tar.gz"
-checksum=d34d4e3962bd8ef786e6fa4933105ae9049f052aaa2afce45492e2bd78a66112
-only_for_archs="i686 x86_64"  # broken on musl
+checksum=c8bc0892061e7cec838e641a8e61319d656f33de5f211502296d1c9a23058ec2
 nocross=yes
 LDFLAGS=-llzo2
 

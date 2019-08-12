@@ -1,21 +1,29 @@
 # Template file for 'pijul'
 pkgname=pijul
-version=0.10.0
-revision=1
-hostmakedepends="cargo pkg-config"
-makedepends="libsodium-devel libressl-devel"
+version=0.12.0
+revision=2
+build_style=cargo
+hostmakedepends="pkg-config clang"
+makedepends="libsodium-devel libressl-devel nettle-devel"
 short_desc="Distributed version control system based on patches"
-maintainer="Toyam Cox <Vaelatern@gmail.com>"
-license="GPL-2"
+maintainer="Toyam Cox <Vaelatern@voidlinux.org>"
+license="GPL-2.0-only"
 homepage="https://pijul.org/"
 distfiles="https://pijul.org/releases/pijul-${version}.tar.gz"
-checksum=da3fcba4ab39a4371cda7273691364c2355c9b216bb7867d92dae5812ebb71d2
-nocross=rustcant
+checksum=987820fa2a6fe92a9f516f5e9b41ad59a597973e72cb0c7a44ca0f38e741a7e6
 
-do_build() {
-	cargo build --release ${makejobs}
+if [ "$CROSS_BUILD" ]; then
+	export HOST_CC="$BUILD_CC"
+	export HOST_CFLAGS="$BUILD_CFLAGS"
+	export BINDGEN_EXTRA_CLANG_ARGS="--sysroot=$XBPS_CROSS_BASE"
+fi
+
+pre_build() {
+	cargo update --package openssl-sys --precise 0.9.46
+	cargo update --package openssl --precise 0.10.22
 }
 
+# We only want to install the binary, so don't run cargo install
 do_install() {
-	vbin target/release/pijul
+	vbin target/${RUST_TARGET}/release/pijul
 }

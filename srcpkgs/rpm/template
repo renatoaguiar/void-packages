@@ -1,20 +1,21 @@
 # Template file for 'rpm'
 pkgname=rpm
-version=4.14.1
-revision=1
+version=4.14.2.1
+revision=2
 build_style=gnu-configure
-configure_args="--with-lua --with-cap --with-acl --with-external-db --enable-python PYTHON=python2"
+configure_args="--with-lua --with-cap --with-acl --with-external-db
+ --enable-python PYTHON=python3"
 hostmakedepends="automake gettext-devel libtool nss-devel pkg-config
- python-setuptools"
+ python3-setuptools"
 makedepends="binutils-devel db-devel elfutils-devel file-devel libarchive-devel
- libcap-devel lua52-devel nss-devel popt-devel python-devel"
+ libcap-devel lua52-devel nss-devel popt-devel python3-devel"
 short_desc="Red Hat Package Management Utils"
 maintainer="maxice8 <thinkabit.ukim@gmail.com>"
 license="GPL-2.0-or-later"
-homepage="http://rpm.org"
-changelog="http://rpm.org/wiki/Releases/${version}.html"
-distfiles="http://ftp.rpm.org/releases/rpm-${version%.*}.x/rpm-${version}.tar.bz2"
-checksum=43f40e2ccc3ca65bd3238f8c9f8399d4957be0878c2e83cba2746d2d0d96793b
+homepage="https://rpm.org"
+changelog="https://rpm.org/wiki/Releases/${version}.html"
+distfiles="http://ftp.rpm.org/releases/rpm-${version%.*.*}.x/rpm-${version}.tar.bz2"
+checksum=1139c24b7372f89c0a697096bf9809be70ba55e006c23ff47305c1849d98acda
 conflicts="rpmextract>=0" # Both provide rpm2cpio
 
 CFLAGS="-I${XBPS_CROSS_BASE}/usr/include/python2.7"
@@ -47,11 +48,12 @@ librpm-devel_package() {
 	}
 }
 
-rpm-python_package() {
+rpm-python3_package() {
 	pycompile_module="rpm"
+	depends="rpm"
 	short_desc+=" - python bindings"
 	pkg_install() {
-		vmove usr/lib/python2*
+		vmove usr/lib/python3*
 	}
 }
 

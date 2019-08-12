@@ -10,12 +10,18 @@ or queried through the `xbps-install(1)` and `xbps-query(1)` utilities, respecti
 ### Requirements
 
 - GNU bash
-- xbps >= 0.46
+- xbps >= 0.55
+- curl(1) - required by `xbps-src update-check`
+- flock(1) - util-linux
+- install(1) - coreutils
+- other common POSIX utilities included by default in almost all UNIX systems.
 
-`xbps-src` requires an utility to chroot and bind mount existing directories
+`xbps-src` requires a utility to chroot and bind mount existing directories
 into a `masterdir` that is used as its main `chroot` directory. `xbps-src` supports
 multiple utilities to accomplish this task:
 
+ - `bwrap` - bubblewrap, see https://github.com/projectatomic/bubblewrap.
+ - `ethereal` - only useful for one-shot containers, i.e docker (used with travis).
  - `xbps-uunshare(1)` - XBPS utility that uses `user_namespaces(7)` (part of xbps, default).
  - `xbps-uchroot(1)` - XBPS utility that uses `namespaces` and must be `setgid` (part of xbps).
  - `proot(1)` - utility that implements chroot/bind mounts in user space, see https://proot-me.github.io/.
@@ -139,7 +145,7 @@ The following directory hierarchy is used with a default configuration file:
             |
             |- hostdir
             |  |- binpkgs ...
-            |  |- ccache-<arch> ...
+            |  |- ccache ...
             |  |- distcc-<arch> ...
             |  |- repocache ...
             |  |- sources ...
@@ -180,9 +186,9 @@ any xbps configuration file (see xbps.d(5)) or by explicitly appending them via 
 
 By default **xbps-src** will try to resolve package dependencies in this order:
 
- - If dependency exists in the local repository, use it (`hostdir/binpkgs`).
- - If dependency exists in a remote repository, use it.
- - If dependency exists in a source package, use it.
+ - If a dependency exists in the local repository, use it (`hostdir/binpkgs`).
+ - If a dependency exists in a remote repository, use it.
+ - If a dependency exists in a source package, use it.
 
 It is possible to avoid using remote repositories completely by using the `-N` flag.
 
@@ -238,7 +244,7 @@ First a RSA key must be created with `openssl(1)` or `ssh-keygen(1)`:
 
 or
 
-	$ ssh-keygen -t rsa -b 4096 -f privkey.pem
+	$ ssh-keygen -t rsa -b 4096 -m PEM -f privkey.pem
 
 > Only RSA keys in PEM format are currently accepted by xbps.
 
@@ -350,7 +356,7 @@ xbps-src can be used in any recent Linux distribution matching the CPU architect
 
 To use xbps-src in your Linux distribution use the following instructions. Let's start downloading the xbps static binaries:
 
-    $ wget http://repo.voidlinux.eu/static/xbps-static-latest.<arch>-musl.tar.xz
+    $ wget http://alpha.de.repo.voidlinux.org/static/xbps-static-latest.<arch>-musl.tar.xz
     $ mkdir ~/XBPS
     $ tar xvf xbps-static-latest.<arch>.tar.xz -C ~/XBPS
     $ export PATH=~/XBPS/usr/bin:$PATH
@@ -415,7 +421,7 @@ Wait until all packages are built and when ready, prepare a new masterdir with t
 
     $ ./xbps-src -m masterdir-x86_64-musl binary-bootstrap x86_64-musl
 
-Your new masterdir is now ready to build natively packages for the musl C library. Try:
+Your new masterdir is now ready to build packages natively for the musl C library. Try:
 
     $ ./xbps-src -m masterdir-x86_64-musl chroot
     $ ldd

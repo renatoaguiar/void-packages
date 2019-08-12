@@ -1,19 +1,23 @@
 # Template file for 'acpica-utils'
 pkgname=acpica-utils
-version=20180629
+version=20190509
 revision=1
+archs="i686* x86_64*"
 wrksrc="acpica-unix-${version}"
 hostmakedepends="flex"
 short_desc="Intel ACPI CA Unix utilities"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="GPL-2.0-only, BSD-3-Clause"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="https://www.acpica.org/"
 distfiles="https://acpica.org/sites/acpica/files/acpica-unix-${version}.tar.gz"
-checksum=70d11f3f2adbdc64a5b33753e1889918af811ec8050722fbee0fdfc3bfd29a4f
-only_for_archs="i686 i686-musl x86_64 x86_64-musl"
+checksum=f124ab6e99110a192864b23dc6911d180968dd15b49f95f7adc37d69dd14621a
 
 do_build() {
-	sed -e 's/_CYGWIN/_LINUX/g' -e 's/-Werror//g' -i generate/unix/Makefile.config generate/unix/iasl/Makefile
+	vsed -e 's/-Werror//g' \
+		 -i generate/unix/Makefile.config
+
+	vsed -e 's/_CYGWIN/_LINUX/g' \
+		 -i generate/unix/iasl/Makefile
 
 	case "$XBPS_TARGET_MACHINE" in
 		i686*) make BITS=32;;

@@ -1,14 +1,14 @@
 # Template file for 'boinc'
 pkgname=boinc
-version=7.12.1
-revision=2
-_majorver=${version%.*.*}
-wrksrc=boinc-client_release-${_majorver}-${version%.*}
+version=7.14.2
+revision=3
+_majorver=${version%.*}
+wrksrc=boinc-client_release-${_majorver}-${version}
 build_style=gnu-configure
-hostmakedepends="automake libtool pkg-config python xorgproto"
+hostmakedepends="automake libtool pkg-config python xorgproto shared-mime-info"
 makedepends="glu-devel libfreeglut-devel libcurl-devel
  libjpeg-turbo-devel libnotify-devel sqlite-devel libxcb-devel
- libXmu-devel libXi-devel gtk+-devel webkitgtk2-devel wxWidgets-devel"
+ libXmu-devel libXi-devel gtk+-devel webkit2gtk-devel wxWidgets-gtk3-devel"
 depends="curl ca-certificates"
 system_accounts="boinc"
 boinc_homedir="/var/lib/boinc"
@@ -16,13 +16,17 @@ boinc_shell="/bin/bash"
 conf_files="/etc/default/boinc-client"
 short_desc="Berkely Infrastructure for Network Computing"
 maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
-license="LGPL-3.0"
+license="LGPL-3.0-or-later"
 homepage="https://boinc.berkeley.edu/"
 distfiles="https://github.com/BOINC/boinc/archive/client_release/${_majorver}/${version}.tar.gz>boinc-${version}.tar.gz"
-checksum=1004d96c8f9b2100bef36bfee6079bf1fed318788c7288b8d4b8ac77e30377d7
+checksum=970aedb9e25afa20be67f125ab05435df8eb2e66a3ac30ad316c54085e397c88
 conflicts="boinc-nox>=0"
 
 CXXFLAGS="-Wno-redundant-decls"
+
+case "$XBPS_TARGET_MACHINE" in
+	armv6l) broken="arm-linux-gnueabihf-g++: error: libwhetvfp.a: No such file or directory" ;;
+esac
 
 pre_configure() {
 	autoreconf -if
@@ -33,7 +37,6 @@ do_configure() {
 		# Set include paths for configure to find dependencies.
 		CFLAGS+=" -I${XBPS_CROSS_BASE}/usr/include/glib-2.0"
 		CFLAGS+=" -I${XBPS_CROSS_BASE}/usr/lib/glib-2.0/include"
-		CFLAGS+=" $(pkg-config --cflags gtk+-2.0)"
 		CXXFLAGS+=" ${CFLAGS}"
 		echo "CFLAGS:   $CFLAGS"
 		echo "CXXFLAGS: $CXXFLAGS"
@@ -62,7 +65,7 @@ do_configure() {
 		--disable-server \
 		--with-ssl=${XBPS_CROSS_BASE}/usr \
 		--with-x=${XBPS_CROSS_BASE}/usr \
-		--with-wx-config=${XBPS_CROSS_BASE}/usr/bin/wx-config-3.0 \
+		--with-wx-config=${XBPS_CROSS_BASE}/usr/bin/wx-config-gtk3 \
 		--with-wx-prefix=${XBPS_CROSS_BASE}/usr
 
 	cd ${wrksrc}/nox
@@ -78,7 +81,6 @@ do_configure() {
 		--enable-client \
 		--disable-manager \
 		--disable-server \
-		--disable-xss \
 		--disable-server \
 		--with-ssl=${XBPS_CROSS_BASE}/usr \
 		--without-x \

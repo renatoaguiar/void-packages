@@ -1,16 +1,18 @@
 # Template file for 'bijiben'
 pkgname=bijiben
-version=3.28.3
+version=3.32.1
 revision=1
+build_helper="gir"
 build_style=meson
-hostmakedepends="automake gobject-introspection intltool itstool pkg-config"
-makedepends="clutter-gtk-devel enchant-devel evolution-devel tracker-devel
- webkit2gtk-devel zeitgeist-devel"
+hostmakedepends="itstool pkg-config"
+makedepends="clutter-gtk-devel evolution-devel tracker-devel webkit2gtk-devel
+ zeitgeist-devel"
 depends="desktop-file-utils tracker zeitgeist"
 short_desc="Intuitive note editor with strong GNOME desktop integration"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Rasmus Thomsen <oss@cogitri.dev>"
 license="GPL-3.0-or-later"
+homepage="https://wiki.gnome.org/Apps/Notes"
 changelog="https://raw.githubusercontent.com/GNOME/bijiben/gnome-${version%.*}/NEWS"
-homepage="https://live.gnome.org/Apps/Bijiben"
 distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=22d2a5f03dbaa9e8c5d186863289f185249c51f610bfa1fb5c3ed766a813e951
+checksum=c734f80ea30195cbab9a61bebe4c16acf91286d993acd9caed10e83b9e536709
+nocross="evolution-data-server cross"

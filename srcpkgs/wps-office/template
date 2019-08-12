@@ -1,16 +1,16 @@
 # Template file for 'wps-office'
-_numericVersion=10.1.0.5707
-_releaseIncrement=a21
-_patchLevel=
-
 pkgname=wps-office
-version=${_numericVersion}${_releaseIncrement}
+version=11.1.0.8722
 revision=1
-maintainer="Michael Aldridge <maldridge@VoidLinux.eu>"
-homepage="http://wps-community.org"
+archs="x86_64"
+create_wrksrc=yes
+makedepends="rpmextract"
+short_desc="Linux office suite with similar appearance to MS Office"
+maintainer="Michael Aldridge <maldridge@voidlinux.org>"
 license="Kingsoft WPS Community License"
 #Full license is at: http://wps-community.org/license.md (Not downloadable)
-short_desc="Linux office suite with similar appearance to MS Office"
+homepage="http://wps-community.org"
+checksum=e898a1edcb53bc7c0bd3361e225c8475fc84d54d937eea53e7ef030f12a1345e
 allow_unknown_shlibs=yes
 nodebug=yes
 restricted=yes
@@ -18,43 +18,20 @@ restricted=yes
 #The programs themselves are PIE, but the error reporter isn't :/
 nopie=yes
 
-_disturl="http://kdl.cc.ksosoft.com/ksodl/download/linux/${_releaseIncrement}"
-
-only_for_archs="i686 x86_64"
-if [ "$XBPS_TARGET_MACHINE" = "x86_64" ]; then
-	_arch=x86_64
-	checksum=aa875a06e7eef79a30d6e5a4bd03f08eeb1524013edd59122d95a20b1638d9c5
-elif [ "$XBPS_TARGET_MACHINE" = "i686" ]; then
-	_arch=x86
-	checksum=3478f88794b4e473357c1b2b4514b6ddf41bc1aac6e018dfeac637aaac7a021f
-fi
-
-_distTar="${pkgname}_${_numericVersion}~${_releaseIncrement}${_patchLevel}_${_arch}.tar.xz"
+_disturl=http://kdl.cc.ksosoft.com/wps-community/download/8722
+_distTar="${pkgname}-${version}-1.x86_64.rpm"
 distfiles="${_disturl}/${_distTar}"
 
-do_extract() {
-	vmkdir "opt/kingsoft/wps-office"
-	tar xvf "${XBPS_SRCDISTDIR}/${pkgname}-${version}/${_distTar}" -C "${DESTDIR}/opt/kingsoft/wps-office" --strip-components=1
+do_install() {
+	cp -R ${wrksrc}/* ${DESTDIR}
 }
 
-do_install() {
-	# Install the wps-office suites
-	vmkdir usr/bin
-	vmkdir usr/share
-	vmkdir usr/lib
-
-	_programs="wps wpp et"
-	for prog in ${_programs}; do
-		ln -fs /opt/kingsoft/wps-office/$prog ${DESTDIR}/usr/bin/$prog
-	done
-	mv ${DESTDIR}/opt/kingsoft/wps-office/resource/* ${DESTDIR}/usr/share/
-
-	#Fonts
-	vmkdir usr/share/fonts/TTF
-	install -m644 ${DESTDIR}/opt/kingsoft/wps-office/fonts/*.TTF ${DESTDIR}/usr/share/fonts/TTF
-
-	#Clean up some things
-	rm ${DESTDIR}/opt/kingsoft/wps-office/README.txt
-	rm -rf ${DESTDIR}/opt/kingsoft/wps-office/font*
-	rm ${DESTDIR}/opt/kingsoft/wps-office/install_fonts
+post_install() {
+	#Clean up:
+	#Delete everything under /etc. It contains cron, logrotate and autostart
+	# configuration for the update check and a seperate menu category for the
+	# wps programs that does not work.
+	rm -rf ${DESTDIR}/etc
+	#Delete postinst and prerm scripts
+	rm -rf ${DESTDIR}/opt/kingsoft/wps-office/INSTALL
 }

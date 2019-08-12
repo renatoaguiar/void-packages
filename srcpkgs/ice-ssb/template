@@ -1,17 +1,17 @@
 # Template file for 'ice-ssb'
 pkgname=ice-ssb
-version=5.3.4
+version=6.0.5
 revision=1
-noarch=yes
+archs=noarch
 wrksrc="ice-$version"
-depends="gtk+3 python3-BeautifulSoup4 python3-gobject"
+depends="gtk+3 python3-BeautifulSoup4 python3-gobject python3-requests"
 short_desc="Site Specific Browsers (SSBs) manager"
 maintainer="John <johnz@posteo.net>"
 license="GPL-2.0-or-later"
 homepage="https://github.com/peppermintos/ice/"
 changelog="https://github.com/peppermintos/ice/blob/${version}/debian/changelog"
 distfiles="https://github.com/peppermintos/ice/archive/v${version}.tar.gz"
-checksum=c8b1aad85d97b87024f383279d489cc991f32a8b6428a6559dd8aa41fb51b73d
+checksum=390bd16de7a6eff6a382a5efc2779bd60b74b65943234b628bf9a839fc1a1f80
 
 post_extract() {
 	sed -i -e 's/chromium-browser/chromium/g' usr/bin/ice

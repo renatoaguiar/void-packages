@@ -1,15 +1,15 @@
 # Template file for 'file-roller'
 pkgname=file-roller
-version=3.28.1
+version=3.32.1
 revision=1
 build_style=meson
-hostmakedepends="glib-devel intltool itstool pkg-config"
-makedepends="file-devel json-glib-devel libarchive-devel libnotify-devel
- nautilus-devel"
+hostmakedepends="glib-devel itstool pkg-config"
+makedepends="gtk+3-devel json-glib-devel libarchive-devel libglib-devel
+ libnotify-devel nautilus-devel"
 depends="desktop-file-utils hicolor-icon-theme"
 short_desc="GNOME Front-end to archiving programs like tar and zip"
-maintainer="Enno Boland <gottox@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.org>"
 license="GPL-2.0-or-later"
 homepage="https://wiki.gnome.org/Apps/FileRoller"
 distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=574b084eaac142357f54419f8406b029038059845eb16b05eb8e314d2b5dc227
+checksum=1cab0847845b3236725a99f81a638c504d06ac0576c7a947824208e498383547

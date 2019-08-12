@@ -1,15 +1,16 @@
 # Template file for 'ksysguard'
 pkgname=ksysguard
-version=5.13.3
+version=5.16.4
 revision=1
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
-hostmakedepends="extra-cmake-modules kdoctools qt5-qmake qt5-host-tools"
+hostmakedepends="extra-cmake-modules kdoctools qt5-qmake qt5-host-tools
+ kcoreaddons"
 makedepends="knewstuff-devel libksysguard-devel kinit-devel libsensors-devel"
 depends="hicolor-icon-theme lm_sensors"
 short_desc="KDE program to monitor various elements of your system"
-maintainer="Denis Revin <denis.revin@gmail.com>"
+maintainer="John <johnz@posteo.net>"
 license="GPL-2.0-or-later, GFDL-1.2"
 homepage="https://projects.kde.org/projects/plasma/ksysguard"
 distfiles="${KDE_SITE}/plasma/${version}/${pkgname}-${version}.tar.xz"
-checksum=e5ce66c9d7515a2ef8a8d26ff147f5fbc1270d1a6b879b35ad61805809905ba1
+checksum=10abf3bfa676275b6fded5e49979466a011e0552b9357c1b8923f01184c029d5

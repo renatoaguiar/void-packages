@@ -1,6 +1,7 @@
 # Template file for 'bind'
 pkgname=bind
-version=9.11.4
+reverts="9.13.6_1"
+version=9.11.8
 revision=1
 _fullver="${version}${_patchver:+-${_patchver}}"
 wrksrc="${pkgname}-${_fullver}"
@@ -9,18 +10,18 @@ configure_args="--disable-static --enable-threads --enable-largefile
  --with-libtool --enable-atomic --sysconfdir=/etc/named --enable-epoll
  --enable-ipv6 --with-randomdev=/dev/random --with-ecdsa=yes --with-eddsa=no
  --with-libtool --with-openssl=${XBPS_CROSS_BASE}/usr --without-gssapi --without-gost
- --enable-openssl-hash --with-readline --with-tuning=default
- --enable-fetchlimit --enable-sit $(vopt_enable seccomp)
+ --enable-openssl-hash --with-readline --with-tuning=default --without-python
+ --enable-fetchlimit --enable-sit --with-libidn2 $(vopt_enable seccomp)
  $(vopt_if geoip "--with-geoip=${XBPS_CROSS_BASE}/usr" "--without-geoip")"
 hostmakedepends="automake libtool perl"
 makedepends="libressl-devel libxml2-devel libcap-devel readline-devel libatomic-devel
- $(vopt_if geoip geoip-devel) $(vopt_if seccomp libseccomp-devel)"
+ libidn2-devel $(vopt_if geoip geoip-devel) $(vopt_if seccomp libseccomp-devel)"
 short_desc="Berkeley Internet Name Domain server"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="ISC"
-homepage="https://www.isc.org/software/bind/"
+homepage="https://www.isc.org/downloads/bind/"
 distfiles="https://ftp.isc.org/isc/bind9/${_fullver}/bind-${_fullver}.tar.gz"
-checksum=595070b031f869f8939656b5a5d11b121211967f15f6afeafa895df745279617
+checksum=669fcc02a9a1864d93992e526d2186ec8923511c0260b2c037fec8ea45406651
 
 conf_files="/etc/named/named.conf"
 system_accounts="named"
@@ -31,14 +32,13 @@ make_dirs="/var/named 0770 root named"
 build_options="geoip seccomp"
 build_options_default="geoip"
 
-if [ -z "$CROSS_BUILD" ]; then
-	build_options_default+=" seccomp"
-fi
+case "$XBPS_TARGET_MACHINE" in
+	x86_64*|i686*) build_options_default+=" seccomp";;
+esac
 
-pre_configure() {
-	autoreconf -fi
-	# disable bin tests for now.
-	sed -e "s,tests,,g" -i bin/Makefile.in
+do_check() {
+	# requires special network setup
+	:
 }
 
 post_install() {

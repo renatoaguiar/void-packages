@@ -1,12 +1,14 @@
 # Template file for 'cabextract'
 pkgname=cabextract
-version=1.7
+version=1.9.1
 revision=1
 build_style=gnu-configure
-configure_args="ac_cv_func_fnmatch_works=yes"
+configure_args="--with-external-libmspack ac_cv_func_fnmatch_works=yes"
+hostmakedepends="pkg-config"
+makedepends="libmspack-devel"
 short_desc="Extract Microsoft Cabinet (.CAB) files"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="GPL-3.0-or-later"
 homepage="http://www.cabextract.org.uk/"
 distfiles="http://www.cabextract.org.uk/${pkgname}-${version}.tar.gz"
-checksum=297203c826c004801ea1b17414f568e7bdf56c3ae9bbaca4d8514e8a56e506bd
+checksum=afc253673c8ef316b4d5c29cc4aa8445844bee14afffbe092ee9469405851ca7

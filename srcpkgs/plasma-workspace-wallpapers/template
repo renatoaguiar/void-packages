@@ -1,14 +1,14 @@
 # Template file for 'plasma-workspace-wallpapers'
 pkgname=plasma-workspace-wallpapers
-version=5.13.3
+version=5.16.4
 revision=1
-noarch=yes
+archs=noarch
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
-hostmakedepends="extra-cmake-modules"
+hostmakedepends="extra-cmake-modules qt5-qmake qt5-host-tools"
 short_desc="KDE Plasma wallpapers"
-maintainer="Denis Revin <denis.revin@gmail.com>"
+maintainer="John <johnz@posteo.net>"
 license="GPL-2.0-or-later"
 homepage="https://projects.kde.org/projects/plasma/plasma-workspace-wallpapers"
 distfiles="${KDE_SITE}/plasma/${version}/${pkgname}-${version}.tar.xz"
-checksum=f73102f1b0ed5dd2eb4e216894727f1e0d7e13fb59166b8c6c53af977f1f11d6
+checksum=052f6d978b1230706821f67574a7d053fadfb25de65227ffc8389a8570ac6003

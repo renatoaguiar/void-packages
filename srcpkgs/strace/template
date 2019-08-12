@@ -1,23 +1,23 @@
 # Template file for 'strace'
 pkgname=strace
-version=4.23
+version=5.1
 revision=1
 build_style=gnu-configure
 configure_args="--with-libunwind"
 makedepends="libunwind-devel"
-short_desc="A System Call Tracer"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="BSD-3-Clause"
+short_desc="System Call Tracer"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
+license="LGPL-2.1-or-later"
 homepage="https://strace.io/"
 distfiles="https://github.com/strace/strace/releases/download/v${version}/strace-${version}.tar.xz"
-checksum=7860a6965f1dd832747bd8281a04738274398d32c56e9fbd0a68b1bb9ec09aad
+checksum=f5a341b97d7da88ee3760626872a4899bf23cf8dee56901f114be5b1837a9a8b
 
 case "$XBPS_TARGET_MACHINE" in
 	aarch64-musl) configure_args=; makedepends= ;;
 esac
 
 case "$XBPS_TARGET_MACHINE" in
-	aarch64*) configure_args+=" --enable-mpers=no"
+	aarch64*|ppc64*) configure_args+=" --enable-mpers=no"
 esac
 
 pre_configure() {

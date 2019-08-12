@@ -1,17 +1,17 @@
 # Template file for 'elfutils'
 pkgname=elfutils
-version=0.173
-revision=2
+version=0.176
+revision=1
 build_style=gnu-configure
 configure_args="--program-prefix=eu-"
 hostmakedepends="automake libtool"
 makedepends="bzip2-devel liblzma-devel zlib-devel"
 short_desc="Utilities to handle ELF object files"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="GPL-3.0-or-later"
 homepage="https://sourceware.org/elfutils/"
 distfiles="https://sourceware.org/${pkgname}/ftp/${version}/${pkgname}-${version}.tar.bz2"
-checksum=b76d8c133f68dad46250f5c223482c8299d454a69430d9aa5c19123345a000ff
+checksum=eb5747c371b0af0f71e86215a5ebb88728533c3a104a43d4231963f308cd1023
 
 CFLAGS="-Wno-error"
 

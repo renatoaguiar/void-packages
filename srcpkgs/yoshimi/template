@@ -1,18 +1,18 @@
 # Template file for 'yoshimi'
 pkgname=yoshimi
-version=1.5.8.2
+version=1.5.11.4
 revision=1
-build_style=cmake
 build_wrksrc=src
+build_style=cmake
 hostmakedepends="pkg-config fltk"
 makedepends="boost-devel jack-devel fltk-devel fftw-devel mxml-devel cairo-devel
  lv2 readline-devel ncurses-devel"
 short_desc="ZynAddSubFX fork with improved JACK audio & MIDI IO"
 maintainer="Andrea Brancaleoni <abc@pompel.me>"
-license="GPL-3"
-homepage="http://yoshimi.sourceforge.net"
+license="GPL-2.0-or-later"
+homepage="https://yoshimi.github.io/"
 distfiles="https://github.com/Yoshimi/$pkgname/archive/$version.tar.gz"
-checksum=9a5a2a3a380386c98ec0430f472fcdf79af83fbc0ef4123976bef616282f9b34
+checksum=36e0b1ff3b513646387612cbe420ddf444ca91842994d01b7a8890696d6a63dc
 
 case "$XBPS_TARGET_MACHINE" in
 	*-musl) makedepends+=" argp-standalone";;

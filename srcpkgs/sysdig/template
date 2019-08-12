@@ -1,32 +1,45 @@
 # Template file for 'sysdig'
 pkgname=sysdig
-version=0.22.0
-revision=2
+version=0.26.2
+revision=1
+archs="i686 x86_64 ppc64le"
 build_style=cmake
 configure_args="-DSYSDIG_VERSION=${version} -DUSE_BUNDLED_DEPS=OFF
- -DUSE_BUNDLED_B64=ON -DUSE_BUNDLED_JQ=ON -DBUILD_DRIVER=OFF"
-hostmakedepends="wget"
-makedepends="jsoncpp-devel libcurl-devel libressl-devel LuaJIT-devel
- ncurses-devel zlib-devel elfutils-devel"
+ -DUSE_BUNDLED_B64=ON -DUSE_BUNDLED_JQ=ON -DBUILD_DRIVER=OFF
+ -DLUA_INCLUDE_DIR=${XBPS_CROSS_BASE}/usr/include/luajit-2.1
+ -DLUA_LIBRARY=libluajit-5.1.so"
+hostmakedepends="wget pkg-config protobuf"
+makedepends="LuaJIT-devel c-ares-devel elfutils-devel grpc-devel jsoncpp-devel
+ libcurl-devel libprotoc-devel libressl-devel ncurses-devel protobuf-devel
+ tbb-devel zlib-devel"
 depends="dkms"
-triggers="dkms"
-dkms_modules="sysdig ${version}"
 short_desc="Open source system-level exploration and troubleshooting tool"
 maintainer="Leah Neukirchen <leah@vuxu.org>"
-license="GPL-2.0-only"
+license="Apache-2.0, MIT, GPL-2.0-only"
 homepage="http://www.sysdig.org/"
-_changelog="https://github.com/draios/sysdig/releases"
+changelog="https://github.com/draios/sysdig/releases"
 distfiles="https://github.com/draios/${pkgname}/archive/${version}.tar.gz"
-checksum=379fac93a786f9d934c1c6e7b3ba803ed19f999923ae193948d8b019c832fcc7
-nocross=yes
+checksum=6f4f5b7b187c3774b6c374c1728b3f905ac18a945bde15151dcfb24c79abb441
 disable_parallel_build=yes
-only_for_archs="i686 x86_64"
+dkms_modules="sysdig ${version}"
+nocross=yes
+
+case "$XBPS_TARGET_MACHINE" in
+        i686) 
+	broken="https://build.voidlinux.org/builders/i686_builder/builds/19262/steps/shell_3/logs/stdio"
+	;;
+esac
 
 post_extract() {
 	sed -i 's,"${DIR_ETC}/bash_completion.d",share/bash-completion/completions,g' scripts/CMakeLists.txt
 	sed -i '1i#include <sys/select.h>' userspace/libsinsp/mesos_collector.h
+	sed -i '1i#include <sys/sysmacros.h>' userspace/libscap/scap_fds.c
+
+	sed -i '1iset(CMAKE_EXE_LINKER_FLAGS "-ltbb -lcurl")' CMakeLists.txt
 }
 
 post_install() {
 	rm -rf ${DESTDIR}/usr/share/zsh/vendor-completions
+	vlicense COPYING
+	vlicense NOTICES
 }

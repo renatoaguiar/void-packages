@@ -1,19 +1,19 @@
 # Template file for 'octave'
 pkgname=octave
-version=4.4.0
-revision=2
+version=5.1.0
+revision=1
 build_style=gnu-configure
-configure_args=" --with-blas=openblas --with-lapack=openblas
- $(vopt_if largearrays --enable-64)"
+configure_args=" --with-blas=openblas --with-lapack=openblas"
 hostmakedepends="perl gcc-fortran pkg-config gnuplot"
 makedepends="pcre-devel openblas-devel readline-devel libSM-devel libltdl-devel
  lcms2-devel glpk-devel"
+depends="$(vopt_if gui qt5-plugin-sqlite) texinfo"
 short_desc="High-level language, primarily intended for numerical computations"
 maintainer="Diogo Leal <diogo@diogoleal.com>"
 license="GPL-3.0-or-later"
 homepage="https://gnu.org/software/octave/"
 distfiles="${GNU_SITE}/octave/octave-${version}.tar.gz"
-checksum=72f846379fcec7e813d46adcbacd069d72c4f4d8f6003bcd92c3513aafcd6e96
+checksum=e36b1124cac27c7caa51cc57de408c31676d5f0096349b4d50b57bfe1bcd7495
 
 # Package build options
 # TODO: some options are still missing, such as
@@ -27,12 +27,10 @@ build_options="
 	gui
 	hdf5
 	imagemagick
-	largearrays
 	opengl
 	openmp
 	qhull
-	zlib
-"
+	zlib"
 
 vopt_conflict graphicsmagick imagemagick
 
@@ -44,7 +42,6 @@ desc_option_gui="Graphical User Interface."
 desc_option_graphicsmagick="Provides 'imread' and 'imwrite' functions."
 desc_option_hdf5="Support for HDF data files."
 desc_option_imagemagick="Provides 'imread' and 'imwrite' functions."
-desc_option_largearrays="Enable large array (64bit pointers)." #req. 64bit BLAS
 desc_option_qhull="Provides 'convhull{,n}', 'delaunay{,n}' and 'voronoi{,n}' functions."
 desc_option_openmp="Enable support for OpenMP SMP multi-threading"
 desc_option_zlib="Support for compressed data."
@@ -60,8 +57,7 @@ build_options_default="
 	opengl
 	openmp
 	qhull
-	zlib
-"
+	zlib"
 
 makedepends+="
 	$(vopt_if arpack arpack-ng-devel)
@@ -75,8 +71,7 @@ makedepends+="
 	$(vopt_if opengl "glu-devel fltk-devel fontconfig-devel freetype-devel gl2ps-devel")
 	$(vopt_if openmp libgomp-devel)
 	$(vopt_if qhull libqhull-devel)
-	$(vopt_if zlib zlib-devel)
-"
+	$(vopt_if zlib zlib-devel)"
 
 pre_build() {
 	chmod +x build-aux/mk-opts.pl
@@ -84,12 +79,12 @@ pre_build() {
 
 post_build() {
 	# Remove references to hardening -specs.
-	sed -e "s|\(-specs=.*hardened-ld\)||g" -e "s|\(-specs=.*hardened-cc1\)||g" \
-		-i src/mkoctfile.cc libinterp/build-env.cc
+	vsed -e "s|\(-specs=.*hardened-ld\)||g" -e "s|\(-specs=.*hardened-cc1\)||g" \
+		 -i src/mkoctfile.cc libinterp/build-env.cc
 }
 
 post_install() {
 	# add helper to launch octave from dmenu etc.
-	printf "#!/bin/sh\noctave --force-gui" > octave-gui
+	printf "#!/bin/sh\noctave --gui" > octave-gui
 	vbin octave-gui
 }

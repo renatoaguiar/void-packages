@@ -1,16 +1,18 @@
 # Template file for 'translate-shell'
 pkgname=translate-shell
-version=0.9.6.7
+version=0.9.6.10
 revision=1
 build_style=gnu-makefile
-build_options="zsh"
-desc_option_zsh="Use zsh compatible wrapper"
 make_build_args="$(vopt_if zsh TARGET=zsh)"
-checkdepends="gawk curl rlwrap emacs"
+makedepends="gawk"
 depends="gawk $(vopt_if zsh zsh bash)"
+checkdepends="curl rlwrap emacs"
 short_desc="Command-line online translator"
 maintainer="SolitudeSF <solitudesf@protonmail.com>"
 license="Unlicense"
 homepage="https://www.soimort.org/translate-shell"
 distfiles="https://github.com/soimort/translate-shell/archive/v${version}.tar.gz"
-checksum=25f90bd755b457602928d4efbdd8db64129013f2943d1d9c1316c6854736db46
+checksum=18c23af071ab5ae8653a5d0d1c50784b32c4a51efd9e05da07f888a6a6428958
+
+build_options="zsh"
+desc_option_zsh="Use zsh compatible wrapper"

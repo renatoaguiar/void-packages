@@ -1,8 +1,8 @@
 # Template file for 'python-serpent'
 pkgname=python-serpent
-version=1.25
+version=1.28
 revision=1
-noarch=yes
+archs=noarch
 wrksrc="${pkgname#*-}-${version}"
 build_style=python-module
 pycompile_module="serpent.py"
@@ -13,19 +13,19 @@ maintainer="pulux <pulux@pf4sh.de>"
 license="MIT"
 homepage="https://pypi.org/project/serpent/"
 distfiles="${PYPI_SITE}/s/serpent/serpent-${version}.tar.gz"
-checksum=264a028e059c1b557701ae7c567cdab330dbd228ff924489343efcb39bd828a0
+checksum=f306336ca09aa38e526f3b03cab58eb7e45af09981267233167bcf3bfd6436ab
 
 post_install() {
-	head -n 4 setup.py | tail -n 3 > LICENSE
 	vlicense LICENSE
 }
 
 python3-serpent_package() {
-	noarch=yes
+	archs=noarch
 	depends="python3"
 	pycompile="serpent.py"
 	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
 		vmove usr/lib/python3*
+		vlicense LICENSE
 	}
 }

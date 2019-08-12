@@ -1,31 +1,33 @@
 # Template file for 'python-jedi'
 pkgname=python-jedi
-version=0.12.0
+version=0.14.0
 revision=1
-noarch=yes
+archs=noarch
+_parsover=0.3.0
 wrksrc="jedi-${version}"
 build_style=python-module
 pycompile_module="jedi"
 hostmakedepends="python-setuptools python3-setuptools"
-depends="python-parso"
+depends="python-parso>=${_parsover}"
+checkdepends="python3-parso python3-pytest"
 short_desc="Autocompletion/static analysis library for Python2"
 maintainer="Alessio Sergi <al3hex@gmail.com>"
-homepage="https://jedi.readthedocs.io/"
 license="MIT"
+homepage="https://jedi.readthedocs.io/"
 distfiles="${PYPI_SITE}/j/jedi/jedi-${version}.tar.gz"
-checksum=1972f694c6bc66a2fac8718299e2ab73011d653a6d8059790c3476d2353b99ad
+checksum=49ccb782651bb6f7009810d17a3316f8867dde31654c750506970742e18b553d
 
 post_install() {
-	vlicense LICENSE.txt LICENSE
+	vlicense LICENSE.txt
 }
 
 python3-jedi_package() {
-	noarch=yes
-	depends="python3-parso"
+	archs=noarch
 	pycompile_module="jedi"
+	depends="python3-parso>=${_parsover}"
 	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
 		vmove usr/lib/python3*
-		vlicense LICENSE.txt LICENSE
+		vlicense LICENSE.txt
 	}
 }

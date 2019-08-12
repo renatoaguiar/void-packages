@@ -1,14 +1,19 @@
 # Template file for 'print-manager'
 pkgname=print-manager
-version=18.04.2
+version=19.04.3
 revision=1
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
-hostmakedepends="extra-cmake-modules"
+hostmakedepends="extra-cmake-modules qt5-qmake qt5-host-tools
+ kpackage-devel kcoreaddons-devel kconfig-devel kauth-devel"
 makedepends="plasma-framework-devel kcmutils-devel cups-devel"
 short_desc="Printing management for KDE 5"
 maintainer="Giuseppe Fierro <gspe@ae-design.ws>"
 license="GPL-2.0-or-later"
 homepage="https://github.com/KDE/print-manager"
-distfiles="${KDE_SITE}/applications/${version}/src/${pkgname}-${version}.tar.xz"
-checksum=e9d9c671e3e1095210d68a9f94ef8309a1c05e3e54266529112ab88c93aca7cd
+distfiles="${KDE_SITE}/applications/${version}/src/print-manager-${version}.tar.xz"
+checksum=5ab32527d6916c1063bf175a1515a0cebb0dfb93844881c4339b2ee690697907
+
+if [ "$CROSS_BUILD" ]; then
+	configure_args+=" -DKF5_HOST_TOOLING=/usr/lib/cmake"
+fi

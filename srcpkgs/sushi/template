@@ -1,21 +1,21 @@
 # Template file for 'sushi'
 pkgname=sushi
-version=3.28.3
-revision=1
-build_style=gnu-configure
+version=3.32.0
+revision=2
+build_helper="gir"
+build_style=meson
 hostmakedepends="glib-devel intltool pkg-config
  $(vopt_if gir 'gobject-introspection')"
 makedepends="clutter-gst3-devel clutter-gtk-devel evince-devel gjs-devel
  gtksourceview-devel libmusicbrainz5-devel libsoup-gnome-devel webkit2gtk-devel"
+depends="evince nautilus"
 short_desc="Quick image previewer over DBus for Nautilus"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Rasmus Thomsen <oss@cogitri.dev>"
 license="GPL-2.0-or-later"
-homepage="https://www.gnome.org"
+homepage="https://gitlab.gnome.org/GNOME/sushi"
 distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=3c2e5ae4a6553563fb06bcc3bd59b61a6d891cc9a3fad724f805e483c968cdfb
+checksum=dd622e169874778876b0c2406f6529de6022f3e3f63890602207bf342e463138
 lib32disabled=yes
 
 build_options="gir"
-if [ -z "$CROSS_BUILD" ]; then
-	build_options_default="gir"
-fi
+build_options_default="gir"

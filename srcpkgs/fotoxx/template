@@ -1,18 +1,19 @@
 # Template file for 'fotoxx'
 pkgname=fotoxx
-version=18.07
+version=19.12
 revision=1
+wrksrc=fotoxx
 build_style=gnu-makefile
 make_use_env=yes
 hostmakedepends="pkg-config"
 makedepends="libchamplain-devel libraw-devel"
 depends="desktop-file-utils exiftool xdg-utils"
 short_desc="Free open source program for image editing and collection management"
-maintainer="cr6git <quark6@protonmail.com>"
+maintainer="Orphaned <orphan@voidlinux.org>"
 license="GPL-3.0-or-later"
 homepage="https://www.kornelix.net/fotoxx/fotoxx.html"
-distfiles="https://www.kornelix.net/downloads/tarballs/fotoxx-${version}.tar.gz"
-checksum=84e88d30f91f3ac2e0e240351d8e54a342a370e3d682d09d26de21963f7fc9cf
+distfiles="https://www.kornelix.net/downloads/downloads/fotoxx-${version}.tar.gz"
+checksum=a5fa5ab5d2a4289c49fb87b0ffa843953daec3439686643db1edbc69ee65407c
 
 case "$XBPS_TARGET_MACHINE" in
 	*-musl) broken="execinfo.h is a GNU specific header, and doesn’t exist under musl.";;

@@ -1,8 +1,8 @@
 # Template file for 'python-gitdb'
 pkgname=python-gitdb
-version=2.0.4
+version=2.0.5
 revision=1
-noarch=yes
+archs=noarch
 wrksrc="gitdb2-${version}"
 build_style=python-module
 pycompile_module="gitdb"
@@ -13,14 +13,14 @@ maintainer="Joseph LaFreniere <joseph@lafreniere.xyz>"
 license="BSD-3-Clause"
 homepage="https://github.com/gitpython-developers/gitdb"
 distfiles="${PYPI_SITE}/g/gitdb2/gitdb2-${version}.tar.gz"
-checksum=bb4c85b8a58531c51373c89f92163b92f30f81369605a67cd52d1fc21246c044
+checksum=83361131a1836661a155172932a13c08bda2db3674e4caa32368aa6eb02f38c2
 
 post_install() {
 	vlicense LICENSE
 }
 
 python3-gitdb_package() {
-	noarch=yes
+	archs=noarch
 	depends="python3-smmap"
 	pycompile_module="gitdb"
 	short_desc="${short_desc/Python2/Python3}"

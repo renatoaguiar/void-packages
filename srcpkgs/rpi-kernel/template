@@ -1,23 +1,23 @@
 # Template file for 'rpi-kernel'
 #
 # We track the latest Raspberry Pi LTS kernel as that is what is used in the
-# official Raspbian distribution. This is currently 4.14:
+# official Raspbian distribution. This is currently 4.19:
 #
-#   https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=197689
+#   https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=224931
 
-_githash="11dc869d874d04293849d830637130269fd0ada9"
+_githash="f1c1b67b26ed3cb789037d1c844d4105deaa3cfd"
 _gitshort="${_githash:0:7}"
 
 pkgname=rpi-kernel
-version=4.14.52
+version=4.19.65
 revision=1
 wrksrc="linux-${_githash}"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 homepage="http://www.kernel.org"
 license="GPL-2.0-only"
 short_desc="The Linux kernel for Raspberry Pi (${version%.*} series [git ${_gitshort}])"
 distfiles="https://github.com/raspberrypi/linux/archive/${_githash}.tar.gz"
-checksum=cb179058b033f49e8c936b1dc8dbb586671ac083616fb0bff20da9f491bea77f
+checksum=57a8cdd3840a69e33fd95524268d8a84ffc3fdf17669ce04618d5591c4d96b91
 
 _kernver="${version}_${revision}"
 
@@ -27,8 +27,8 @@ noverifyrdeps=yes
 noshlibprovides=yes
 
 # RPi, RPi2, RPi3
-only_for_archs="armv6l armv6l-musl armv7l armv7l-musl aarch64 aarch64-musl"
-hostmakedepends="perl kmod uboot-mkimage libressl-devel bc"
+archs="armv6l* armv7l* aarch64*"
+hostmakedepends="perl kmod uboot-mkimage libressl-devel bc bison flex"
 makedepends="ncurses-devel"
 triggers="kernel-hooks"
 # These files could be modified when an external module is built.

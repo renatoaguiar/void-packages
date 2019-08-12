@@ -1,38 +1,42 @@
 # Template file for 'gedit'
 pkgname=gedit
-version=3.28.1
-revision=2
-build_style=gnu-configure
-configure_args="--disable-schemas-compile --enable-zeitgeist
- --enable-python --enable-gvfs-metadata $(vopt_enable gir introspection)"
-hostmakedepends="gnome-doc-utils intltool itstool pkg-config
- $(vopt_if gir 'gobject-introspection')"
-makedepends="gsettings-desktop-schemas-devel gspell-devel gtksourceview-devel
- libpeas-devel $(vopt_if gir 'python-gobject-devel') zeitgeist-devel"
-depends="desktop-file-utils gsettings-desktop-schemas gnome-icon-theme
- iso-codes zeitgeist"
-short_desc="A text editor for GNOME"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.gnome.org"
+version=3.32.2
+revision=1
+build_helper="gir"
+build_style=meson
+pycompile_module="gi/overrides"
+pycompile_dirs="usr/lib/gedit/plugins"
+configure_args="-Dplugins=true -Dvapi=$(vopt_if vala true false)
+ -Dintrospection=$(vopt_if gir true false)"
+hostmakedepends="itstool pkg-config glib-devel gdk-pixbuf perl $(vopt_if vala vala)"
+makedepends="gsettings-desktop-schemas-devel gspell-devel gtksourceview4-devel
+ libpeas-devel libsoup-devel $(vopt_if gir 'python-gobject-devel')"
+depends="desktop-file-utils gsettings-desktop-schemas
+ iso-codes"
+short_desc="Text editor for GNOME"
+maintainer="Rasmus Thomsen <oss@cogitri.dev>"
 license="GPL-2.0-or-later"
+homepage="https://wiki.gnome.org/Apps/Gedit"
 distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=f174be0958ce63771fef9a81d06da6769358dab8705364a6abb5c7d10ec8211d
-nocross="requires libpeas which requires girepository which is not cross"
+checksum=742fef5e496f5d0dbc95dac5c5547f040dffbea55cd835e6618294eadd9959e0
+shlib_provides="libgedit-3.14.so"
 
-build_options="gir"
-if [ -z "$CROSS_BUILD" ]; then
-	build_options_default="gir"
-fi
+nocross=yes
+
+build_options="gir vala"
+build_options_default="gir vala"
 
 gedit-devel_package() {
-	depends="gtksourceview-devel libpeas-devel"
+	depends="${sourcepkg}>=${version}_${revision} gtksourceview-devel libpeas-devel"
 	short_desc+=" - development files"
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
-		vmove usr/share/gtk-doc
 		if [ "$build_option_gir" ]; then
 			vmove usr/share/gedit/gir-1.0
+		fi
+		if [ "$build_option_vala" ]; then
+			vmove usr/share/vala
 		fi
 	}
 }

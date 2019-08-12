@@ -1,21 +1,35 @@
 # Template file for 'flatpak'
 pkgname=flatpak
-version=0.11.8.3
-revision=1
+version=1.4.2
+revision=3
 build_style=gnu-configure
-configure_args="--disable-documentation --with-system-bubblewrap"
-hostmakedepends="bubblewrap glib-devel libxslt pkg-config bison"
+build_helper="gir"
+configure_args="
+ --with-system-bubblewrap
+ --with-system-helper-user=_flatpak
+ $(vopt_enable gir introspection)"
+hostmakedepends="bubblewrap glib-devel libxslt pkg-config bison
+ docbook docbook-xml docbook-xsl"
 makedepends="appstream-glib-devel gpgme-devel json-glib-devel libcap-devel
- libostree-devel libseccomp-devel polkit-devel"
-checkdepends="dbus"
-depends="bubblewrap"
+ libostree-devel libseccomp-devel polkit-devel dconf-devel fuse-devel"
+depends="bubblewrap gnupg2"
+checkdepends="bubblewrap dbus"
 short_desc="Application sandboxing and distribution framework"
-maintainer="Duncaen <duncaen@voidlinux.eu>"
+maintainer="Duncaen <duncaen@voidlinux.org>"
 license="LGPL-2.1-or-later"
 homepage="https://flatpak.org/"
-#changelog="https://github.com/flatpak/flatpak/blob/master/NEWS"
+changelog="https://github.com/flatpak/flatpak/blob/master/NEWS"
 distfiles="https://github.com/flatpak/flatpak/releases/download/${version}/flatpak-${version}.tar.xz"
-checksum=be463fb628490252aea10e7855bb4a522cc1b57856509cf50e21009067c8f3b5
+checksum=f2799a6d973a052529b52943021108f148706d3e69725ac7dd60bf6ac4bdd522
+
+build_options="gir"
+build_options_default="gir"
+
+system_accounts="_flatpak"
+
+if [ "$CROSS_BUILD" ]; then
+	configure_args+=" --enable-selinux-module=no"
+fi
 
 post_install() {
 	rm -rf $DESTDIR/usr/lib/systemd
@@ -28,6 +42,7 @@ flatpak-devel_package() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
 		vmove "usr/lib/*.so"
+		vmove usr/share/gtk-doc
 		if [ "$build_option_gir" ]; then
 			vmove usr/share/gir-1.0
 		fi

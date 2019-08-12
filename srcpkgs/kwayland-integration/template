@@ -1,14 +1,14 @@
 # Template file for 'kwayland-integration'
 pkgname=kwayland-integration
-version=5.13.3
+version=5.16.4
 revision=1
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
 hostmakedepends="extra-cmake-modules qt5-devel qt5-qmake"
-makedepends="kidletime-devel kwayland-devel kwindowsystem-devel libstdc++-devel"
+makedepends="kidletime-devel kwayland-devel kwindowsystem-devel"
 short_desc="Integration plugins for Kwayland"
-maintainer="Denis Revin <denis.revin@gmail.com>"
+maintainer="John <johnz@posteo.net>"
 license="LGPL-2.1-or-later"
 homepage="https://projects.kde.org/projects/plasma/kwayland-integration"
 distfiles="${KDE_SITE}/plasma/${version}/${pkgname}-${version}.tar.xz"
-checksum=df6903caa379a3d6634f2697cd4217c0e032f6f8630dab0320ec4746fb1b5cee
+checksum=f15ae33af1d9ff999ec45d00752f202242f71fc022ae72b9522e5bf3a20edace

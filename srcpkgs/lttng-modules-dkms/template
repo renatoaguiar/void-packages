@@ -1,18 +1,17 @@
-# template file for 'lttng-modules-dkms'
+# Template file for 'lttng-modules-dkms'
 pkgname=lttng-modules-dkms
-version=2.10.6
-revision=1
+version=2.10.9
+revision=2
 wrksrc="lttng-modules-${version}"
-short_desc="The LTTng modules provide Linux kernel tracing capability"
+depends="dkms"
+short_desc="LTTng modules provide Linux kernel tracing capability"
 maintainer="Alexander Egorenkov <egorenar-dev@posteo.net>"
 license="LGPL-2.1-only, GPL-2.0-only, MIT"
 homepage="https://lttng.org"
 distfiles="${homepage}/files/lttng-modules/lttng-modules-${version}.tar.bz2"
-checksum=04a080c81743eb29d181bac29ceb0c15819a2f4210793f2cc9958d885435029f
+checksum=a1855bbd02d0f71ebd180e9872309862036624f012442ab9cc5852eb60340145
 
-triggers="dkms"
 dkms_modules="lttng-modules ${version}"
-depends="dkms"
 
 do_install() {
 	vmkdir usr/src/lttng-modules-${version}

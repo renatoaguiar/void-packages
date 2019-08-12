@@ -1,10 +1,10 @@
 # Template file for 'kubernetes'
 pkgname=kubernetes
-version=1.11.1
+version=1.15.1
 revision=1
 build_style=go
 nocross=yes
-only_for_archs="x86_64 x86_64-musl"
+archs="x86_64* ppc64le*"
 hostmakedepends="rsync git go-bindata"
 depends="kubectl"
 short_desc="Container Cluster Manager for Docker"
@@ -13,7 +13,7 @@ license="Apache-2.0"
 go_import_path="github.com/kubernetes/kubernetes"
 homepage="http://kubernetes.io"
 distfiles="https://$go_import_path/archive/v$version.tar.gz"
-checksum=073b77321812f26df6513c0ad0aef3a8b0c17f6281a186d515f5855ae009ea17
+checksum=a90fc0456e32da76ca52a5e8256d9a9fd7e18eebb5f3438c60476059c7464334
 system_accounts="kube"
 make_dirs="/var/lib/kubelet 0755 kube kube"
 conf_files="/etc/kubernetes/*"

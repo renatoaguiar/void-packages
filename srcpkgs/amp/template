@@ -1,23 +1,20 @@
 # Template file for 'amp'
 pkgname=amp
-version=0.4.1
-revision=1
-hostmakedepends="cargo cmake git perl pkg-config python3"
+version=0.5.2
+revision=3
+build_style=cargo
+hostmakedepends="cmake git perl pkg-config python3"
 makedepends="libcurl-devel libgit2-devel libxcb-devel"
 short_desc="A complete text editor for your terminal"
 maintainer="Wilson Birney <wpb@360scada.com>"
 license="GPL-3.0-or-later"
 homepage="https://amp.rs"
+changelog="https://raw.githubusercontent.com/jmacdonald/amp/master/CHANGELOG.md"
 distfiles="https://github.com/jmacdonald/amp/archive/${version}.tar.gz"
-checksum=c6c3df2183145db45242c03b05c1bac972b0be15dd86aa2db54a95baa34be2a7
-nocross=yes
+checksum=e1f22a829205cf44f8c3fcf5660dbdb9a3c5a1f64b92c67dcdb75a30ad7e5a60
 
-do_build() {
-	cargo update --package openssl-sys --precise 0.9.28
-	export LIBGIT2_SYS_USE_PKG_CONFIG=1
-	cargo build --release ${makejobs}
-}
+export LIBGIT2_SYS_USE_PKG_CONFIG=1
 
-do_install() {
-	vbin target/release/${pkgname}
+pre_build() {
+	cargo update --package openssl-sys --precise 0.9.46
 }

@@ -1,24 +1,30 @@
 # Template file for 'skalibs'
 pkgname=skalibs
-version=2.6.4.0
+version=2.8.1.0
 revision=1
 _sysdepspkg=skaware-void-sysdeps
-build_style=gnu-configure
+build_style=configure
 configure_args="--libdir=/usr/lib --enable-static --enable-shared --enable-clock
- --enable-monotonic --enable-force-devr --datadir=/usr/share/$pkgname"
+ --enable-monotonic --enable-force-devr --datadir=/usr/share/$pkgname --libdir=/usr/lib
+ --bindir=/usr/bin --dynlibdir=/usr/lib"
 short_desc="General purpose libraries for building software from skarnet.org"
-maintainer="bougyman <bougyman@voidlinux.eu>"
+maintainer="bougyman <bougyman@voidlinux.org>"
 license="ISC"
-homepage="http://skarnet.org/software/skalibs/"
-distfiles="http://skarnet.org/software/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=30ac73f1e8da6387fcfa19cfe1e326a143b4d811aaf532988b280daefa56dcc7
+homepage="https://skarnet.org/software/skalibs/"
+distfiles="https://skarnet.org/software/${pkgname}/${pkgname}-${version}.tar.gz"
+checksum=431c6507b4a0f539b6463b4381b9b9153c86ad75fa3c6bfc9dc4722f00b166ba
 
 CFLAGS="-D_DEFAULT_SOURCE"
 
 if [ "$CROSS_BUILD" ]; then
 	distfiles+=" https://github.com/CMB/${_sysdepspkg}/archive/${version}.tar.gz"
-	checksum+=" d6095994b48906c3b629ea42a352026a6773056ed560c8a533366cc1a58d7a8d"
+	checksum+=" b5a56d24caeb731f9a8468fa61ab0e9ae139370609ef4acb36888e69bbe8d98d"
 	configure_args+=" --with-sysdeps=../${_sysdepspkg}-${version}/${XBPS_CROSS_TRIPLET}"
+
+	case "$XBPS_TARGET_MACHINE" in
+		aarch64*|armv6*|armv7l*|i686|x86_64*|ppc*) ;;
+		*) nocross="Missing cross sysdeps" ;;
+	esac
 fi
 
 post_install() {
@@ -26,7 +32,7 @@ post_install() {
 }
 
 skalibs-doc_package() {
-	noarch=yes
+	archs=noarch
 	short_desc+=" - documentation"
 	depends="${sourcepkg}>=${version}_${revision}"
 	pkg_install() {
@@ -40,7 +46,7 @@ skalibs-devel_package() {
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/skalibs/sysdeps
-		vmove usr/lib/*.a
-		vmove usr/lib/*.so
+		vmove "usr/lib/*.a"
+		vmove "usr/lib/*.so"
 	}
 }

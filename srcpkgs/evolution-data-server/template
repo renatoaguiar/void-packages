@@ -1,22 +1,22 @@
 # Template file for 'evolution-data-server'
 pkgname=evolution-data-server
-version=3.28.4
+version=3.32.4
 revision=1
 build_style=cmake
-configure_args="-DENABLE_GOOGLE_AUTH=OFF -DENABLE_UOA=OFF
+configure_args="-DENABLE_UOA=OFF
  $(vopt_if gir '-DENABLE_INTROSPECTION=ON -DENABLE_VALA_BINDINGS=ON' '-DENABLE_WEATHER=OFF')"
-hostmakedepends="flex glib-devel gperf intltool pkg-config
+hostmakedepends="flex glib-devel gperf intltool pkg-config libglib-devel
  $(vopt_if gir 'gobject-introspection')"
-makedepends="libgdata-devel $(vopt_if gir libgweather-devel) libical-devel libsecret-devel
- mit-krb5-devel $(vopt_if gir 'vala-devel') webkit2gtk-devel"
+makedepends="libcanberra-devel libgdata-devel $(vopt_if gir libgweather-devel)
+ libical-devel libsecret-devel mit-krb5-devel $(vopt_if gir 'vala-devel') webkit2gtk-devel"
 depends="$(vopt_if gir libgweather) libsoup-gnome"
 short_desc="Centralized access to appointments and contacts"
-maintainer="Enno Boland <gottox@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.org>"
 license="LGPL-2.1-only"
 homepage="https://wiki.gnome.org/Apps/Evolution"
-changelog="https://raw.githubusercontent.com/GNOME/evolution-data-server/gnome-3-28/NEWS"
+changelog="https://raw.githubusercontent.com/GNOME/evolution-data-server/gnome-3-30/NEWS"
 distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=7cbe2af6ae3449b7ac92e0befee99c1536bf2ceed011673b537f00a6869bb8f6
+checksum=83f67cb4b680e892b22b51bcde64c788b7ac63e92a99de401fb347e3794f4c7f
 
 build_options="gir"
 if [ -z "$CROSS_BUILD" ]; then
@@ -41,15 +41,15 @@ pre_configure() {
 		cp ${FILESDIR}/disableRuntimeTests.cmake ${wrksrc}/build/.
 	fi
 }
+
 post_install() {
-	# Fix broken pkg-config
-	sed -i "s|^Requires: gio-2.0, , |Requires: gio-2.0, mozilla-nspr, mozilla-nss|" \
-		$DESTDIR/usr/lib/pkgconfig/evolution-data-server-1.2.pc
+	rm -rf ${DESTDIR}/usr/lib/systemd
 }
 
 evolution-data-server-devel_package() {
-	depends="sqlite-devel mit-krb5-devel nss-devel libical-devel
+	depends="sqlite-devel mit-krb5-devel nss-devel nspr-devel libical-devel
 		libldap-devel libgdata-devel>=0.15 libsecret-devel libglib-devel
+		libsoup-devel gtk+3-devel libxml2-devel gnome-desktop-devel
 		${sourcepkg}>=${version}_${revision}"
 	short_desc+=" - development files"
 	pkg_install() {

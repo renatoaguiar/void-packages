@@ -1,15 +1,16 @@
 # Template file for 'gotop'
 pkgname=gotop
-version=1.4.1
+version=3.0.0
 revision=1
 build_style=go
-go_import_path="github.com/cjbassi/gotop"
+go_import_path=github.com/cjbassi/gotop
+hostmakedepends="git"
 short_desc="Terminal based graphical activity monitor"
 maintainer="SolitudeSF <solitudesf@protonmail.com>"
 license="AGPL-3.0-or-later"
 homepage="https://github.com/cjbassi/gotop"
-distfiles="${homepage}/archive/${version}.tar.gz"
-checksum=e1ce6278002833c5bccf80621aa5c4f3db3fc8117c1f59530fba25c7f87e9b96
+distfiles="https://github.com/cjbassi/gotop/archive/${version}.tar.gz"
+checksum=d5147080bb6057f0bf0900b38438e89aa066959c845bdd4c84a9c9fe478b176f
 
 post_install() {
 	vlicense LICENSE

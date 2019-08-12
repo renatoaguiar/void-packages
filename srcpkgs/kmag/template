@@ -1,13 +1,13 @@
 # Template file for 'kmag'
 pkgname=kmag
-version=18.04.2
+version=19.04.3
 revision=1
 build_style=cmake
-hostmakedepends="extra-cmake-modules kdoctools python qt5-host-tools qt5-qmake"
-makedepends="kparts-devel qt5-devel"
+hostmakedepends="extra-cmake-modules kcoreaddons kdoctools python qt5-host-tools qt5-qmake"
+makedepends="kparts-devel libqaccessibilityclient-devel qt5-devel"
 short_desc="Screen Magnifier"
 maintainer="Piotr Wójcik <chocimier@tlen.pl>"
 license="GPL-2.0-or-later"
 homepage="https://www.kde.org/applications/utilities/kmag/"
-distfiles="${KDE_SITE}/applications/${version}/src/${pkgname}-${version}.tar.xz"
-checksum=5632a75930cc5284a57ddfe6ec80bb35664464b897479c707b7fe99c89b233ba
+distfiles="${KDE_SITE}/applications/${version}/src/kmag-${version}.tar.xz"
+checksum=4fad3d4414884fa8fb7dcfb27e7cc4207dfe219819ffda75355de5c1b4981e35

@@ -2,7 +2,7 @@
 pkgname=python-pexpect
 version=4.6.0
 revision=1
-noarch=yes
+archs=noarch
 wrksrc="${pkgname/python-}-${version}"
 build_style=python-module
 hostmakedepends="python-setuptools python3-setuptools"
@@ -10,7 +10,7 @@ depends="python-ptyprocess"
 checkdepends="python3-pytest python3-ptyprocess mdocml"
 pycompile_module="pexpect"
 short_desc="Python2 module for spawning child applications and controlling them"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="https://pexpect.readthedocs.io/"
 license="ISC"
 distfiles="${PYPI_SITE}/p/pexpect/pexpect-${version}.tar.gz"
@@ -30,7 +30,7 @@ post_install() {
 }
 
 python3-pexpect_package() {
-	noarch=yes
+	archs=noarch
 	depends="python3-ptyprocess"
 	pycompile_module="pexpect"
 	short_desc="${short_desc/Python2/Python3}"

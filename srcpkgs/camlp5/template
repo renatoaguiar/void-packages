@@ -1,19 +1,19 @@
 # Template file for 'camlp5'
 pkgname=camlp5
-version=7.06
+version=7.08
 revision=1
 build_style=configure
 configure_args="-mandir /usr/share/man"
 hostmakedepends="ocaml"
 short_desc="OCaml preprocessor and pretty-printer"
-maintainer="Némo Fournier <nemo@epicea.xyz>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="BSD-3-Clause"
 homepage="https://camlp5.github.io/"
 distfiles="https://github.com/${pkgname}/${pkgname}/archive/rel${version//./}.tar.gz"
 wrksrc="camlp5-rel${version//./}"
 nocross=yes
 nopie=yes
-checksum=bea3fba40305b6299a4a65a26f8e1f1caf844abec61588ff1c500e9c05047922
+checksum=46e67d8e36e5e4558c414f0b569532a33d3a12d7120ffdc474a6b3da1bfff163
 
 post_install() {
 	vinstall etc/META 0644 usr/lib/ocaml/camlp5

@@ -1,7 +1,7 @@
 # Template file for 'bctoolbox'
 pkgname=bctoolbox
 version=0.6.0
-revision=2
+revision=3
 build_style=cmake
 configure_args="-DENABLE_TESTS_COMPONENT=OFF"
 makedepends="mbedtls-devel"
@@ -11,6 +11,8 @@ license="GPL-2.0-only"
 homepage="https://github.com/BelledonneCommunications/bctoolbox"
 distfiles="https://github.com/BelledonneCommunications/bctoolbox/archive/${version}.tar.gz"
 checksum=299dedcf8f1edea79964314504f0d24e97cdf24a289896fc09bc69c38eb9f9be
+
+CFLAGS="-Wno-stringop-truncation"
 
 bctoolbox-devel_package() {
 	depends="bctoolbox-${version}_${revision}"

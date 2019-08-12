@@ -1,24 +1,29 @@
 # Template file for 'apache-maven'
 pkgname=apache-maven
-version=3.5.2
+version=3.6.1
 revision=1
+archs=noarch
 hostmakedepends="openjdk"
 depends="virtual?java-environment"
-noarch=yes
 short_desc="Software project management and comprehension tool"
-maintainer="Michael Aldridge <maldridge@VoidLinux.eu>"
+maintainer="Michael Aldridge <maldridge@voidlinux.org>"
 license="Apache-2.0"
 homepage="https://maven.apache.org/"
 distfiles="https://www-us.apache.org/dist/maven/maven-3/${version}/source/${pkgname}-${version}-src.tar.gz
  https://www-us.apache.org/dist/maven/maven-3/${version}/binaries/apache-maven-${version}-bin.tar.gz"
-checksum="246653dd9920f87b54c67ff4651b32d78ac4d7da973c10a6c8b1c70d9e6d0305
- 707b1f6e390a65bde4af4cdaf2a24d45fc19a6ded00fff02e91626e3e42ceaff"
+checksum="025921fff6ba827a25413ffc08fb1933565eb1f07ee2d3f228911913ee4f3c3f
+ 2528c35a99c30f8940cc599ba15d34359d58bec57af58c1075519b8cd33b69e7"
 
 do_build() {
-	./bin/mvn package -Drat.skip=true -Dmaven.repo.local=repo -DdistributionTargetDir=${DESTDIR}/usr/share/${pkgname}/
+	./bin/mvn package -DskipTests -Drat.skip=true -Dmaven.repo.local=repo -DdistributionTargetDir=${DESTDIR}/usr/share/${pkgname}/
 }
 
 do_install() {
+	# contains bundled native libraries that might not match the platform
+	# disables ansi color support
+	rm -rf ${DESTDIR}/usr/share/${pkgname}/lib/jansi-native
+	rm -f ${DESTDIR}/usr/share/${pkgname}/lib/jansi-*.jar
+
 	mkdir -p ${DESTDIR}/etc/profile.d
 	vinstall ${FILESDIR}/apache-maven.sh 0755 etc/profile.d/
 	vlicense LICENSE

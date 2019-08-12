@@ -1,6 +1,6 @@
 # Template file for 'gst1-python'.
 pkgname=gst1-python
-version=1.14.2
+version=1.16.0
 revision=1
 wrksrc="gst-python-${version}"
 build_style=gnu-configure
@@ -10,11 +10,11 @@ hostmakedepends="pkg-config python"
 makedepends="libglib-devel python-gobject-devel gst-plugins-base1-devel"
 depends="python-gobject"
 short_desc="Python bindings for GStreamer 1.x"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="LGPL-2.1-or-later"
 homepage="https://gstreamer.freedesktop.org"
 distfiles="${homepage}/src/gst-python/gst-python-${version}.tar.xz"
-checksum=dc40be5ab4f1a433ff3f0af2b3d2d79a363009020c41ec10f9747ba64200cb22
+checksum=55dc7aaed1855565f9b9ef842d93e93bfc5cb2b376faef6af5b463e1774e2d38
 
 pre_configure() {
 	if [ "$CROSS_BUILD" ]; then

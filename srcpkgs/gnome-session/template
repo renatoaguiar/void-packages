@@ -1,17 +1,18 @@
 # Template file for 'gnome-session'
 pkgname=gnome-session
-version=3.28.1
-revision=1
+version=3.32.0
+revision=2
 build_style=meson
-hostmakedepends="glib-devel intltool pkg-config xmlto"
 configure_args="-Dsystemd_journal=false"
-makedepends="elogind-devel gnome-desktop-devel json-glib-devel libSM-devel
- libXtst-devel startup-notification-devel upower-devel"
-depends="alsa-plugins-pulseaudio dconf desktop-file-utils
- gsettings-desktop-schemas hicolor-icon-theme polkit-elogind"
+hostmakedepends="glib-devel intltool pkg-config xmlto"
+makedepends="elogind-devel gnome-desktop-devel gtk+3-devel json-glib-devel
+ libglib-devel libICE-devel libSM-devel libXtst-devel startup-notification-devel
+ upower-devel xtrans"
+depends="alsa-plugins-pulseaudio dconf desktop-file-utils bash
+ gsettings-desktop-schemas hicolor-icon-theme polkit"
 short_desc="GNOME session management utilities"
-maintainer="Enno Boland <gottox@voidlinux.eu>"
-homepage="http://www.gnome.org"
+maintainer="Enno Boland <gottox@voidlinux.org>"
 license="GPL-2.0-or-later, LGPL-2.1-or-later"
-distfiles="${GNOME_SITE}/$pkgname/${version%.*}/$pkgname-$version.tar.xz"
-checksum=b893f75c8d34dbdbbc5c56429a17b59136ac7402e12f384da856dcfc725cd592
+homepage="https://gitlab.gnome.org/GNOME/gnome-session"
+distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=bbd4c4ead32f0b805d0e372a63207e4e0c756dd16e1d456b2a211a40da9d3f7f

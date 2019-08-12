@@ -1,19 +1,19 @@
 # Template file for 'python-mechanize'
 pkgname=python-mechanize
-version=0.3.6
+version=0.4.2
 revision=1
+archs=noarch
 wrksrc="mechanize-${version}"
-noarch=yes
 build_style=python2-module
+pycompile_module="mechanize"
 hostmakedepends="python-setuptools"
 depends="python python-html5lib"
-pycompile_module="mechanize"
 short_desc="Stateful programmatic web browsing in Python"
 maintainer="Farhad Shahbazi <grauwolf@geekosphere.org>"
-license="BSD"
+license="BSD-3-Clause"
 homepage="https://github.com/python-mechanize/mechanize"
 distfiles="https://github.com/python-mechanize/mechanize/archive/v${version}.tar.gz"
-checksum=377ca7b2160716857a2035d986abba1c133f4f80939c19002333c82bd4c01e98
+checksum=c14a7899f34b2d8ecc0c5ec8ff26559dc39eba56668697f2e2b008e1cb82e183
 
 post_install() {
 	vlicense LICENSE

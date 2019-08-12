@@ -1,16 +1,16 @@
 # Template file for 'cloc'
 pkgname=cloc
-version=1.76
+version=1.82
 revision=1
-noarch=yes
+archs=noarch
 hostmakedepends="perl"
 depends="perl"
 short_desc="Count Lines of Code"
 maintainer="Leah Neukirchen <leah@vuxu.org>"
-license="GPL-2"
+license="GPL-2.0-or-later"
 homepage="https://github.com/AlDanial/cloc"
-distfiles="${homepage}/archive/v${version}.tar.gz"
-checksum=b3e7ab59667f721ea870e1db5887924f5ea9548501964f363913cc32730665f3
+distfiles="${homepage}/archive/${version}.tar.gz"
+checksum=7ab390f3a4888d9b78df420bff586326b53e3f7fc0e0c9ff9b160d076ca85a17
 
 do_build() {
 	make -C Unix man

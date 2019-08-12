@@ -1,22 +1,23 @@
 # Template file for 'python-lxml'
 pkgname=python-lxml
-version=4.2.3
+version=4.3.4
 revision=1
 wrksrc="lxml-lxml-${version}"
 build_style=python-module
 pycompile_module="lxml"
 hostmakedepends="libxslt-devel python-Cython python-setuptools python3-Cython python3-setuptools"
 makedepends="libxslt-devel python-devel python3-devel"
-checkdepends="python3"
+checkdepends="python3-cssselect python3-BeautifulSoup4 python3-html5lib"
 short_desc="Python2 binding for the libxml2 and libxslt libraries"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="https://lxml.de/"
+maintainer="Alessio Sergi <al3hex@gmail.com>"
 license="BSD-3-Clause, ElementTree"
+homepage="https://lxml.de/"
 distfiles="https://github.com/lxml/lxml/archive/lxml-${version}.tar.gz"
-checksum=b398434856f0f1399da8f8b48e72cb9075db195cb64ddbb05cb7725f0461d571
+checksum=d85812f0630af6c1f916253535fc315ff20c0b9879a15edff3ee750287f283aa
 
 do_check() {
-	python3 test.py
+	cp -f build-3.*/lib.linux-*/lxml/*.so src/lxml
+	python3 test.py -vv --all-levels -p
 }
 
 post_install() {

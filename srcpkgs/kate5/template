@@ -1,22 +1,22 @@
 # Template file for 'kate5'
 pkgname=kate5
-version=18.04.3
+version=19.04.3
 revision=1
+wrksrc="${pkgname%5}-${version}"
 build_style=cmake
 configure_args="-DBUILD_TESTING=OFF"
-wrksrc="${pkgname%5}-${version}"
-hostmakedepends="extra-cmake-modules pkg-config"
+hostmakedepends="extra-cmake-modules pkg-config kcoreaddons"
 makedepends="kitemmodels-devel knewstuff-devel ktexteditor-devel
  plasma-framework-devel threadweaver-devel"
 depends="hicolor-icon-theme"
 short_desc="KDE Text editor"
-maintainer="Denis Revin <denis.revin@gmail.com>"
+maintainer="John <johnz@posteo.net>"
 license="GPL-3.0-or-later, LGPL-2.0-or-later, GPL-2.0-or-later"
 homepage="https://projects.kde.org/projects/applications/kate"
 distfiles="${KDE_SITE}/applications/${version}/src/${pkgname%5}-${version}.tar.xz"
-checksum=e4ac4587881ca4a99ea972ffffd9015ea00a0d14fd1bcb129c1d22b930b02bf0
+checksum=b1dcd45270c0494e97f32f435a943ca27b0bcb23065a9ad2a1fe37e4a81ad9a6
 
-if [ -n "$CROSS_BUILD" ]; then
+if [ "$CROSS_BUILD" ]; then
 	configure_args+=" -DKF5_HOST_TOOLING=/usr/lib/cmake"
 	hostmakedepends+=" kauth-devel kconfig-devel kcoreaddons-devel kpackage-devel kdoctools python qt5-host-tools qt5-qmake"
 fi

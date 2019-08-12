@@ -1,17 +1,17 @@
 # Template file for 'opera'
 pkgname=opera
-version=54.0.2952.64
+version=62.0.3331.99
 revision=1
-only_for_archs="x86_64"
-repository="nonfree"
-nostrip=yes
+archs="x86_64"
 depends="ffmpeg desktop-file-utils hicolor-icon-theme"
 short_desc="Fast, secure, easy to use browser"
 maintainer="Diogo Leal <diogo@diogoleal.com>"
-license="Proprietary"
+license="custom:Proprietary"
 homepage="https://www.opera.com/computer"
 distfiles="http://get.geo.opera.com/pub/opera/desktop/${version}/linux/${pkgname}-stable_${version}_amd64.deb"
-checksum=d7fa007dce4bc89815c744c19cd05d3ed509482c53a3a52fff53b2f2c99c21cf
+checksum=29a11c820eb97ce71f6ab42fac02e556bb38e532556116bd76685fbf77d2eadf
+repository="nonfree"
+nostrip=yes
 
 do_extract() {
 	ar x ${XBPS_SRCDISTDIR}/${pkgname}-${version}/${pkgname}-stable_${version}_amd64.deb

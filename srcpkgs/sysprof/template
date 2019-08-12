@@ -1,29 +1,29 @@
 # Template file for 'sysprof'
 pkgname=sysprof
-version=3.28.0
-revision=1
+version=3.32.0
+revision=2
 build_style=meson
+configure_args="-Denable_gtk=true -Dsystemdunitdir=deleteme"
 hostmakedepends="pkg-config itstool glib-devel"
 makedepends="gtk+3-devel polkit-devel glib-devel elogind-devel"
-short_desc="A system-wide profiler for Linux"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="GPL-2"
+short_desc="System-wide profiler for Linux"
+maintainer="Rasmus Thomsen <oss@cogitri.dev>"
+license="GPL-2.0-or-later, GPL-3.0-or-later"
 homepage="http://sysprof.com/"
-distfiles="https://download.gnome.org/sources/sysprof/${version%.*}/$pkgname-$version.tar.xz"
-checksum=65437778af2fc3bab05bf9c1871fbd8726a4bd6471f1288d7b7a7e3429cee436
-configure_args="-Denable-gtk=true -Dsystemdunitdir=/DELETEME"
-case "$XBPS_TARGET_MACHINE" in
-  x64_64-musl|aarch64-musl) CFLAGS="-D__WORDSIZE=64" ;;
-  *-musl) CFLAGS="-D__WORDSIZE=32" ;;
-esac
-CFLAGS+=" -Wno-error -Wno-error=undef"
+distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=fc22a69e468701c5ec9036e960c6273afa1ed6a89df1f889fed49417add5554d
+
+# for ITS rules
+if [ "$CROSS_BUILD" ]; then
+	hostmakedepends+=" polkit-devel"
+fi
 
 pre_build() {
 	export SHELL=/bin/bash
 }
 
 post_install() {
-	rm -r $DESTDIR/DELETEME
+	rm -rf ${DESTDIR}/usr/deleteme
 }
 
 sysprof-devel_package() {
@@ -33,6 +33,5 @@ sysprof-devel_package() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
 		vmove "usr/lib/*.a"
-		vmove usr/share
 	}
 }

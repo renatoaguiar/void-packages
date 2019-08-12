@@ -1,21 +1,24 @@
 # Template file for 'weechat'
 pkgname=weechat
-version=2.2
+version=2.5
 revision=1
-lib32disabled=yes
 build_style=cmake
-configure_args="-DENABLE_MAN=ON -DENABLE_ENCHANT=ON -DPYTHON_EXECUTABLE=/usr/bin/python2.7 -DPYTHON_LIBRARY=/usr/lib/libpython2.7.so"
-hostmakedepends="asciidoc libgcrypt-devel pkg-config python-devel tcl-devel"
+configure_args="-DENABLE_MAN=ON -DENABLE_ENCHANT=ON -DENABLE_PERL=ON
+ -DENABLE_LUA=ON -DENABLE_RUBY=ON -DENABLE_SPELL=ON
+ -DPYTHON_EXECUTABLE=/usr/bin/python2.7
+ -DPYTHON_LIBRARY=${XBPS_CROSS_BASE}/usr/lib/libpython2.7.so"
+hostmakedepends="ruby-asciidoctor libgcrypt-devel pkg-config python tcl-devel"
 makedepends="enchant-devel gnutls-devel libcurl-devel lua-devel python-devel
- ruby-devel tcl-devel"
+ ruby-devel tcl-devel perl"
 depends="ca-certificates"
 short_desc="Fast, light and extensible IRC client"
 maintainer="maxice8 <thinkabit.ukim@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://www.weechat.org"
 changelog="https://raw.githubusercontent.com/weechat/weechat/master/ChangeLog.adoc"
-distfiles="${homepage}/files/src/${pkgname}-${version}.tar.bz2"
-checksum=8f621d638dc93db27a7865b6c4a67c14376bbd33315579de3998f0e30e84965c
+distfiles="https://www.weechat.org/files/src/weechat-${version}.tar.xz"
+checksum=52c87775c3ff9714a62cfa5b7e13e2fa59bf32829fe083781c1d9c7f1c2d4c27
+lib32disabled=yes
 
 subpackages="weechat-aspell weechat-devel weechat-ruby weechat-python weechat-tcl weechat-lua weechat-perl"
 
@@ -30,7 +33,7 @@ if [ "$CROSS_BUILD" ]; then
 fi
 
 post_extract() {
-	sed -i '/pkg_search_module/s/ruby-2.2/ruby-2.9 ruby-2.8 ruby-2.7 ruby-2.6 ruby-2.5 ruby-2.4 ruby-2.3 &/' cmake/FindRuby.cmake
+	vsed -i '/pkg_search_module/s/ruby-2.2/ruby-2.9 ruby-2.8 ruby-2.7 ruby-2.6 ruby-2.5 ruby-2.4 ruby-2.3 &/' cmake/FindRuby.cmake
 }
 
 weechat-aspell_package() {
@@ -38,7 +41,7 @@ weechat-aspell_package() {
 	depends="${sourcepkg}>=${version}_${revision}"
 	short_desc+=" - aspell/enchant plugin"
 	pkg_install() {
-		vmove usr/lib/weechat/plugins/aspell.so
+		vmove usr/lib/weechat/plugins/spell.so
 	}
 }
 weechat-devel_package() {

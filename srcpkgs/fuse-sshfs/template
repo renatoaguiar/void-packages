@@ -1,6 +1,6 @@
 # Template file for 'fuse-sshfs'
 pkgname=fuse-sshfs
-version=3.4.0
+version=3.5.2
 revision=1
 wrksrc="sshfs-${version}"
 build_style=meson
@@ -10,11 +10,11 @@ makedepends="fuse3-devel libglib-devel python-docutils"
 depends="openssh"
 checkdepends="python3-pytest"
 short_desc="FUSE client based on the SSH File Transfer Protocol"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="GPL-2.0-or-later"
 homepage="https://github.com/libfuse/sshfs"
 distfiles="https://github.com/libfuse/sshfs/releases/download/sshfs-${version}/sshfs-${version}.tar.xz"
-checksum=d27ccd35436d72755c40234cefa081e30fa529e092232a5b4abbff2178c2c22f
+checksum=841be1594b6fb76b23e4b5700ce235e86a64324f2483d67130ce07c2330ff0b2
 
 case "${XBPS_TARGET_MACHINE}" in
 	i686|armv6l|armv7l)
@@ -22,5 +22,5 @@ case "${XBPS_TARGET_MACHINE}" in
 esac
 
 do_check() {
-	python3 -m pytest test/
+	python3 -m pytest
 }

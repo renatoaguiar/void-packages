@@ -1,11 +1,11 @@
 # Template file for 'gst-plugins-ugly1'.
 pkgname=gst-plugins-ugly1
-version=1.14.2
+version=1.16.0
 revision=1
 lib32disabled=yes
 wrksrc="${pkgname/1/}-${version}"
-build_style=gnu-configure
-configure_args="--enable-experimental"
+build_style=meson
+configure_args="-Damrnb=disabled -Damrwbdec=disabled -Dsidplay=disabled"
 # XXX add required pkgs for the amr, sid plugins.
 hostmakedepends="pkg-config intltool python"
 makedepends="glib-devel libxml2-devel gst-plugins-base1-devel
@@ -13,8 +13,8 @@ makedepends="glib-devel libxml2-devel gst-plugins-base1-devel
  orc-devel liba52-devel libmpeg2-devel lame-devel"
 depends="orc>=0.4.18 gst-plugins-base1>=${version}"
 short_desc="GStreamer plugins from the ugly set (1.x)"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.org>"
 license="LGPL-2.1-or-later"
 homepage="https://gstreamer.freedesktop.org"
 distfiles="${homepage}/src/${pkgname/1/}/${pkgname/1/}-${version}.tar.xz"
-checksum=55e097d9d93921fdcf7abb0ff92d23b21dd9098e632f1ba433603b3bd1cf3d69
+checksum=e30964c5f031c32289e0b25e176c3c95a5737f2052dfc81d0f7427ef0233a4c2

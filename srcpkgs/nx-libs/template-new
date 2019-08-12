@@ -1,0 +1,19 @@
+# Template file for 'nx-libs'
+pkgname=nx-libs
+version="3.5.99.20"
+revision=1
+build_style=gnu-makefile
+make_install_args="PREFIX=/usr"
+hostmakedepends="autoconf automake libtool pkg-config"
+makedepends="xorgproto zlib-devel libjpeg-turbo-devel libpng-devel"
+short_desc="NX X11 protocol compression libraries"
+maintainer="Renato Aguiar <renato@renag.me>"
+license="GPL-2"
+homepage="http://www.x2go.org"
+distfiles="https://code.x2go.org/releases/source/${pkgname}/${pkgname}-${version}-${revision}-lite.tar.gz"
+checksum=6b934a98e6425b3790ab0fa56e6e1c7047e98ffdb381415afa755375ae1cb123
+
+do_build() {
+	make ${makejobs} PREFIX=/usr \
+	     CONFIGURE="./configure ${configure_args} --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --includedir=/usr/include"
+}

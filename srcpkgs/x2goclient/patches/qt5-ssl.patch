@@ -1,7 +1,7 @@
 diff --git a/Makefile b/Makefile
 index a87b21f..6100334 100755
 --- a/Makefile
-+++ b/Makefile
++++ Makefile
 @@ -20,8 +20,8 @@ ETCDIR=/etc/x2go
  BINDIR=$(PREFIX)/bin
  SHAREDIR=$(PREFIX)/share
@@ -16,7 +16,7 @@ index a87b21f..6100334 100755
 diff --git a/src/printwidget.cpp b/src/printwidget.cpp
 index 58a8af7..52cf547 100644
 --- a/src/printwidget.cpp
-+++ b/src/printwidget.cpp
++++ src/printwidget.cpp
 @@ -23,6 +23,7 @@
  #include "x2gosettings.h"
  #include "x2gologdebug.h"

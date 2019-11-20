@@ -1,0 +1,27 @@
+diff --git a/Makefile b/Makefile
+index a87b21f..6100334 100755
+--- a/Makefile
++++ b/Makefile
+@@ -20,8 +20,8 @@ ETCDIR=/etc/x2go
+ BINDIR=$(PREFIX)/bin
+ SHAREDIR=$(PREFIX)/share
+ MANDIR=$(SHAREDIR)/man
+-QMAKE_BINARY=qmake-qt4
+-LRELEASE_BINARY=lrelease-qt4
++QMAKE_BINARY=qmake
++LRELEASE_BINARY=lrelease
+ QMAKE_OPTS=
+ 
+ LDFLAGS+=-lldap -lcups -lX11 -lXpm
+diff --git a/src/printwidget.cpp b/src/printwidget.cpp
+index 58a8af7..52cf547 100644
+--- a/src/printwidget.cpp
++++ b/src/printwidget.cpp
+@@ -23,6 +23,7 @@
+ #include "x2gosettings.h"
+ #include "x2gologdebug.h"
+ #include <QDir>
++#include <QtWidgets>
+ #ifdef Q_OS_WIN
+ #include "wapi.h"
+ #endif

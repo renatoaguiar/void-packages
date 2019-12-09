@@ -1,6 +1,6 @@
 # Template file for 'linux-virt'
 pkgname=linux-virt
-version=4.19.79
+version=4.19.88
 revision=1
 wrksrc="linux-${version}"
 short_desc="Linux kernel and modules (${version%.*} series)"
@@ -8,7 +8,7 @@ maintainer="Helmut Pozimski <helmut@pozimski.eu>"
 license="GPL-2.0-only"
 homepage="https://www.kernel.org"
 distfiles="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${version}.tar.xz"
-checksum=f1143564364f278ba0893a7813afc02da6ecef6d5de147bd5011aa3cc1634b34
+checksum=c1923b6bd166e6dd07be860c15f59e8273aaa8692bc2a1fce1d31b826b9b3fbe
 patch_args="-Np1"
 
 nodebug=yes  # -dbg package is generated below manually
@@ -17,7 +17,7 @@ noverifyrdeps=yes
 noshlibprovides=yes
 preserve=yes
 
-archs="x86_64*" #archs="i686* x86_64* arm* aarch64* ppc*"
+archs="x86_64*"
 hostmakedepends="bc elfutils-devel flex gmp-devel kmod libmpc-devel libressl-devel perl uboot-mkimage"
 
 _kernver="${version}_${revision}-virt"

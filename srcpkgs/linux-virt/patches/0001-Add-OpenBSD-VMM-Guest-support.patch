@@ -1,4 +1,4 @@
-From a4b91f862d61aa38115184bcbc620cd494359f3f Mon Sep 17 00:00:00 2001
+From d509d7fe520f3ea450dc2e99216bbb4a02d77e41 Mon Sep 17 00:00:00 2001
 From: Renato Aguiar <renato@renag.me>
 Date: Wed, 29 May 2019 20:16:55 -0700
 Subject: [PATCH] Add OpenBSD VMM Guest support
@@ -16,10 +16,10 @@ Subject: [PATCH] Add OpenBSD VMM Guest support
  create mode 100644 arch/x86/kernel/vmm.c
 
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 1a0be022f91d..10e6c35d6ff9 100644
+index af35f5caadbe..4ce3b63853f6 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -787,7 +787,7 @@ source "arch/x86/xen/Kconfig"
+@@ -783,7 +783,7 @@ source "arch/x86/xen/Kconfig"
  config KVM_GUEST
  	bool "KVM Guest support (including kvmclock)"
  	depends on PARAVIRT
@@ -28,7 +28,7 @@ index 1a0be022f91d..10e6c35d6ff9 100644
  	default y
  	---help---
  	  This option enables various optimizations for running under the KVM
-@@ -796,6 +796,10 @@ config KVM_GUEST
+@@ -792,6 +792,10 @@ config KVM_GUEST
  	  underlying device model, the host provides the guest with
  	  timing infrastructure such as time of day, and system time
  
@@ -39,7 +39,7 @@ index 1a0be022f91d..10e6c35d6ff9 100644
  config KVM_DEBUG_FS
  	bool "Enable debug information for KVM Guests in debugfs"
  	depends on KVM_GUEST && DEBUG_FS
-@@ -829,6 +833,14 @@ config JAILHOUSE_GUEST
+@@ -825,6 +829,14 @@ config JAILHOUSE_GUEST
  	  cell. You can leave this option disabled if you only want to start
  	  Jailhouse and run Linux afterwards in the root cell.
  
@@ -80,7 +80,7 @@ index 4c723632c036..162d9d48ff1a 100644
  #ifdef CONFIG_KVM_GUEST
  bool kvm_check_and_clear_guest_paused(void);
 diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 8824d01c0c35..56673b0d16e7 100644
+index da0b6bc090f3..bb28cf7f151d 100644
 --- a/arch/x86/kernel/Makefile
 +++ b/arch/x86/kernel/Makefile
 @@ -20,6 +20,7 @@ CFLAGS_REMOVE_kvmclock.o = -pg
@@ -91,7 +91,7 @@ index 8824d01c0c35..56673b0d16e7 100644
  endif
  
  KASAN_SANITIZE_head$(BITS).o				:= n
-@@ -110,7 +111,8 @@ obj-$(CONFIG_APB_TIMER)		+= apb_timer.o
+@@ -111,7 +112,8 @@ obj-$(CONFIG_APB_TIMER)		+= apb_timer.o
  obj-$(CONFIG_AMD_NB)		+= amd_nb.o
  obj-$(CONFIG_DEBUG_NMI_SELFTEST) += nmi_selftest.o
  
@@ -101,7 +101,7 @@ index 8824d01c0c35..56673b0d16e7 100644
  obj-$(CONFIG_PARAVIRT)		+= paravirt.o paravirt_patch_$(BITS).o
  obj-$(CONFIG_PARAVIRT_SPINLOCKS)+= paravirt-spinlocks.o
  obj-$(CONFIG_PARAVIRT_CLOCK)	+= pvclock.o
-@@ -118,6 +120,8 @@ obj-$(CONFIG_X86_PMEM_LEGACY_DEVICE) += pmem.o
+@@ -119,6 +121,8 @@ obj-$(CONFIG_X86_PMEM_LEGACY_DEVICE) += pmem.o
  
  obj-$(CONFIG_JAILHOUSE_GUEST)	+= jailhouse.o
  
@@ -133,10 +133,10 @@ index 479ca4728de0..1fbce0504d67 100644
  
  enum x86_hypervisor_type x86_hyper_type;
 diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index d9b71924c23c..517600236d65 100644
+index cee45d46e67d..01336be4e270 100644
 --- a/arch/x86/kernel/kvm.c
 +++ b/arch/x86/kernel/kvm.c
-@@ -716,7 +716,7 @@ static void __init kvm_apic_init(void)
+@@ -719,7 +719,7 @@ static void __init kvm_apic_init(void)
  
  static void __init kvm_init_platform(void)
  {
@@ -146,10 +146,10 @@ index d9b71924c23c..517600236d65 100644
  }
  
 diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index 013fe3d21dbb..dbc4c3cf01c5 100644
+index 2ec202cb9dfd..f6a3c3a60eb7 100644
 --- a/arch/x86/kernel/kvmclock.c
 +++ b/arch/x86/kernel/kvmclock.c
-@@ -322,17 +322,22 @@ static int kvmclock_setup_percpu(unsigned int cpu)
+@@ -318,17 +318,22 @@ static int kvmclock_setup_percpu(unsigned int cpu)
  	return p ? 0 : -ENOMEM;
  }
  
@@ -176,7 +176,7 @@ index 013fe3d21dbb..dbc4c3cf01c5 100644
  		return;
  	}
  
-@@ -348,7 +353,7 @@ void __init kvmclock_init(void)
+@@ -344,7 +349,7 @@ void __init kvmclock_init(void)
  	kvm_register_clock("primary cpu clock");
  	pvclock_set_pvti_cpu0_va(hv_clock_boot);
  
@@ -185,7 +185,7 @@ index 013fe3d21dbb..dbc4c3cf01c5 100644
  		pvclock_set_flags(PVCLOCK_TSC_STABLE_BIT);
  
  	flags = pvclock_read_flags(&hv_clock_boot[0].pvti);
-@@ -369,5 +374,4 @@ void __init kvmclock_init(void)
+@@ -365,5 +370,4 @@ void __init kvmclock_init(void)
  #endif
  	kvm_get_preset_lpj();
  	clocksource_register_hz(&kvm_clock, NSEC_PER_SEC);
@@ -282,5 +282,5 @@ index 000000000000..248e7946c467
 +	.init.init_platform	= vmm_init_platform,
 +};
 -- 
-2.22.0
+2.24.0
 

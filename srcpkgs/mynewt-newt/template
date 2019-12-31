@@ -1,0 +1,14 @@
+# Template file for 'mynewt-newt'
+pkgname=mynewt-newt
+version=1.7.0
+revision=1
+_version=${version//./_}
+wrksrc=${pkgname}-mynewt_${_version}_tag
+build_style=go
+go_import_path=mynewt.apache.org/newt/newt
+short_desc="Build tool for Apache Mynewt Operating System"
+maintainer="Renato Aguiar <renato@renatoaguiar.net>"
+license="Apache-2.0"
+homepage="https://github.com/apache/mynewt-newt"
+distfiles="https://github.com/apache/mynewt-newt/archive/mynewt_${_version}_tag.tar.gz"
+checksum=6aefb5aaae06c4b9d514333ec682f62bd52e97e9d8e7b9f9c50e15983590f1f7

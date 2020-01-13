@@ -1,14 +1,14 @@
-From d509d7fe520f3ea450dc2e99216bbb4a02d77e41 Mon Sep 17 00:00:00 2001
-From: Renato Aguiar <renato@renag.me>
-Date: Wed, 29 May 2019 20:16:55 -0700
+From 82a408cd6a2c8c8ee2d143cfb62a12675d64d4f0 Mon Sep 17 00:00:00 2001
+From: Renato Aguiar <renato@renatoaguiar.net>
+Date: Sat, 11 Jan 2020 17:57:15 -0800
 Subject: [PATCH] Add OpenBSD VMM Guest support
 
 ---
  arch/x86/Kconfig                  | 14 +++++-
- arch/x86/include/asm/hypervisor.h |  1 +
+ arch/x86/include/asm/hypervisor.h |  2 +
  arch/x86/include/asm/kvm_para.h   |  2 +-
  arch/x86/kernel/Makefile          |  6 ++-
- arch/x86/kernel/cpu/hypervisor.c  |  4 ++
+ arch/x86/kernel/cpu/hypervisor.c  |  3 ++
  arch/x86/kernel/kvm.c             |  2 +-
  arch/x86/kernel/kvmclock.c        | 16 +++---
  arch/x86/kernel/vmm.c             | 84 +++++++++++++++++++++++++++++++
@@ -16,32 +16,33 @@ Subject: [PATCH] Add OpenBSD VMM Guest support
  create mode 100644 arch/x86/kernel/vmm.c
 
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index af35f5caadbe..4ce3b63853f6 100644
+index 8ef85139553f..0fd4cdce6b44 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -783,7 +783,7 @@ source "arch/x86/xen/Kconfig"
+@@ -795,8 +795,8 @@ source "arch/x86/xen/Kconfig"
  config KVM_GUEST
  	bool "KVM Guest support (including kvmclock)"
  	depends on PARAVIRT
 -	select PARAVIRT_CLOCK
+ 	select ARCH_CPUIDLE_HALTPOLL
 +	select KVM_CLOCK
  	default y
  	---help---
  	  This option enables various optimizations for running under the KVM
-@@ -792,6 +792,10 @@ config KVM_GUEST
- 	  underlying device model, the host provides the guest with
- 	  timing infrastructure such as time of day, and system time
+@@ -811,6 +811,10 @@ config ARCH_CPUIDLE_HALTPOLL
+         help
+ 	  If virtualized under KVM, disable host haltpoll.
  
 +config KVM_CLOCK
 +	bool
 +	select PARAVIRT_CLOCK
 +
- config KVM_DEBUG_FS
- 	bool "Enable debug information for KVM Guests in debugfs"
- 	depends on KVM_GUEST && DEBUG_FS
-@@ -825,6 +829,14 @@ config JAILHOUSE_GUEST
- 	  cell. You can leave this option disabled if you only want to start
- 	  Jailhouse and run Linux afterwards in the root cell.
+ config PVH
+ 	bool "Support for running PVH guests"
+ 	---help---
+@@ -859,6 +863,14 @@ config ACRN_GUEST
+ 	  IOT with small footprint and real-time features. More details can be
+ 	  found in https://projectacrn.org/.
  
 +config VMM_GUEST
 +	bool "OpenBSD VMM Guest support"
@@ -49,25 +50,33 @@ index af35f5caadbe..4ce3b63853f6 100644
 +	select KVM_CLOCK
 +	default y
 +	---help---
-+          TODO
++          This option allows to run Linux as guest in the OpenBSD VMM hypervisor.
 +
  endif #HYPERVISOR_GUEST
  
- config NO_BOOTMEM
+ source "arch/x86/Kconfig.cpu"
 diff --git a/arch/x86/include/asm/hypervisor.h b/arch/x86/include/asm/hypervisor.h
-index 8c5aaba6633f..00f9e6243ce9 100644
+index e41cbf2ec41d..18afe21fc669 100644
 --- a/arch/x86/include/asm/hypervisor.h
 +++ b/arch/x86/include/asm/hypervisor.h
-@@ -29,6 +29,7 @@ enum x86_hypervisor_type {
- 	X86_HYPER_XEN_HVM,
+@@ -30,6 +30,7 @@ enum x86_hypervisor_type {
  	X86_HYPER_KVM,
  	X86_HYPER_JAILHOUSE,
+ 	X86_HYPER_ACRN,
 +	X86_HYPER_VMM,
  };
  
  #ifdef CONFIG_HYPERVISOR_GUEST
+@@ -64,6 +65,7 @@ extern const struct hypervisor_x86 x86_hyper_xen_pv;
+ extern const struct hypervisor_x86 x86_hyper_kvm;
+ extern const struct hypervisor_x86 x86_hyper_jailhouse;
+ extern const struct hypervisor_x86 x86_hyper_acrn;
++extern const struct hypervisor_x86 x86_hyper_vmm;
+ extern struct hypervisor_x86 x86_hyper_xen_hvm;
+ 
+ extern bool nopv;
 diff --git a/arch/x86/include/asm/kvm_para.h b/arch/x86/include/asm/kvm_para.h
-index 4c723632c036..162d9d48ff1a 100644
+index 9b4df6eaa11a..c2b729e33b73 100644
 --- a/arch/x86/include/asm/kvm_para.h
 +++ b/arch/x86/include/asm/kvm_para.h
 @@ -6,7 +6,7 @@
@@ -80,7 +89,7 @@ index 4c723632c036..162d9d48ff1a 100644
  #ifdef CONFIG_KVM_GUEST
  bool kvm_check_and_clear_guest_paused(void);
 diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index da0b6bc090f3..bb28cf7f151d 100644
+index 3578ad248bc9..8d8a71e23f2b 100644
 --- a/arch/x86/kernel/Makefile
 +++ b/arch/x86/kernel/Makefile
 @@ -20,6 +20,7 @@ CFLAGS_REMOVE_kvmclock.o = -pg
@@ -98,7 +107,7 @@ index da0b6bc090f3..bb28cf7f151d 100644
 -obj-$(CONFIG_KVM_GUEST)		+= kvm.o kvmclock.o
 +obj-$(CONFIG_KVM_GUEST)		+= kvm.o
 +obj-$(CONFIG_KVM_CLOCK)		+= kvmclock.o
- obj-$(CONFIG_PARAVIRT)		+= paravirt.o paravirt_patch_$(BITS).o
+ obj-$(CONFIG_PARAVIRT)		+= paravirt.o paravirt_patch.o
  obj-$(CONFIG_PARAVIRT_SPINLOCKS)+= paravirt-spinlocks.o
  obj-$(CONFIG_PARAVIRT_CLOCK)	+= pvclock.o
 @@ -119,6 +121,8 @@ obj-$(CONFIG_X86_PMEM_LEGACY_DEVICE) += pmem.o
@@ -111,20 +120,12 @@ index da0b6bc090f3..bb28cf7f151d 100644
  obj-$(CONFIG_PCSPKR_PLATFORM)	+= pcspeaker.o
  
 diff --git a/arch/x86/kernel/cpu/hypervisor.c b/arch/x86/kernel/cpu/hypervisor.c
-index 479ca4728de0..1fbce0504d67 100644
+index 553bfbfc3a1b..ddd98e06c33b 100644
 --- a/arch/x86/kernel/cpu/hypervisor.c
 +++ b/arch/x86/kernel/cpu/hypervisor.c
-@@ -32,6 +32,7 @@ extern const struct hypervisor_x86 x86_hyper_xen_pv;
- extern const struct hypervisor_x86 x86_hyper_xen_hvm;
- extern const struct hypervisor_x86 x86_hyper_kvm;
- extern const struct hypervisor_x86 x86_hyper_jailhouse;
-+extern const struct hypervisor_x86 x86_hyper_vmm;
- 
- static const __initconst struct hypervisor_x86 * const hypervisors[] =
- {
-@@ -49,6 +50,9 @@ static const __initconst struct hypervisor_x86 * const hypervisors[] =
- #ifdef CONFIG_JAILHOUSE_GUEST
- 	&x86_hyper_jailhouse,
+@@ -45,6 +45,9 @@ static const __initconst struct hypervisor_x86 * const hypervisors[] =
+ #ifdef CONFIG_ACRN_GUEST
+ 	&x86_hyper_acrn,
  #endif
 +#ifdef CONFIG_VMM_GUEST
 +        &x86_hyper_vmm,
@@ -133,10 +134,10 @@ index 479ca4728de0..1fbce0504d67 100644
  
  enum x86_hypervisor_type x86_hyper_type;
 diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index cee45d46e67d..01336be4e270 100644
+index e820568ed4d5..32dde18f1d59 100644
 --- a/arch/x86/kernel/kvm.c
 +++ b/arch/x86/kernel/kvm.c
-@@ -719,7 +719,7 @@ static void __init kvm_apic_init(void)
+@@ -710,7 +710,7 @@ static void __init kvm_apic_init(void)
  
  static void __init kvm_init_platform(void)
  {
@@ -146,10 +147,10 @@ index cee45d46e67d..01336be4e270 100644
  }
  
 diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index 2ec202cb9dfd..f6a3c3a60eb7 100644
+index 904494b924c1..afbe5a986df6 100644
 --- a/arch/x86/kernel/kvmclock.c
 +++ b/arch/x86/kernel/kvmclock.c
-@@ -318,17 +318,22 @@ static int kvmclock_setup_percpu(unsigned int cpu)
+@@ -305,17 +305,22 @@ static int kvmclock_setup_percpu(unsigned int cpu)
  	return p ? 0 : -ENOMEM;
  }
  
@@ -176,7 +177,7 @@ index 2ec202cb9dfd..f6a3c3a60eb7 100644
  		return;
  	}
  
-@@ -344,7 +349,7 @@ void __init kvmclock_init(void)
+@@ -331,7 +336,7 @@ void __init kvmclock_init(void)
  	kvm_register_clock("primary cpu clock");
  	pvclock_set_pvti_cpu0_va(hv_clock_boot);
  
@@ -185,9 +186,9 @@ index 2ec202cb9dfd..f6a3c3a60eb7 100644
  		pvclock_set_flags(PVCLOCK_TSC_STABLE_BIT);
  
  	flags = pvclock_read_flags(&hv_clock_boot[0].pvti);
-@@ -365,5 +370,4 @@ void __init kvmclock_init(void)
- #endif
- 	kvm_get_preset_lpj();
+@@ -366,5 +371,4 @@ void __init kvmclock_init(void)
+ 		kvm_clock.rating = 299;
+ 
  	clocksource_register_hz(&kvm_clock, NSEC_PER_SEC);
 -	pv_info.name = "KVM";
  }
@@ -282,5 +283,5 @@ index 000000000000..248e7946c467
 +	.init.init_platform	= vmm_init_platform,
 +};
 -- 
-2.24.0
+2.24.1
 

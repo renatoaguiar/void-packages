@@ -5,6 +5,6 @@ revision=1
 build_style=meta
 depends="linux-virt linux-virt-headers grub socklog-void"
 short_desc="Virtualization Guest base files"
-maintainer="Renato Aguiar <renato@renag.me>"
+maintainer="Renato Aguiar <renato@renatoaguiar.net>"
 license="WTFPL"
 homepage="http://www.voidlinux.org"

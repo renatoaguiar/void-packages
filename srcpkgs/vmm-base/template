@@ -1,0 +1,14 @@
+# Template file for 'vmm-base'
+pkgname=vmm-base
+version=0.1
+revision=1
+homepage="http://www.voidlinux.org"
+short_desc="Void Linux VMM base files"
+maintainer="Renato Aguiar <renato@renatoaguiar.net>"
+license="Public Domain"
+
+depends="grub virtio_vmmci vmm_clock"
+
+do_install() {
+	vinstall ${FILESDIR}/vmm.conf 644 usr/lib/dracut/dracut.conf.d
+}
